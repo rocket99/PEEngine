@@ -1,7 +1,7 @@
-#include <stdio.h>
+#include "PEPrefix.h"
 //edit test to local sync
 int main(int argc, char *argv[])
 {
-	printf("Hello, github!\n");
+	PELog("Hello, github!\n");
 	return 0;
 }
