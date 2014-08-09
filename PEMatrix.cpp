@@ -30,6 +30,6 @@ float PEMatrix::Elm(int row, int col)
 
 void PEMatrix::setElm(int row, int col, float value)
 {
-
-
+	PE_Assert(row<m_row && col<m_col, "error: row >= max_row || col >= max_col");
+	m_data[ID(row, col)] = value;
 }
