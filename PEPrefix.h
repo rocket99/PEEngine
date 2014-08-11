@@ -20,11 +20,17 @@ using namespace std;
 
 #define PELog(format, ...) printf("%s:(%d)" format "\n", __FILE__, __LINE__, ##__VA_ARGS__)
 
-#define PE_Assert(expr, msg)  (void)((expr)?((void)0):assert_msg(__FILE__, __LINE__, msg))
-void assert_msg(const char *file, int line, const char *msg)
-{
-	printf("%s(%d):%s\n", file, line, msg);
-	abort();
-}
+#define ASSERT_ENABLE 1
+#if ASSERT_ENABLE>0
+	#define PE_Assert(expr, msg) do{ 	\
+		if(!(expr)) {		 	\
+			PELog(msg);		\
+			assert(expr);		\
+		}				\
+		}while(0)				
+#else
+	#define PE_Assert(expr, msg) // assert(expr) 
+#endif
+
 
 #endif
