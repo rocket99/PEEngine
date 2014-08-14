@@ -23,7 +23,15 @@ P2D P2D::operator - (P2D &P)
 	return result;
 }
 
-P2D P2D::operator * (P2D &P)
+P2D::P2D::operator * (P2D &P)
+{	
+	P2D result;
+	result.x = x * P.x;
+	result.y = y * P.y;
+	return result;
+}
+
+P2D P2D::cross (P2D &P)
 {
 	P2D result;
 	result.x = x*P.x - y*P.y;
@@ -39,12 +47,31 @@ P2D P2D::operator * (float scalar)
 	return result;
 }
 
+P2D P2D::operator / (P2D &P)
+{
+	P2D result;
+	float m = P.morel();
+	result.x = (x*P.x + y*P.y)/m;
+	result.y = (y*P.x - x*P.y)/m;
+	return result;	
+}
+
 P2D P2D::operator / (float scalar)
 {
 	P2D result;
 	result.x = x/scalar;
 	result.y = x/scalar;
 	return result;
+}
+
+bool P2D::operator == (P2D &P)
+{
+	return (x==P.x && y==P.y);
+}
+
+bool P2D::operator != (P2D &P)
+{
+	return (x!=P.x || y!=P.y);
 }
 
 float P2D::dot(P2D &P)
@@ -107,5 +134,46 @@ P2D P2D::normal()
 	return result;
 }
 
+P2D Point2D(float x, float y)
+{
+	P2D point; 
+	point.x = x; 
+	point.y = y;
+	return point;
+}
+
 #pragma mark PEPoint3D implementation
+
+P3D Point3D(float x , float y, float z)
+{
+	P3D point;
+	point.x = x;
+	point.y = y;
+	point.z = z;
+	return point;
+}
+
+void P3D::operator = (P3D &P)
+{
+	x = P.x;
+	y = P.y;
+	z = P.z;
+}
+
+P3D P3D::operator + (P3D &P)
+{	
+	return Point3D(x+P.x, y+P.y, z+P.z);
+}
+
+P3D P3D::operator - (P3D &P)
+{
+	return Point3D(x-P.x, y-P.y, z-P.z);
+}
+
+P3D P3D::operator * (P3D &P)
+{
+	return Point3D(x*P.x, y*P.y, z*P.z);
+}
+
+
 
