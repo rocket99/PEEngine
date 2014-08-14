@@ -34,7 +34,21 @@ typedef struct PEPoint3D
 	void operator = (struct PEPoint3D &P);	
 	struct PEPoint3D operator + (struct PEPoint3D &P);	
 	struct PEPoint3D operator - (struct PEPoint3D &P);	
-	struct PEPoint3D operator * (struct PEPoint3D &P);	
+	struct PEPoint3D operator * (struct PEPoint3D &P);
+	struct PEPoint3D operator * (float scalar);
+	struct PEPoint3D operator / (float scalar);
+	
+	struct PEPoint3D cross (struct PEPoint3D &P);
+
+	float dot(struct PEPoint3D &P);
+	
+	float morel();	
+	void normalized();
+	struct PEPoint3D normal();	
+
+	//笛卡尔坐标变换球坐标,返回的 PEPoint3D的 (x-radius), 
+	//(y-theta(与球坐标Z轴的角度)), (z-alpha(在XY平面上的相位角))
+	struct PEPoint3D sphericalCoord(struct PEPoint3D &P);
 }P3D, V3D;
 
 P3D Point3D(float x, float y, float z);

@@ -175,5 +175,55 @@ P3D P3D::operator * (P3D &P)
 	return Point3D(x*P.x, y*P.y, z*P.z);
 }
 
+P3D P3D::operator *(float scalar)
+{
+	return Point3D(x*scalr, y*scalar, z*scalar);
+}
+
+P3D P3D::operator / (float scalar)
+{
+	return (x/scalar, y/scalar, z/scalar);
+}
+
+P3D P3D::cross(P3D &P)
+{
+	return Point3D(y*P.z-z*P.y, z*P.x-x*P.z, x*P.y-y*P.x);
+}
+
+float P3D::dot(P3D &P)
+{
+	return (x*P.x + y*P.y + z*P.z);
+}
+
+float P3D::morel()
+{
+	return sqrt(x*x+y*y+z*z);
+}
+
+void P3D::normalized()
+{
+	float len = this->morel();
+	x /= len;
+	y /= len;
+	z /= len;
+}
+
+P3D P3D::normal()
+{
+	float len = this->morel();
+	return Point3D(x/len, y/len, z/len);
+}
+
+P3D P3D::sphericalCoord(P3D &P)
+{
+	float radius = P.morel();
+	P2D pxy = Point2D(x/radius, y/radius);
+	float alpha = pxy.degree();
+	float theta = acos(z/radius);
+	return Point3D(radius, theta, alpha);
+}
+
+
+
 
 
