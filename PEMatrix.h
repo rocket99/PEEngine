@@ -10,15 +10,37 @@ class PEMatrix
 		PEMatrix(int row, int col);
 		~PEMatrix();
 
-		Elm(int row, int col);
-		setElm(int row, int col, float value);
+		float Elm(int row, int col);
+		void setElm(int row, int col, float value);
+
+		void display();
+		void displayRow(int row);
+		void displayColumn(int col);
+
+		virtual void operator = (PEMatrix &mat);
+		virtual void operator * (float scale);
+		virtual PEMatrix *operator - (PEMatrix &mat);
+		virtual PEMatrix *operator + (PEMatrix &mat);
+		
+		int getRowNum();
+		int getColumnNum();
+
+		PEMatrix *complement(int row, int col);//algebra complement
+		float morel();
+		
+		static PEMatrix *IdentityMat(int rank);
+
+		void exchangeRow(int row0, int row2);
+		void exchangeColumn(int col0, int col1);
+		PEMatrix *inverse();
+
 	protected:
 		int m_col, m_row;
 	private:
 		float *m_data;
 		int ID(int row, int col);
 		
-}
+};
 
 
 #endif
