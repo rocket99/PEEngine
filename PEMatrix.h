@@ -22,6 +22,7 @@ class PEMatrix
 		virtual PEMatrix *operator - (PEMatrix &mat);
 		virtual PEMatrix *operator + (PEMatrix &mat);
 		
+
 		int getRowNum();
 		int getColumnNum();
 

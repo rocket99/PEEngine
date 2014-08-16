@@ -166,9 +166,6 @@ float PEMatrix::morel()
 			delete mat;
 		}
 	}
-
-	this->display();
-	PELog("sum = %.3f", sum);
 	return sum;
 }
 
@@ -189,16 +186,52 @@ PEMatrix *PEMatrix::IdentityMat(int rank)
 
 void PEMatrix::exchangeRow(int row0, int row1)
 {
-
+	for(int i=0; i<m_col; ++i){
+		float tmp = m_data[ID(row0, i)];
+		m_data[ID(row0, i)] = m_data[ID(row1, i)];
+		m_data[ID(row1, i)] = tmp;
+	}
 }
 
 void PEMatrix::exchangeColumn(int col0, int col1)
 {
-
+	for(int i=0; i<m_row; ++i){
+		float tmp = m_data[ID(i, col0)];
+		m_data[ID(i, col0)] = m_data[ID(i, col1)];
+		m_data[ID(i, col1)] = m_data[ID(i, col0)];
+	}
 }
 
 PEMatrix *PEMatrix::inverse()
 {
-
+	PEMatrix mat = *this;
+	PEMatrix *inv = PEMatrix::IdentityMat(m_row);
+	for(int i=0; i<m_row; ++i){
+		if(mat.Elm(i, i) == 0.0){
+			for(int j=i+1; j<m_row; ++j){
+				if(mat.Elm(j, i) != 0){
+					mat.exchangeRow(i, j);
+					inv->exchangeRow(i, j);
+					break;
+				}
+			}
+		}
+		float f = mat.Elm(i, i);
+		for(int j=0; j<m_col; ++j){
+			mat.setElm(i, j, mat.Elm(i, j)/f);
+			inv->setElm(i, j, inv->Elm(i, j)/f);
+		}
+		for(int r=0; r<m_row; ++r){
+			if(r == i){
+				continue;
+			}
+			float a = mat.Elm(r, i)/mat.Elm(i, i);
+			for(int k=0; k<m_col; ++k){
+				mat.setElm(r, k, mat.Elm(r, k)-a*mat.Elm(i, k));
+				inv->setElm(r, k, inv->Elm(r, k)-a*inv->Elm(i, k));
+			}
+		}
+	}
+	return inv;
 }
 
