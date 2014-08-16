@@ -7,7 +7,6 @@
 #include <time.h>
 #include <math.h>
 
-#define _GNU_SOURCE
 #include <assert.h>
 
 #ifdef __cplusplus
