@@ -204,7 +204,8 @@ void PEMatrix::exchangeColumn(int col0, int col1)
 
 PEMatrix *PEMatrix::inverse()
 {
-	PEMatrix mat = *this;
+	PEMatrix mat;
+	mat = *this;
 	PEMatrix *inv = PEMatrix::IdentityMat(m_row);
 	for(int i=0; i<m_row; ++i){
 		if(mat.Elm(i, i) == 0.0){
@@ -234,4 +235,43 @@ PEMatrix *PEMatrix::inverse()
 	}
 	return inv;
 }
+
+void PEMatrix::transfers()
+{
+	float *buf = (float *)malloc(sizeof(float) * m_row * m_col);
+	for(int i=0; i<m_row; ++i){
+		for(int j=0; j<m_col; ++j){
+			buf[ID(i, j)] = m_data[ID(j, i)];
+		}
+	}
+	for(int i=0; i<m_row*m_col; ++i){
+		m_data[i] = buf[i];
+	}
+	free(buf);
+	int tmp = m_row;
+	m_row = m_col;
+	m_col = tmp;
+}
+
+PEMatrix *PEMatrix::cross(PEMatrix &mat)
+{
+	if(m_col != mat.getRowNum()){
+		return NULL;
+	}
+	PEMatrix *result = new PEMatrix(m_row, mat.getColumnNum());
+	for(int i=0; i<m_row; ++i){
+		for(int j=0; j<mat.getColumnNum(); ++j){
+			result->setElm(i, j, 0.0);
+			for(int k=0; k<m_col; ++k){
+				float tmp = result->Elm(i, j);
+				result->setElm(i, j, tmp+this->Elm(i, k)*mat.Elm(k, j));
+			}
+//			PELog("mat[%d %d] = %.3f", i, j, result->Elm(i, j));
+		}
+	}
+	return result;
+}
+
+
+
 

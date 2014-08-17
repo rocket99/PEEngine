@@ -21,7 +21,7 @@ class PEMatrix
 		virtual void operator * (float scale);
 		virtual PEMatrix *operator - (PEMatrix &mat);
 		virtual PEMatrix *operator + (PEMatrix &mat);
-		
+		virtual PEMatrix *cross(PEMatrix &mat);		
 
 		int getRowNum();
 		int getColumnNum();
@@ -34,6 +34,9 @@ class PEMatrix
 		void exchangeRow(int row0, int row2);
 		void exchangeColumn(int col0, int col1);
 		PEMatrix *inverse();
+
+		void transfers();
+
 
 	protected:
 		int m_col, m_row;
