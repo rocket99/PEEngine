@@ -30,17 +30,12 @@ inline int PEMatrix::ID(int row, int col)
 	return col*m_row + row;
 }
 
-float PEMatrix::Elm(int row, int col)
+float &PEMatrix::Elm(int row, int col)
 {
 	assert(row<m_row && col<m_col);
 	return m_data[ID(row, col)];
 }
 
-void PEMatrix::setElm(int row, int col, float value)
-{
-	assert(row<m_row && col<m_col);
-	m_data[ID(row, col)] = value;
-}
 
 void PEMatrix::display()
 {
@@ -88,50 +83,94 @@ void PEMatrix::operator = (PEMatrix &mat)
 	}
 }
 
-void PEMatrix::operator * (float scale)
+void PEMatrix::operator += (PEMatrix &mat)
 {
-	for(int i=0; i<m_row; ++i){
-		for(int j=0; j<m_col; ++j){
-			m_data[ID(i, j)] *= scale;
-		}
-	}
+    for(int i=0; i<m_row; ++i){
+        if(i >= mat.getRowNum()){
+            break;
+        }
+        for(int j=0; j<m_col; ++j){
+            if(j >= mat.getColumnNum()){
+                break;
+            }
+            Elm(i, j) += mat.Elm(i, j);
+        }
+    }
 }
 
-PEMatrix *PEMatrix::operator + (PEMatrix &mat)
+void PEMatrix::operator -= (PEMatrix &mat)
 {
-	if(mat.getRowNum()!=m_row || mat.getColumnNum()!=m_col){
-		return NULL;
-	}
-	PEMatrix *newMat = new PEMatrix(mat.getRowNum(), mat.getColumnNum());
-	for(int i=0; i<m_row; ++i){
-		for(int j=0; j<m_col; ++j){
-			newMat->setElm(i, j, mat.Elm(i,j)+m_data[ID(i, j)]);
-		}
-	}
-	return newMat;
+    for(int i=0; i<m_row; ++i){
+        if(i >= mat.getRowNum()){
+            break;
+        }
+        for(int j=0; j<m_col; ++j){
+            if(j >= mat.getColumnNum()){
+                break;
+            }
+            Elm(i, j) -= mat.Elm(i, j);
+        }
+    }
 }
 
-PEMatrix *PEMatrix::operator - (PEMatrix &mat)
+void PEMatrix::operator *= (PEMatrix &mat)
 {
-	if(mat.getRowNum()!=m_row || mat.getColumnNum()!=m_col){
-		return NULL;
-	}
-	PEMatrix *newMat = new PEMatrix(mat.getRowNum(), mat.getColumnNum());
-	for(int i=0; i<m_row; ++i){
-		for(int j=0; j<m_col; ++j){
-			newMat->setElm(i, j, -mat.Elm(i,j)+m_data[ID(i, j)]);
-		}
-	}
-	return newMat;
+    for(int i=0; i<m_row; ++i){
+        if(i >= mat.getRowNum()){
+            break;
+        }
+        for(int j=0; j<m_col; ++j){
+            if(j >= mat.getColumnNum()){
+                break;
+            }
+            Elm(i, j) *= mat.Elm(i, j);
+        }
+    }
 }
 
-PEMatrix *PEMatrix::complement(int row, int col)
+void PEMatrix::operator /= (PEMatrix &mat)
+{
+    for(int i=0; i<m_row; ++i){
+        if(i >= mat.getRowNum()){
+            break;
+        }
+        for(int j=0; j<m_col; ++j){
+            if(j >= mat.getColumnNum()){
+                break;
+            }
+            Elm(i, j) /= mat.Elm(i, j);
+        }
+    }
+}
+
+bool PEMatrix::operator == (PEMatrix &mat)
+{
+    if(m_row != mat.getRowNum() || m_col != mat.getColumnNum()){
+        return false;
+    }
+    for (int i=0; i<m_row; ++i) {
+        for(int j=0; j<m_col; ++j){
+            if (Elm(i, j) != mat.Elm(i, j)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool PEMatrix::operator != (PEMatrix &mat)
+{
+    return !((*this) == mat);
+}
+
+
+PEMatrix PEMatrix::complement(int row, int col)
 {
 	if(row >= m_col || col >= m_col){
 		PELog("there is must be row<max_row && col<max_col");
-		return NULL;
+		return PEMatrix(0, 0);
 	}
-	PEMatrix *retMat = new PEMatrix(m_row-1, m_col-1);
+	PEMatrix retMat(m_row-1, m_col-1);
 	int i1 = 0, j1 = 0;
 	for(int i0=0; i0<m_row; ++i0){
 		if(i0 == row){
@@ -142,7 +181,7 @@ PEMatrix *PEMatrix::complement(int row, int col)
 			if(j0 == col){
 				continue;
 			}	
-			retMat->setElm(i1, j1, m_data[ID(i0, j0)]);
+			retMat.Elm(i1, j1) = m_data[ID(i0, j0)];
 			++ j1;
 		}
 		++ i1;
@@ -161,23 +200,22 @@ float PEMatrix::morel()
 		sum = Elm(0, 0);
 	}else{
 		for(int i=0; i<m_col; ++i){
-			PEMatrix *mat = this->complement(0, i);
-			sum = i%2==0 ? sum + Elm(0, i)*mat->morel() : sum - Elm(0, i)*mat->morel();
-			delete mat;
+			PEMatrix mat = this->complement(0, i);
+			sum = i%2==0 ? sum + Elm(0, i)*mat.morel() : sum - Elm(0, i)*mat.morel();
 		}
 	}
 	return sum;
 }
 
-PEMatrix *PEMatrix::IdentityMat(int rank)
+PEMatrix PEMatrix::IdentityMat(int rank)
 {
-	PEMatrix *mat = new PEMatrix(rank, rank);
+	PEMatrix mat(rank, rank);
 	for(int i=0; i<rank; ++i){
 		for(int j=0; j<rank; ++j){
 			if(i==j){
-				mat->setElm(i, j, 1.0);
+				mat.Elm(i, j) = 1.0;
 			}else{
-				mat->setElm(i, j, 0.0);
+				mat.Elm(i, j) = 0.0;
 			}
 		}
 	}
@@ -202,25 +240,25 @@ void PEMatrix::exchangeColumn(int col0, int col1)
 	}
 }
 
-PEMatrix *PEMatrix::inverse()
+PEMatrix PEMatrix::inverse()
 {
 	PEMatrix mat;
 	mat = *this;
-	PEMatrix *inv = PEMatrix::IdentityMat(m_row);
+	PEMatrix inv = PEMatrix::IdentityMat(m_row);
 	for(int i=0; i<m_row; ++i){
 		if(mat.Elm(i, i) == 0.0){
 			for(int j=i+1; j<m_row; ++j){
 				if(mat.Elm(j, i) != 0){
 					mat.exchangeRow(i, j);
-					inv->exchangeRow(i, j);
+					inv.exchangeRow(i, j);
 					break;
 				}
 			}
 		}
 		float f = mat.Elm(i, i);
 		for(int j=0; j<m_col; ++j){
-			mat.setElm(i, j, mat.Elm(i, j)/f);
-			inv->setElm(i, j, inv->Elm(i, j)/f);
+			mat.Elm(i, j) = mat.Elm(i, j);
+			inv.Elm(i, j) = inv.Elm(i, j)/f;
 		}
 		for(int r=0; r<m_row; ++r){
 			if(r == i){
@@ -228,8 +266,8 @@ PEMatrix *PEMatrix::inverse()
 			}
 			float a = mat.Elm(r, i)/mat.Elm(i, i);
 			for(int k=0; k<m_col; ++k){
-				mat.setElm(r, k, mat.Elm(r, k)-a*mat.Elm(i, k));
-				inv->setElm(r, k, inv->Elm(r, k)-a*inv->Elm(i, k));
+				mat.Elm(r, k) = mat.Elm(r, k)-a*mat.Elm(i, k);
+				inv.Elm(r, k) = inv.Elm(r, k)-a*inv.Elm(i, k);
 			}
 		}
 	}
@@ -253,25 +291,101 @@ void PEMatrix::transfers()
 	m_col = tmp;
 }
 
-PEMatrix *PEMatrix::cross(PEMatrix &mat)
+PEMatrix operator * (PEMatrix &mat, float scale)
 {
-	if(m_col != mat.getRowNum()){
-		return NULL;
-	}
-	PEMatrix *result = new PEMatrix(m_row, mat.getColumnNum());
-	for(int i=0; i<m_row; ++i){
-		for(int j=0; j<mat.getColumnNum(); ++j){
-			result->setElm(i, j, 0.0);
-			for(int k=0; k<m_col; ++k){
-				float tmp = result->Elm(i, j);
-				result->setElm(i, j, tmp+this->Elm(i, k)*mat.Elm(k, j));
-			}
-//			PELog("mat[%d %d] = %.3f", i, j, result->Elm(i, j));
-		}
-	}
-	return result;
+    PEMatrix result(mat.m_row, mat.m_col);
+    for(int i=0; i<mat.m_row; ++i){
+        for(int j=0; j<mat.m_col; ++j){
+            result.Elm(i, j) = mat.Elm(i, j)*scale;
+        }
+    }
+    return result;
 }
 
+PEMatrix operator - (PEMatrix &A, PEMatrix &B)
+{
+    PEMatrix result(A.m_row, A.m_col);
+    for(int i=0; i<result.m_row; ++i){
+        if(i>= B.m_row){
+            continue;
+        }
+        for(int j=0; j<result.m_col; ++j){
+            if(j < B.m_col){
+                result.Elm(i, j) = A.Elm(i, j) - B.Elm(i, j);
+            }
+        }
+    }
+    return result;
+}
 
+PEMatrix operator + (PEMatrix &A, PEMatrix &B)
+{
+    PEMatrix result(A.m_row, A.m_col);
+    for(int i=0; i<result.m_row; ++i){
+        if(i>= B.m_row){
+            continue;
+        }
+        for(int j=0; j<result.m_col; ++j){
+            if(j < B.m_col){
+                result.Elm(i, j) = A.Elm(i, j) + B.Elm(i, j);
+            }
+        }
+    }
+    return result;
+}
+PEMatrix operator * (PEMatrix &A, PEMatrix &B)
+{
+    PEMatrix result(A.m_row, A.m_col);
+    for(int i=0; i<result.m_row; ++i){
+        if(i>= B.m_row){
+            continue;
+        }
+        for(int j=0; j<result.m_col; ++j){
+            if(j < B.m_col){
+                result.Elm(i, j) = A.Elm(i, j) * B.Elm(i, j);
+            }
+        }
+    }
+    return result;
+}
+
+PEMatrix operator / (PEMatrix &A, PEMatrix &B)
+{
+    PEMatrix result(A.m_row, A.m_col);
+    for(int i=0; i<result.m_row; ++i){
+        if(i>= B.m_row){
+            continue;
+        }
+        for(int j=0; j<result.m_col; ++j){
+            if(j < B.m_col){
+                result.Elm(i, j) = A.Elm(i, j) / B.Elm(i, j);
+            }
+        }
+    }
+    return result;
+}
+
+PEMatrix cross(PEMatrix &A, PEMatrix &B)
+{
+	if(A.m_col != B.m_row){
+		return PEMatrix(0, 0);
+	}
+	PEMatrix result(A.m_row, B.m_col);
+	for(int i=0; i<A.m_row; ++i){
+		for(int j=0; j<B.m_col; ++j){
+            float tmp = 0.0;
+			for(int k=0; k<A.m_col; ++k){
+				tmp += A.Elm(i, k)*B.Elm(k, j);
+			}
+            result.Elm(i, j) = tmp;
+		}
+	}
+    return result;
+}
+
+float *PEMatrix::getData()
+{
+    return m_data;
+}
 
 

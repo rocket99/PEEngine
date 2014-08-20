@@ -31,5 +31,12 @@ using namespace std;
 	#define PE_Assert(expr, msg) // assert(expr) 
 #endif
 
+#ifdef OPENGL_ES
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+#include <OpenGLES/ES3/gl.h>
+#include <OpenGLES/ES3/glext.h>
+#endif
+
 
 #endif

@@ -10,10 +10,13 @@ public:
 	float &operator [] (int idx);
 	float &operator [] (int idx) const;
 	void operator = (PEVector &vec);
+    bool operator == (PEVector &vec);
+    bool operator != (PEVector &vec);
 	friend PEVector operator + (PEVector &A, PEVector &B);
 	friend PEVector operator - (PEVector &A, PEVector &B);
 	friend PEVector operator * (PEVector &A, PEVector &B);
-	
+	friend PEVector operator / (PEVector &A, PEVector &B);
+    friend PEVector operator * (PEVector &A, float scale);
     void display();
     void setValues(int num, ...);
 private:
@@ -22,6 +25,4 @@ private:
 };
 
 #endif
-
-
 

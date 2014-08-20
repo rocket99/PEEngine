@@ -5,39 +5,47 @@
 
 class PEMatrix
 {
-	public:
-		PEMatrix():m_row(0), m_col(0),m_data(NULL){};
-		PEMatrix(int row, int col);
-		~PEMatrix();
+public:
+    PEMatrix():m_row(0), m_col(0),m_data(NULL){};
+    PEMatrix(int row, int col);
+    ~PEMatrix();
 
-		float Elm(int row, int col);
-		void setElm(int row, int col, float value);
+    float &Elm(int row, int col);
 
-		void display();
-		void displayRow(int row);
-		void displayColumn(int col);
+    void display();
+    void displayRow(int row);
+    void displayColumn(int col);
 
-		virtual void operator = (PEMatrix &mat);
-		virtual void operator * (float scale);
-		virtual PEMatrix *operator - (PEMatrix &mat);
-		virtual PEMatrix *operator + (PEMatrix &mat);
-		virtual PEMatrix *cross(PEMatrix &mat);		
+    virtual void operator = (PEMatrix &mat);
+    virtual void operator += (PEMatrix &mat);
+    virtual void operator -= (PEMatrix &mat);
+    virtual void operator *= (PEMatrix &mat);
+    virtual void operator /= (PEMatrix &mat);
+    virtual bool operator == (PEMatrix &mat);
+    virtual bool operator != (PEMatrix &mat);
+    
+    friend PEMatrix operator * (PEMatrix &mat, float scale);
+    friend PEMatrix operator - (PEMatrix &A, PEMatrix &B);
+    friend PEMatrix operator * (PEMatrix &A, PEMatrix &B);
+    friend PEMatrix operator / (PEMatrix &A, PEMatrix &B);
+    friend PEMatrix operator + (PEMatrix &A, PEMatrix &B);
+    friend PEMatrix cross(PEMatrix &A, PEMatrix &B);
 
-		int getRowNum();
-		int getColumnNum();
+    int getRowNum();
+    int getColumnNum();
 
-		PEMatrix *complement(int row, int col);//algebra complement
-		float morel();
+    PEMatrix complement(int row, int col);//algebra complement
+    float morel();
 		
-		static PEMatrix *IdentityMat(int rank);
+    static PEMatrix IdentityMat(int rank);
 
-		void exchangeRow(int row0, int row2);
-		void exchangeColumn(int col0, int col1);
-		PEMatrix *inverse();
+    void exchangeRow(int row0, int row2);
+    void exchangeColumn(int col0, int col1);
+    PEMatrix inverse();
 
-		void transfers();
+    void transfers();
 
-
+    float *getData();
 	protected:
 		int m_col, m_row;
 	private:

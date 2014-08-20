@@ -91,9 +91,27 @@ PEVector operator * (PEVector &A, PEVector &B)
 			result[i] = A[i];
 			continue;
 		}
-		result[i] = A[i] - B[i];		
+		result[i] = A[i] * B[i];
 	}	
 	return result;	
+}
+
+PEVector operator / (PEVector &A, PEVector &B)
+{
+	int r = A.elmNum() > B.elmNum() ? A.elmNum() : B.elmNum();
+	PEVector result(r);
+	for(int i=0; i<result.elmNum(); ++i){
+		if(i >= A.elmNum()){
+			result[i] = 0.0 - B[i];
+			continue;
+		}
+		if(i>= B.elmNum()){
+			result[i] = A[i];
+			continue;
+		}
+		result[i] = A[i] / B[i];
+	}
+	return result;
 }
 
 void PEVector::display()
