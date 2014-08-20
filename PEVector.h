@@ -6,8 +6,8 @@ class PEVector
 {
 public:
 	PEVector(int num);
-	PEVector(int num, ...);
-	~PEVector();	
+//	PEVector(int num, ...);
+	~PEVector();
 	int elmNum(); 
 	float &operator [] (int idx);
 	float &operator [] (int idx) const;

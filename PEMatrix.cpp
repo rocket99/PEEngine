@@ -198,7 +198,7 @@ void PEMatrix::exchangeColumn(int col0, int col1)
 	for(int i=0; i<m_row; ++i){
 		float tmp = m_data[ID(i, col0)];
 		m_data[ID(i, col0)] = m_data[ID(i, col1)];
-		m_data[ID(i, col1)] = m_data[ID(i, col0)];
+		m_data[ID(i, col1)] = tmp;
 	}
 }
 

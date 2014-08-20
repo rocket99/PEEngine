@@ -23,7 +23,7 @@ P2D P2D::operator - (P2D &P)
 	return result;
 }
 
-P2D::P2D::operator * (P2D &P)
+P2D P2D::operator * (P2D &P)
 {	
 	P2D result;
 	result.x = x * P.x;
@@ -177,12 +177,12 @@ P3D P3D::operator * (P3D &P)
 
 P3D P3D::operator *(float scalar)
 {
-	return Point3D(x*scalr, y*scalar, z*scalar);
+	return Point3D(x*scalar, y*scalar, z*scalar);
 }
 
 P3D P3D::operator / (float scalar)
 {
-	return (x/scalar, y/scalar, z/scalar);
+	return Point3D(x/scalar, y/scalar, z/scalar);
 }
 
 P3D P3D::cross(P3D &P)
