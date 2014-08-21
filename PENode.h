@@ -30,12 +30,18 @@ public:
     
     void setParentNode(PENode *node);
     PENode *getParentNode();
+    
+    virtual void draw();
+    
+    void setGLProgram(GLuint prog);
+    GLuint getGLProgram();
 protected:
     PENode();
     ~PENode();
     
     P3D m_posiiton;
-    
+    PEMatrix m_rotate;
+    GLuint m_program;
 private:
     PENode *m_parent;
     std::vector<PENode *> m_children;

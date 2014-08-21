@@ -15,5 +15,7 @@
 #include "PEVector.h"
 
 //gl program shaders
+#include "PEShaders.h"
+#include "PEShaderManager.h"
 
 #endif

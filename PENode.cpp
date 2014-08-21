@@ -11,6 +11,7 @@
 PENode::PENode():
 m_tag(0),
 m_parent(nullptr),
+m_program(0),
 m_posiiton(Point3D(0, 0, 0))
 {
     m_children.clear();
@@ -73,4 +74,19 @@ void PENode::setParentNode(PENode *node)
 PENode * PENode::getParentNode()
 {
     return m_parent;
+}
+
+void PENode::setGLProgram(GLuint prog)
+{
+    m_program = prog;
+}
+
+GLuint PENode::getGLProgram()
+{
+    return m_program;
+}
+
+void PENode::draw()
+{
+    
 }

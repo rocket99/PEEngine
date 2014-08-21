@@ -2,6 +2,7 @@
 #define __PEMatrix_H__
 
 #include "PEPrefix.h"
+#include "PEDataType.h"
 
 class PEMatrix
 {
@@ -46,14 +47,16 @@ public:
     void transfers();
 
     float *getData();
-	protected:
-		int m_col, m_row;
-	private:
-		float *m_data;
-		int ID(int row, int col);
+    
+    
+    static PEMatrix RotationMatrix(V3D axis, float angle);
+protected:
+    int m_col, m_row;
+private:
+    float *m_data;
+    int ID(int row, int col);
 		
 };
-
 
 #endif
 
