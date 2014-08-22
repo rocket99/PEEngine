@@ -138,6 +138,7 @@ void PENode::draw()
 {
     std::vector<PENode *>::iterator it = m_children.begin();
     while(it != m_children.end()){
+        (*it)->getWorldPos();
         (*it)->draw();
         ++ it;
     }

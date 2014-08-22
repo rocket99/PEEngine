@@ -43,9 +43,7 @@ public:
     GLuint getGLProgram();
     
     P3D &Position();
-    
     bool &Visible();
-    
     P3D &World();
 protected:
     PENode();
@@ -54,14 +52,13 @@ protected:
     P3D m_position;
     PEMatrix m_rotate;
     GLuint m_program;
-private:
-    
-    PENode *m_parent;
-    std::vector<PENode *> m_children;
-    int m_tag;
     V3D m_worldSize;
     P3D m_worldPos;
     P3D getWorldPos();
+private:
+    PENode *m_parent;
+    std::vector<PENode *> m_children;
+    int m_tag;
 };
 
 #endif /* defined(__Engine__PENode__) */
