@@ -12,7 +12,8 @@ PENode::PENode():
 m_tag(0),
 m_parent(nullptr),
 m_program(0),
-m_position(Point3D(0, 0, 0))
+m_position(Point3D(0, 0, 0)),
+m_isVisible(true)
 {
     m_children.clear();
 }
@@ -135,10 +136,6 @@ GLuint PENode::getGLProgram()
 
 void PENode::draw()
 {
-    if(!m_isVisible){
-        return;
-    }
-    
     std::vector<PENode *>::iterator it = m_children.begin();
     while(it != m_children.end()){
         (*it)->draw();
@@ -151,6 +148,10 @@ P3D &PENode::Position()
     return m_position;
 }
 
+P3D &PENode::World()
+{
+    return m_worldSize;
+}
 bool &PENode::Visible()
 {
     return m_isVisible;

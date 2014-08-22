@@ -45,18 +45,21 @@ public:
     P3D &Position();
     
     bool &Visible();
+    
+    P3D &World();
 protected:
     PENode();
     ~PENode();
-    
+    bool m_isVisible;
     P3D m_position;
     PEMatrix m_rotate;
     GLuint m_program;
 private:
-    bool m_isVisible;
+    
     PENode *m_parent;
     std::vector<PENode *> m_children;
     int m_tag;
+    V3D m_worldSize;
     P3D m_worldPos;
     P3D getWorldPos();
 };

@@ -38,7 +38,7 @@ typedef struct PEPoint2D
 	void normalized();
 	struct PEPoint2D normal() const;
     struct PEPoint2D normal();
-} P2D, V2D;
+} P2D, V2D, Size2D;
 P2D Point2D(float x, float y);
 
 
@@ -70,7 +70,7 @@ typedef struct PEPoint3D
 	//笛卡尔坐标变换球坐标,返回的 PEPoint3D的 (x-radius), 
 	//(y-theta(与球坐标Z轴的角度)), (z-alpha(在XY平面上的相位角))
 	struct PEPoint3D sphericalCoord(struct PEPoint3D &P);
-}P3D, V3D;
+}P3D, V3D, Size3D;
 
 P3D Point3D(float x, float y, float z);
 

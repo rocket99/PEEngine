@@ -14,6 +14,18 @@
 #include "PENode.h"
 #include "PEPrefix.h"
 
-class
+class PELayer3D:public PENode
+{
+public:
+    static PELayer3D *create(const Size3D &size);
+    bool initWithSize(const Size3D &size);
+    
+    void draw();
+protected:
+    PELayer3D();
+    ~PELayer3D();
+private:
+    Size3D m_size;
+};
 
 #endif /* defined(__Engine__PELayer__) */
