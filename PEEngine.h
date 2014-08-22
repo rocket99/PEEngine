@@ -10,12 +10,11 @@
 #define Engine_PEEngine_h
 
 //math methods
-#include "PEDataType.h"
-#include "PEMatrix.h"
-#include "PEVector.h"
-
+#include "PEMath.h"
 //gl program shaders
 #include "PEShaders.h"
 #include "PEShaderManager.h"
+
+//base node
 
 #endif

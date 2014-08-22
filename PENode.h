@@ -26,6 +26,12 @@ public:
     
     void addChild(PENode *node);
     void addChild(PENode *node, int tag);
+    void addChild(PENode *node, string name);
+    
+    void removeChild(PENode *node);
+    void removeChildByTag(int tag);
+    void removeChildByName(string name);
+    
     void removeFromParentNode();
     
     void setParentNode(PENode *node);
@@ -35,18 +41,27 @@ public:
     
     void setGLProgram(GLuint prog);
     GLuint getGLProgram();
+    
+    P3D &Position();
+    
+    bool &Visible();
 protected:
     PENode();
     ~PENode();
     
-    P3D m_posiiton;
+    P3D m_position;
     PEMatrix m_rotate;
     GLuint m_program;
 private:
+    bool m_isVisible;
     PENode *m_parent;
     std::vector<PENode *> m_children;
     int m_tag;
+    P3D m_worldPos;
+    P3D getWorldPos();
 };
 
 #endif /* defined(__Engine__PENode__) */
+
+
 

@@ -38,5 +38,10 @@ using namespace std;
 #include <OpenGLES/ES3/glext.h>
 #endif
 
+#ifdef GL_LINUX
+#include <glfw.h>
+#include <gl.h>
+#include <glext.h>
+#endif
 
 #endif

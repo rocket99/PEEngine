@@ -6,24 +6,38 @@
 typedef struct PEPoint2D
 {
 	float x, y;
-	void operator = (struct PEPoint2D &P);
-	struct PEPoint2D operator + (struct PEPoint2D &P);
-	struct PEPoint2D operator - (struct PEPoint2D &P);
-	struct PEPoint2D operator * (struct PEPoint2D &P);
-	struct PEPoint2D operator * (float scalar);
-	struct PEPoint2D operator / (float scalar);
-	struct PEPoint2D operator / (struct PEPoint2D &P);//复述除法
+	void operator = (const struct PEPoint2D &P);
+    void operator += (const struct PEPoint2D &P);
+    void operator -= (const struct PEPoint2D &P);
+    void operator *= (float scalar);
+    void operator /= (float scalar);
+
+    
+    
+	friend struct PEPoint2D operator + (const struct PEPoint2D &A, const struct PEPoint2D &B);
+	friend struct PEPoint2D operator - (const struct PEPoint2D &A, const struct PEPoint2D &B);
+	friend struct PEPoint2D operator * (const struct PEPoint2D &A, const struct PEPoint2D &B);
+	friend struct PEPoint2D operator * (const struct PEPoint2D &A, float scalar);
+    friend struct PEPoint2D operator * (float scalar, const struct PEPoint2D &A);
+	friend struct PEPoint2D operator / (const struct PEPoint2D &A, float scalar);
+	friend struct PEPoint2D operator / (const struct PEPoint2D &A, const struct PEPoint2D &B);//复述除法
+
 	float dot(struct PEPoint2D &P); //点积
 	struct PEPoint2D cross(struct PEPoint2D &P);
-	float morel();
+    
+	float morel() const;
+	float arg() const;
+	float degree() const;
+
+    float morel();
 	float arg();
 	float degree();
-
-	bool operator == (struct PEPoint2D &P);
-	bool operator != (struct PEPoint2D &P);
+	bool operator == (const struct PEPoint2D &P);
+	bool operator != (const struct PEPoint2D &P);
 
 	void normalized();
-	struct PEPoint2D normal();
+	struct PEPoint2D normal() const;
+    struct PEPoint2D normal();
 } P2D, V2D;
 P2D Point2D(float x, float y);
 
@@ -31,16 +45,23 @@ P2D Point2D(float x, float y);
 typedef struct PEPoint3D
 {		
 	float x, y, z;
-	void operator = (struct PEPoint3D &P);	
-	struct PEPoint3D operator + (struct PEPoint3D &P);	
-	struct PEPoint3D operator - (struct PEPoint3D &P);	
-	struct PEPoint3D operator * (struct PEPoint3D &P);
-	struct PEPoint3D operator * (float scalar);
-	struct PEPoint3D operator / (float scalar);
+	void operator = (const struct PEPoint3D &P);
+	friend struct PEPoint3D operator + (const struct PEPoint3D &A, const struct PEPoint3D &B);
+	friend struct PEPoint3D operator - (const struct PEPoint3D &A, const struct PEPoint3D &B);
+	friend struct PEPoint3D operator * (const struct PEPoint3D &A, const struct PEPoint3D &B);
+	friend struct PEPoint3D operator * (const struct PEPoint3D &A, float scalar);
+    friend struct PEPoint3D operator * (float scalar, const struct PEPoint3D &A);
+	friend struct PEPoint3D operator / (const struct PEPoint3D &A, float scalar);
 	
-	struct PEPoint3D cross (struct PEPoint3D &P);
+	
 
-	float dot(struct PEPoint3D &P);
+    void operator += (const struct PEPoint3D &P);
+    void operator -= (const struct PEPoint3D &P);
+    void operator *= (float scalar);
+    void operator /= (float scalar);
+    
+    friend struct PEPoint3D cross (const struct PEPoint3D &A, const struct PEPoint3D &B);
+	float dot(const struct PEPoint3D &P);
 	
 	float morel();	
 	void normalized();
