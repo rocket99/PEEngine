@@ -4,7 +4,7 @@ PEMatrix::PEMatrix(int row, int col)
 {
 	m_row = row;
 	m_col = col;
-	m_data =(float *)malloc(sizeof(float *)*m_row*m_col);
+	m_data =(float *)malloc(sizeof(float)*m_row*m_col);
 }
 
 PEMatrix::~PEMatrix()

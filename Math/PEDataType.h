@@ -52,9 +52,8 @@ typedef struct PEPoint3D
 	friend struct PEPoint3D operator * (const struct PEPoint3D &A, float scalar);
     friend struct PEPoint3D operator * (float scalar, const struct PEPoint3D &A);
 	friend struct PEPoint3D operator / (const struct PEPoint3D &A, float scalar);
-	
-	
-
+    friend struct PEPoint3D operator / (const struct PEPoint3D &A, const struct PEPoint3D &B);
+    
     void operator += (const struct PEPoint3D &P);
     void operator -= (const struct PEPoint3D &P);
     void operator *= (float scalar);
@@ -67,11 +66,24 @@ typedef struct PEPoint3D
 	void normalized();
 	struct PEPoint3D normal();	
 
+    float morel() const;
+	struct PEPoint3D normal() const;
 	//笛卡尔坐标变换球坐标,返回的 PEPoint3D的 (x-radius), 
 	//(y-theta(与球坐标Z轴的角度)), (z-alpha(在XY平面上的相位角))
 	struct PEPoint3D sphericalCoord(struct PEPoint3D &P);
+    
+    friend bool isParallel(const struct PEPoint3D &A, const struct PEPoint3D &B);
+    friend bool operator == (const struct PEPoint3D &A, const PEPoint3D &B);
+    
 }P3D, V3D, Size3D;
-
 P3D Point3D(float x, float y, float z);
+#define P3DZERO Point3D(0.0, 0.0, 0.0)
+   
 
+typedef struct PEColor
+{
+    float r, g, b, a;
+    void operator = (const struct PEColor &color);
+}Color4F;
+Color4F ColorRGBA(float red, float green, float blue, float alpha);
 #endif

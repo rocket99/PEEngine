@@ -13,4 +13,5 @@
 #include "PEMatrix.h"
 #include "PEVector.h"
 
+#include "PECamera.h"
 #endif

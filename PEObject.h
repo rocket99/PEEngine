@@ -22,7 +22,7 @@ public:
     void release();
 protected:
     PEObject(){};
-    ~PEObject(){};
+    virtual ~PEObject(){};
 private:
     int m_retain;
     string m_name;

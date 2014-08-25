@@ -8,7 +8,6 @@
 
 #include "PELayer3D.h"
 
-
 PELayer3D::PELayer3D():m_size(Point3D(0, 0, 0))
 {}
 
@@ -31,10 +30,15 @@ bool PELayer3D::initWithSize(const Size3D &size)
         return false;
     }
     m_size = size;
+    PECamera::getInstance()->setPerspect(60.0, 1.0, 0.05, 30.0);
+    PECamera::getInstance()->World() = m_size;
+    PECamera::getInstance()->WorldFocus() = P3DZERO;
+    PECamera::getInstance()->WorldPos() = Point3D(0.0, 0.0, m_size.z);
     return true;
 }
 
 void PELayer3D::draw(){
+//    PEMatrix modelProject = PECamera::getInstance()->modelViewProject();
     PENode::draw();
 }
 

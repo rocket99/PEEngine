@@ -12,6 +12,21 @@
 #include <iostream>
 #include "PENode.h"
 #include "PEMath.h"
-
+#include "PEPolygon.h"
+class PERect:public PEPolygon
+{
+public:
+    PERect();
+    ~PERect();
+    
+    static PERect *create(float width, float height);
+    bool initWithSize(float width, float height);
+    void draw();
+    Color4F &Color();
+private:
+    float m_width, m_height;
+    float *m_data;
+    Color4F m_color;
+};
 
 #endif /* defined(__Engine__PERect__) */

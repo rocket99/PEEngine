@@ -23,6 +23,21 @@ PENode::~PENode()
     
 }
 
+PENode *PENode::create()
+{
+    PENode *node = new PENode();
+    if(node->init()){
+        return node;
+    }
+    delete node;
+    return NULL;
+}
+
+bool PENode::init()
+{
+    return true;
+}
+
 void PENode::setTag(int value)
 {
     m_tag = value;

@@ -44,4 +44,6 @@ using namespace std;
 #include <glext.h>
 #endif
 
+#include "PEMacro.h"
+
 #endif

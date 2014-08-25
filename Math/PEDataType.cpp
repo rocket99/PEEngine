@@ -253,6 +253,11 @@ P3D operator / (const P3D &A, float scalar)
 	return Point3D(A.x/scalar, A.y/scalar, A.z/scalar);
 }
 
+P3D operator / (const P3D &A, const P3D &B)
+{
+    return Point3D(A.x/B.x, A.y/B.y, A.z/B.z);
+}
+
 void P3D::operator += (const P3D &P)
 {
     x += P.x; y += P.y; z += P.z;
@@ -300,6 +305,17 @@ P3D P3D::normal()
 	return Point3D(x/len, y/len, z/len);
 }
 
+float P3D::morel() const
+{
+	return sqrt(x*x+y*y+z*z);
+}
+
+P3D P3D::normal() const
+{
+	float len = this->morel();
+	return Point3D(x/len, y/len, z/len);
+}
+
 P3D P3D::sphericalCoord(P3D &P)
 {
 	float radius = P.morel();
@@ -309,6 +325,32 @@ P3D P3D::sphericalCoord(P3D &P)
 	return Point3D(radius, theta, alpha);
 }
 
+bool isParallel(const P3D &A, const P3D &B)
+{
+    return  (cross(A, B).morel() == 0.0);
+}
+
+bool operator == (const P3D &A, const P3D &B)
+{
+    return (A.x==B.x) && (A.y==B.y) && (A.z==B.z);
+}
+
+
+#pragma mark PEColor
+
+void Color4F::operator = (const Color4F &color)
+{
+    r = color.r;    g = color.g;
+    b = color.b;    a = color.a;
+}
+
+Color4F ColorRGBA(float red, float green, float blue, float alpha)
+{
+    Color4F color;
+    color.r = red;  color.g = green;
+    color.b = blue; color.a = alpha;
+    return color;
+}
 
 
 

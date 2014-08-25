@@ -11,9 +11,7 @@
 
 #include "PEObject.h"
 #include "PEPrefix.h"
-#include "PEDataType.h"
-#include "PEMatrix.h"
-#include "PEVector.h"
+#include "PEMath.h"
 
 class PENode:public PEObject
 {

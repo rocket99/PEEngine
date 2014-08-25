@@ -52,10 +52,10 @@ public:
     static PEMatrix RotationMatrix(V3D axis, float angle);
 protected:
     int m_col, m_row;
-private:
     float *m_data;
+
     int ID(int row, int col);
-		
+private:
 };
 
 #endif

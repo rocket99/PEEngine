@@ -9,15 +9,14 @@
 #ifndef Engine_PEMacro_h
 #define Engine_PEMacro_h
 
-#define POINT_LOC       0
-#define TEXCOORD_LOC    1
-#define NORMAL_LOC      2
-#defINE COLOR_LOC       3
+#define ATTRIB_POINT_LOC        0
+#define ATTRIB_TEXCOORD_LOC     1
+#define ATTRIB_NORMAL_LOC       2
+#define ATTRIB_COLOR_LOC        3
 
 #define UNIFORM_SPACE           "u_space"
 #define UNIFORM_POSITION        "u_position"
 #define UNIFORM_ROTATE          "u_rotation"
 #define UNIFORM_MODELPROJECT    "u_modelProject"
-
 
 #endif

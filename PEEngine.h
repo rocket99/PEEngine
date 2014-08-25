@@ -16,5 +16,9 @@
 #include "PEShaderManager.h"
 
 //base node
+#include "PENode.h"
+#include "PELayer3D.h"
+#include "PEPolygon.h"
+#include "PERect.h"
 
 #endif

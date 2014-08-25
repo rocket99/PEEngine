@@ -19,7 +19,7 @@ public:
     ~PEPolygon();
     static PEPolygon *createWithPoints(P2D *points, int num);
     bool initWithPoints(P2D *points, int num);
-    void draw();
+    virtual void draw();
 private:
     float *m_data;
     int m_num;
