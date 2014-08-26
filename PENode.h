@@ -43,16 +43,26 @@ public:
     P3D &Position();
     bool &Visible();
     P3D &World();
+    
+    Color4F &Color();
+    
+    void setRotate(V3D axis, float angle);
+    
+    virtual void update();
 protected:
     PENode();
     ~PENode();
     bool m_isVisible;
     P3D m_position;
     PEMatrix m_rotate;
+    
     GLuint m_program;
+    
     V3D m_worldSize;
     P3D m_worldPos;
+    PEMatrix m_worldRotate;
     P3D getWorldPos();
+    Color4F m_color;
 private:
     PENode *m_parent;
     std::vector<PENode *> m_children;

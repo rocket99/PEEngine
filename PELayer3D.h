@@ -18,7 +18,7 @@ class PELayer3D:public PENode
 {
 public:
     static PELayer3D *create(const Size3D &size);
-    bool initWithSize(const Size3D &size);
+    virtual bool initWithSize(const Size3D &size);
     
     void draw();
 protected:

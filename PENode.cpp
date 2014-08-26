@@ -35,6 +35,8 @@ PENode *PENode::create()
 
 bool PENode::init()
 {
+    PEMatrix mat = PEMatrix::RotationMatrix(Point3D(0, 0, 1.0), 0.0);
+    m_rotate = mat;
     return true;
 }
 
@@ -149,11 +151,17 @@ GLuint PENode::getGLProgram()
     return m_program;
 }
 
+void PENode::update()
+{
+    
+}
+
 void PENode::draw()
 {
+    this->update();
     std::vector<PENode *>::iterator it = m_children.begin();
     while(it != m_children.end()){
-        (*it)->getWorldPos();
+        (*it)->update();
         (*it)->draw();
         ++ it;
     }
@@ -173,13 +181,29 @@ bool &PENode::Visible()
     return m_isVisible;
 }
 
+Color4F &PENode::Color()
+{
+    return m_color;
+}
 P3D PENode::getWorldPos()
 {
-    P3D result = this->m_position;
+    m_worldPos = this->m_position;
     PENode *parent = m_parent;
     while (parent != NULL) {
-        result += parent->Position();
+        m_worldPos += parent->Position();
         parent = parent->getParentNode();
     }
-    return result;
+    return m_worldPos;
+}
+
+void PENode::setRotate(V3D axis, float angle)
+{
+    PEMatrix mat = PEMatrix::RotationMatrix(axis, angle);
+    m_rotate = mat;
+    m_worldRotate = m_rotate;
+    PENode *parent = m_parent;
+    while (parent != NULL) {
+        
+        parent = parent->getParentNode();
+    }
 }

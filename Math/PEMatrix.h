@@ -17,7 +17,7 @@ public:
     void displayRow(int row);
     void displayColumn(int col);
 
-    virtual void operator = (PEMatrix &mat);
+    void operator = (PEMatrix &mat);
     virtual void operator += (PEMatrix &mat);
     virtual void operator -= (PEMatrix &mat);
     virtual void operator *= (PEMatrix &mat);

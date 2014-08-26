@@ -22,15 +22,29 @@ PEPolygon::~PEPolygon()
 PEPolygon *PEPolygon::createWithPoints(P2D *points, int num)
 {
     PEPolygon *polygon = new PEPolygon;
-    if(PEPolygon->initWithPoints(points, num)){
+    if(polygon->initWithPoints(points, num)){
         return polygon;
     }
-    
+    return polygon;
 }
 
 bool PEPolygon::initWithPoints(P2D *points, int num)
 {
-    
+    if(!PENode::init()){
+        return false;
+    }
+    m_num = num;
+    for(int i=0; i<m_num; ++i){
+        m_points.push_back(points[i]);
+    }
+    m_data = (float *)malloc(sizeof(float)*m_num*3);
+    for(int i=0; i<m_num; ++i){
+        m_data[3*i+0] = m_points[i].x;
+        m_data[3*i+1] = m_points[i].y;
+        m_data[3*i+2] = 0.0;
+        PELog("(%.3f, %.3f, %.3f", m_data[3*i+0], m_data[3*i+1], m_data[3*i+2]);
+    }
+    return true;
 }
 
 
@@ -57,7 +71,10 @@ void PEPolygon::draw()
     if(loc >= 0){
         glUniformMatrix4fv(loc, 1, GL_FALSE, m_rotate.getData());
     }
-    
+    loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
+    if(loc >= 0){
+        glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
+    }
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_data);
     glDrawArrays(GL_LINE_LOOP, 0, m_num);

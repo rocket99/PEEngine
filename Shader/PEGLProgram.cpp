@@ -10,7 +10,9 @@
 
 PEGLProgram::PEGLProgram(const char *vert, const char *frag)
 {
-    
+    GLint vShader = compileShader(GL_VERTEX_SHADER, vert);
+    GLint fShader = compileShader(GL_FRAGMENT_SHADER, frag);
+    linkProgram(vShader, fShader);
 }
 
 PEGLProgram::~PEGLProgram()
@@ -68,4 +70,9 @@ void PEGLProgram::linkProgram(GLint vert, GLint frag)
     glDetachShader(m_program, frag);
     glDeleteShader(vert);
     glDeleteShader(frag);
+}
+
+GLuint PEGLProgram::getProgram()
+{
+    return m_program;
 }

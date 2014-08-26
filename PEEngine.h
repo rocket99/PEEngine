@@ -9,6 +9,7 @@
 #ifndef Engine_PEEngine_h
 #define Engine_PEEngine_h
 
+#include "PEMacro.h"
 //math methods
 #include "PEMath.h"
 //gl program shaders

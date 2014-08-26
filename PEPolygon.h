@@ -22,6 +22,7 @@ public:
     virtual void draw();
 private:
     float *m_data;
+    vector <P2D> m_points;
     int m_num;
 };
 #endif /* defined(__Engine__PEPolygon__) */

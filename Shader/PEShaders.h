@@ -9,27 +9,36 @@
 #ifndef Engine_PEShaders_h
 #define Engine_PEShaders_h
 
-const char *commonVert  = "\
-#version 300 ES     \
-layout (location=0) in mediump vec3 a_point; \
-layout (location=1) in mediump vec2 a_texCoord;\
-uniform mediump vec3 u_position;\
-uniform mediump vec3 u_space;\
-uniform mediump mat4 u_rotate;\
-void main()\
-{\
-    gl_PointSize=1.0;\
-    vec4 tmp = vec4(a_point, 1.0)*u_rotate;\
-    gl_Position = (tmp.xyz+u_position)/u_space;\
-}";
+#ifdef __cplusplus
+extern "C" {
+#endif
+static const char *commonVertSrc  =
+    "#version 300 es\n"
+    "layout (location=0) in mediump vec3 a_point;\n"
+    "layout (location=1) in mediump vec2 a_texCoord;\n"
+    "uniform mediump vec3 u_position;\n"
+    "uniform mediump vec3 u_space;\n"
+    "uniform mediump mat4 u_rotate;\n"
+    "out mediump vec2 v_texCoord;\n"
+    "void main()\n"
+    "{\n"
+    "gl_PointSize=1.0;\n"
+    "vec4 tmp = vec4(a_point, 1.0)*u_rotate;\n"
+    "gl_Position.xyz = (tmp.xyz+u_position)/u_space;\n"
+    "gl_Position.w = 1.0;"
+    "v_texCoord = a_texCoord;\n"
+    "}\n";
 
-const char *commonFrag = "\
-#version 300 ES \
-layout (location=1) int mediump vec2 v_texCoord;\
-layout (location=0) out mediump vec4 frag_color;\
-uniform sample2D u_texture;\
-uniform mediump vec4 u_color;\
-void main(){\
-    frag_color = u_color;\
-}";
+static const char *commonFragSrc =
+    "#version 300 es\n"
+    "in mediump vec2 v_texCoord;\n"
+    "layout (location=0) out mediump vec4 frag_color;\n"
+    "uniform sampler2D u_texture;\n"
+    "uniform mediump vec4 u_color;\n"
+    "void main(){\n"
+        "frag_color = u_color;\n"
+    "}\n";
+#ifdef __cplusplus
+}
+#endif
 #endif

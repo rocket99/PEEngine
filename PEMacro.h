@@ -16,7 +16,7 @@
 
 #define UNIFORM_SPACE           "u_space"
 #define UNIFORM_POSITION        "u_position"
-#define UNIFORM_ROTATE          "u_rotation"
+#define UNIFORM_ROTATE          "u_rotate"
 #define UNIFORM_MODELPROJECT    "u_modelProject"
-
+#define UNIFORM_COLOR           "u_color"
 #endif
