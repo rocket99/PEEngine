@@ -45,7 +45,7 @@ bool PERect::initWithSize(float width, float height)
     
     m_data[9] = 0.5*m_width;
     m_data[10] = -0.5*m_height;
-    m_data[12] = 0.0;
+    m_data[11] = 0.0;
     return true;
 }
 
@@ -59,16 +59,28 @@ void PERect::draw()
     if(m_isVisible == false){
         return;
     }
+    if(glIsProgram(m_program) == GL_FALSE){
+        return;
+    }
     glUseProgram(m_program);
     
     GLint loc = glGetUniformLocation(m_program, UNIFORM_POSITION);
     if(loc >= 0){
-        glUniform3f(loc, m_position.x, m_position.y, m_position.z);
+        this->setWorldPos();
+        glUniform3f(loc, m_worldPos.x, m_worldPos.y, m_worldPos.z);
     }
-    
+    loc = glGetUniformLocation(m_program, UNIFORM_SPACE);
+    if(loc >= 0){
+        glUniform3f(loc, m_worldSize.x, m_worldSize.y, m_worldSize.z);
+    }
     loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >=0){
-        glUniformMatrix4fv(m_program, 1, GL_FALSE, m_rotate.getData());
+        this->setWorldRotate();
+        glUniformMatrix4fv(m_program, 1, GL_FALSE, m_worldRotate.getData());
+    }
+    loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
+    if(loc >= 0){
+        glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
     }
     
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);

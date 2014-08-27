@@ -42,7 +42,6 @@ bool PEPolygon::initWithPoints(P2D *points, int num)
         m_data[3*i+0] = m_points[i].x;
         m_data[3*i+1] = m_points[i].y;
         m_data[3*i+2] = 0.0;
-        PELog("(%.3f, %.3f, %.3f", m_data[3*i+0], m_data[3*i+1], m_data[3*i+2]);
     }
     return true;
 }
@@ -64,12 +63,13 @@ void PEPolygon::draw()
     }
     loc = glGetUniformLocation(m_program, UNIFORM_POSITION);
     if(loc >= 0){
-        this->getWorldPos();
+        this->setWorldPos();
         glUniform3f(loc, m_worldPos.x, m_worldPos.y, m_worldPos.z);
     }
     loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >= 0){
-        glUniformMatrix4fv(loc, 1, GL_FALSE, m_rotate.getData());
+        this->setWorldRotate();
+        glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldRotate.getData());
     }
     loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
     if(loc >= 0){

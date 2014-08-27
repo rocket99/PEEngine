@@ -13,7 +13,8 @@ m_tag(0),
 m_parent(nullptr),
 m_program(0),
 m_position(Point3D(0, 0, 0)),
-m_isVisible(true)
+m_isVisible(true),
+m_color(ColorRGBA(0, 0, 0, 0))
 {
     m_children.clear();
 }
@@ -58,8 +59,10 @@ void PENode::addChild(PENode *node)
         if (*it == node) {
             return;
         }
+        ++ it;
     }
     node->retain();
+    node->setParentNode(this);
     this->m_children.push_back(node);
 }
 
@@ -74,6 +77,7 @@ void PENode::addChild(PENode *node, int tag)
         ++ it;
     }
     node->retain();
+    node->setParentNode(this);
     this->m_children.push_back(node);
 }
 
@@ -88,6 +92,7 @@ void PENode::addChild(PENode *node, string name)
         ++ it;
     }
     node->retain();
+    node->setParentNode(this);
     this->m_children.push_back(node);
 }
 
@@ -128,9 +133,42 @@ void PENode::removeChildByName(string name)
         }
     }
 }
-
+void PENode::removeAllChildern()
+{
+    std::vector<PENode *>::iterator it = m_children.begin();
+    while(it != m_children.end()){
+        (*it)->release();
+        ++ it;
+    }
+}
 void PENode::removeFromParentNode(){
     this->m_parent->removeChild(this);
+}
+
+PENode * PENode::getChildByTag(int tag)
+{
+    std::vector<PENode *>::iterator it = m_children.begin();
+    while(it != m_children.end()){
+        if ((*it)->getTag() == tag) {
+            return *it;
+        }else{
+            ++ it;
+        }
+    }
+    return NULL;
+}
+
+PENode * PENode::getChildByName(string name)
+{
+    std::vector<PENode *>::iterator it = m_children.begin();
+    while(it != m_children.end()){
+        if ((*it)->getName() == name) {
+            return *it;
+        }else{
+            ++ it;
+        }
+    }
+    return NULL;
 }
 
 void PENode::setParentNode(PENode *node){
@@ -185,7 +223,8 @@ Color4F &PENode::Color()
 {
     return m_color;
 }
-P3D PENode::getWorldPos()
+
+void PENode::setWorldPos()
 {
     m_worldPos = this->m_position;
     PENode *parent = m_parent;
@@ -193,17 +232,27 @@ P3D PENode::getWorldPos()
         m_worldPos += parent->Position();
         parent = parent->getParentNode();
     }
-    return m_worldPos;
 }
 
 void PENode::setRotate(V3D axis, float angle)
 {
     PEMatrix mat = PEMatrix::RotationMatrix(axis, angle);
     m_rotate = mat;
+}
+
+PEMatrix &PENode::getRotate()
+{
+    return m_rotate;
+}
+
+void PENode::setWorldRotate()
+{
     m_worldRotate = m_rotate;
     PENode *parent = m_parent;
     while (parent != NULL) {
-        
+//        PEMatrix mat;
+        m_worldRotate = cross(m_worldRotate, parent->getRotate());
+//        m_worldRotate = mat;
         parent = parent->getParentNode();
     }
 }

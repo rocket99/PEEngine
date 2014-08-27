@@ -29,8 +29,11 @@ public:
     void removeChild(PENode *node);
     void removeChildByTag(int tag);
     void removeChildByName(string name);
-    
+    void removeAllChildern();
     void removeFromParentNode();
+    
+    PENode * getChildByTag(int tag);
+    PENode * getChildByName(string name);
     
     void setParentNode(PENode *node);
     PENode *getParentNode();
@@ -47,7 +50,7 @@ public:
     Color4F &Color();
     
     void setRotate(V3D axis, float angle);
-    
+    PEMatrix &getRotate();
     virtual void update();
 protected:
     PENode();
@@ -61,7 +64,8 @@ protected:
     V3D m_worldSize;
     P3D m_worldPos;
     PEMatrix m_worldRotate;
-    P3D getWorldPos();
+    void setWorldPos();
+    void setWorldRotate();
     Color4F m_color;
 private:
     PENode *m_parent;

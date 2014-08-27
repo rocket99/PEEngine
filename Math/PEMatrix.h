@@ -7,34 +7,39 @@
 class PEMatrix
 {
 public:
-    PEMatrix():m_row(0), m_col(0),m_data(NULL){};
+    PEMatrix():m_row(0), m_col(0), m_data(NULL){};
     PEMatrix(int row, int col);
     ~PEMatrix();
-
+    
+    PEMatrix(const PEMatrix &mat);
+    
     float &Elm(int row, int col);
-
+    float Elm(int row, int col) const;
     void display();
     void displayRow(int row);
     void displayColumn(int col);
 
-    void operator = (PEMatrix &mat);
-    virtual void operator += (PEMatrix &mat);
-    virtual void operator -= (PEMatrix &mat);
-    virtual void operator *= (PEMatrix &mat);
-    virtual void operator /= (PEMatrix &mat);
-    virtual bool operator == (PEMatrix &mat);
-    virtual bool operator != (PEMatrix &mat);
+    PEMatrix &operator = (const PEMatrix &mat);
+    virtual PEMatrix & operator += (const PEMatrix &mat);
+    virtual PEMatrix & operator -= (const PEMatrix &mat);
+    virtual PEMatrix & operator *= (const PEMatrix &mat);
+    virtual PEMatrix & operator /= (const PEMatrix &mat);
+    virtual bool operator == (const PEMatrix &mat);
+    virtual bool operator != (const PEMatrix &mat);
     
-    friend PEMatrix operator * (PEMatrix &mat, float scale);
-    friend PEMatrix operator - (PEMatrix &A, PEMatrix &B);
-    friend PEMatrix operator * (PEMatrix &A, PEMatrix &B);
-    friend PEMatrix operator / (PEMatrix &A, PEMatrix &B);
-    friend PEMatrix operator + (PEMatrix &A, PEMatrix &B);
-    friend PEMatrix cross(PEMatrix &A, PEMatrix &B);
+    friend PEMatrix operator * (const PEMatrix &mat, float scale);
+    friend PEMatrix operator - (const PEMatrix &A, const PEMatrix &B);
+    friend PEMatrix operator * (const PEMatrix &A, const PEMatrix &B);
+    friend PEMatrix operator / (const PEMatrix &A, const PEMatrix &B);
+    friend PEMatrix operator + (const PEMatrix &A, const PEMatrix &B);
+    friend PEMatrix cross(const PEMatrix &A, const PEMatrix &B);
 
     int getRowNum();
     int getColumnNum();
 
+    int getRowNum() const;
+    int getColumnNum() const;
+    
     PEMatrix complement(int row, int col);//algebra complement
     float morel();
 		
@@ -55,6 +60,7 @@ protected:
     float *m_data;
 
     int ID(int row, int col);
+    int ID(int row, int col) const;
 private:
 };
 

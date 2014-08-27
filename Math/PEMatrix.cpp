@@ -4,7 +4,23 @@ PEMatrix::PEMatrix(int row, int col)
 {
 	m_row = row;
 	m_col = col;
-	m_data =(float *)malloc(sizeof(float)*m_row*m_col);
+    if (m_row * m_col != 0) {
+        m_data =(float *)malloc(sizeof(float)*m_row*m_col);
+    }
+}
+
+PEMatrix::PEMatrix(const PEMatrix &mat)
+{
+    m_row = mat.getRowNum();
+    m_col = mat.getColumnNum();
+    if (m_row * m_col != 0) {
+        m_data =(float *)malloc(sizeof(float)*m_row*m_col);
+    }
+    for (int i=0; i<m_row; ++i) {
+        for(int j=0; j<m_col; ++j){
+            m_data[ID(i, j)] = mat.Elm(i, j);
+        }
+    }
 }
 
 PEMatrix::~PEMatrix()
@@ -12,6 +28,7 @@ PEMatrix::~PEMatrix()
 	if(NULL != m_data){
 		free(m_data);
 	}
+    m_data = NULL;
 }
 
 int PEMatrix::getRowNum(){
@@ -22,7 +39,23 @@ int PEMatrix::getColumnNum(){
 	return m_col;
 }
 
+int PEMatrix::getRowNum() const{
+	return m_row;
+}
+
+int PEMatrix::getColumnNum() const{
+	return m_col;
+}
+
 inline int PEMatrix::ID(int row, int col)
+{
+	if(row >= m_row || col >= m_col){
+		PELog("Invalid matrix index!\n");
+	}
+	return col*m_row + row;
+}
+
+inline int PEMatrix::ID(int row, int col) const
 {
 	if(row >= m_row || col >= m_col){
 		PELog("Invalid matrix index!\n");
@@ -36,6 +69,11 @@ float &PEMatrix::Elm(int row, int col)
 	return m_data[ID(row, col)];
 }
 
+float PEMatrix::Elm(int row, int col) const
+{
+	assert(row<m_row && col<m_col);
+	return m_data[ID(row, col)];
+}
 
 void PEMatrix::display()
 {
@@ -70,9 +108,11 @@ void PEMatrix::displayColumn(int col)
 	printf("\n");
 }
 
-void PEMatrix::operator = (PEMatrix &mat)
+PEMatrix & PEMatrix::operator = (const PEMatrix &mat)
 {
-	free(m_data);
+    if (m_data!= NULL) {
+        free(m_data);
+    }
 	m_row = mat.getRowNum();
 	m_col = mat.getColumnNum();
 	m_data = (float *)malloc(sizeof(float)*m_row*m_col);
@@ -81,9 +121,10 @@ void PEMatrix::operator = (PEMatrix &mat)
 			m_data[ID(i, j)] = mat.Elm(i, j);
 		}
 	}
+    return *this;
 }
 
-void PEMatrix::operator += (PEMatrix &mat)
+PEMatrix & PEMatrix::operator += (const PEMatrix &mat)
 {
     for(int i=0; i<m_row; ++i){
         if(i >= mat.getRowNum()){
@@ -96,9 +137,10 @@ void PEMatrix::operator += (PEMatrix &mat)
             Elm(i, j) += mat.Elm(i, j);
         }
     }
+    return *this;
 }
 
-void PEMatrix::operator -= (PEMatrix &mat)
+PEMatrix & PEMatrix::operator -= (const PEMatrix &mat)
 {
     for(int i=0; i<m_row; ++i){
         if(i >= mat.getRowNum()){
@@ -111,9 +153,10 @@ void PEMatrix::operator -= (PEMatrix &mat)
             Elm(i, j) -= mat.Elm(i, j);
         }
     }
+    return *this;
 }
 
-void PEMatrix::operator *= (PEMatrix &mat)
+PEMatrix & PEMatrix::operator *= (const PEMatrix &mat)
 {
     for(int i=0; i<m_row; ++i){
         if(i >= mat.getRowNum()){
@@ -126,9 +169,10 @@ void PEMatrix::operator *= (PEMatrix &mat)
             Elm(i, j) *= mat.Elm(i, j);
         }
     }
+    return *this;
 }
 
-void PEMatrix::operator /= (PEMatrix &mat)
+PEMatrix & PEMatrix::operator /= (const PEMatrix &mat)
 {
     for(int i=0; i<m_row; ++i){
         if(i >= mat.getRowNum()){
@@ -141,9 +185,10 @@ void PEMatrix::operator /= (PEMatrix &mat)
             Elm(i, j) /= mat.Elm(i, j);
         }
     }
+    return *this;
 }
 
-bool PEMatrix::operator == (PEMatrix &mat)
+bool PEMatrix::operator == (const PEMatrix &mat)
 {
     if(m_row != mat.getRowNum() || m_col != mat.getColumnNum()){
         return false;
@@ -158,7 +203,7 @@ bool PEMatrix::operator == (PEMatrix &mat)
     return true;
 }
 
-bool PEMatrix::operator != (PEMatrix &mat)
+bool PEMatrix::operator != (const PEMatrix &mat)
 {
     return !((*this) == mat);
 }
@@ -291,7 +336,7 @@ void PEMatrix::transfers()
 	m_col = tmp;
 }
 
-PEMatrix operator * (PEMatrix &mat, float scale)
+PEMatrix operator * (const PEMatrix &mat, float scale)
 {
     PEMatrix result(mat.m_row, mat.m_col);
     for(int i=0; i<mat.m_row; ++i){
@@ -302,7 +347,7 @@ PEMatrix operator * (PEMatrix &mat, float scale)
     return result;
 }
 
-PEMatrix operator - (PEMatrix &A, PEMatrix &B)
+PEMatrix operator - (const PEMatrix &A, const PEMatrix &B)
 {
     PEMatrix result(A.m_row, A.m_col);
     for(int i=0; i<result.m_row; ++i){
@@ -318,7 +363,7 @@ PEMatrix operator - (PEMatrix &A, PEMatrix &B)
     return result;
 }
 
-PEMatrix operator + (PEMatrix &A, PEMatrix &B)
+PEMatrix operator + (const PEMatrix &A, const PEMatrix &B)
 {
     PEMatrix result(A.m_row, A.m_col);
     for(int i=0; i<result.m_row; ++i){
@@ -333,7 +378,7 @@ PEMatrix operator + (PEMatrix &A, PEMatrix &B)
     }
     return result;
 }
-PEMatrix operator * (PEMatrix &A, PEMatrix &B)
+PEMatrix operator * (const PEMatrix &A, const PEMatrix &B)
 {
     PEMatrix result(A.m_row, A.m_col);
     for(int i=0; i<result.m_row; ++i){
@@ -349,7 +394,7 @@ PEMatrix operator * (PEMatrix &A, PEMatrix &B)
     return result;
 }
 
-PEMatrix operator / (PEMatrix &A, PEMatrix &B)
+PEMatrix operator / (const PEMatrix &A, const PEMatrix &B)
 {
     PEMatrix result(A.m_row, A.m_col);
     for(int i=0; i<result.m_row; ++i){
@@ -365,7 +410,7 @@ PEMatrix operator / (PEMatrix &A, PEMatrix &B)
     return result;
 }
 
-PEMatrix cross(PEMatrix &A, PEMatrix &B)
+PEMatrix cross(const PEMatrix &A, const PEMatrix &B)
 {
 	if(A.m_col != B.m_row){
 		return PEMatrix(0, 0);
