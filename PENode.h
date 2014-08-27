@@ -48,6 +48,7 @@ public:
     P3D &World();
     
     Color4F &Color();
+    GLuint &Texture();
     
     void setRotate(V3D axis, float angle);
     PEMatrix &getRotate();
@@ -67,6 +68,11 @@ protected:
     void setWorldPos();
     void setWorldRotate();
     Color4F m_color;
+    
+    V3D m_rotateAxis;
+    float m_rotateAngle;
+    
+    GLuint m_texture;
 private:
     PENode *m_parent;
     std::vector<PENode *> m_children;

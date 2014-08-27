@@ -36,7 +36,7 @@ static const char *commonFragSrc =
     "uniform sampler2D u_texture;\n"
     "uniform mediump vec4 u_color;\n"
     "void main(){\n"
-        "frag_color = u_color;\n"
+        "frag_color = texture(u_texture, v_texCoord);\n"
     "}\n";
 #ifdef __cplusplus
 }

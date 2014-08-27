@@ -15,6 +15,7 @@
 //gl program shaders
 #include "PEShaders.h"
 #include "PEShaderManager.h"
+#include "PETexture.h"
 
 //base node
 #include "PENode.h"

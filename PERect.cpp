@@ -29,7 +29,7 @@ bool PERect::initWithSize(float width, float height)
     }
     m_width = width;
     m_height = height;
-    m_data = (float *)malloc(sizeof(float)*12);
+    m_data = (float *)malloc(sizeof(float)*(12+8));
     
     m_data[0] = -0.5*m_width;
     m_data[1] = -0.5*m_height;
@@ -46,6 +46,11 @@ bool PERect::initWithSize(float width, float height)
     m_data[9] = 0.5*m_width;
     m_data[10] = -0.5*m_height;
     m_data[11] = 0.0;
+    
+    m_data[12] = 0.0; m_data[13] = 0.0;
+    m_data[14] = 0.0; m_data[15] = 1.0;
+    m_data[16] = 1.0; m_data[17] = 1.0;
+    m_data[18] = 1.0; m_data[19] = 0.0;
     return true;
 }
 
@@ -76,15 +81,26 @@ void PERect::draw()
     loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >=0){
         this->setWorldRotate();
-        glUniformMatrix4fv(m_program, 1, GL_FALSE, m_worldRotate.getData());
+        m_worldRotate.display();
+        glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldRotate.getData());
     }
     loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
     if(loc >= 0){
         glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
     }
     
+    loc = glGetUniformLocation(m_program, UNIFORM_TEXTURE);
+    if(loc >=0){
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, m_texture);
+        glUniform1i(loc, 0);
+    }
+    
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);
     glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, m_data);
+    glEnableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
+    glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 0, &m_data[12]);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     glDisableVertexAttribArray(ATTRIB_POINT_LOC);
+    glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
 }

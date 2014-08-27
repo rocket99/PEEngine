@@ -13,6 +13,8 @@
 #include "PENode.h"
 #include "PEMath.h"
 #include "PEPolygon.h"
+#include "PETexture.h"
+
 class PERect:public PEPolygon
 {
 public:
@@ -23,7 +25,7 @@ public:
     bool initWithSize(float width, float height);
     void draw();
     Color4F &Color();
-private:
+protected:
     float m_width, m_height;
     float *m_data;
     Color4F m_color;

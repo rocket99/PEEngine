@@ -5,18 +5,20 @@ class PEVector
 {
 public:
 	PEVector(int num);
+    PEVector(const PEVector &vec);
 	~PEVector();
-	int elmNum(); 
+	int elmNum();
+    int elmNum() const;
 	float &operator [] (int idx);
 	float &operator [] (int idx) const;
-	void operator = (PEVector &vec);
-    bool operator == (PEVector &vec);
-    bool operator != (PEVector &vec);
-	friend PEVector operator + (PEVector &A, PEVector &B);
-	friend PEVector operator - (PEVector &A, PEVector &B);
-	friend PEVector operator * (PEVector &A, PEVector &B);
-	friend PEVector operator / (PEVector &A, PEVector &B);
-    friend PEVector operator * (PEVector &A, float scale);
+	void operator = (const PEVector &vec);
+    bool operator == (const PEVector &vec);
+    bool operator != (const PEVector &vec);
+	friend PEVector operator + (const PEVector &A, const PEVector &B);
+	friend PEVector operator - (const PEVector &A, const PEVector &B);
+	friend PEVector operator * (const PEVector &A, const PEVector &B);
+	friend PEVector operator / (const PEVector &A, const PEVector &B);
+    friend PEVector operator * (const PEVector &A, float scale);
     void display();
     void setValues(int num, ...);
 private:

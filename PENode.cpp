@@ -197,6 +197,8 @@ void PENode::update()
 void PENode::draw()
 {
     this->update();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     std::vector<PENode *>::iterator it = m_children.begin();
     while(it != m_children.end()){
         (*it)->update();
@@ -236,6 +238,8 @@ void PENode::setWorldPos()
 
 void PENode::setRotate(V3D axis, float angle)
 {
+    m_rotateAxis = axis;
+    m_rotateAngle = angle;
     PEMatrix mat = PEMatrix::RotationMatrix(axis, angle);
     m_rotate = mat;
 }
@@ -250,9 +254,12 @@ void PENode::setWorldRotate()
     m_worldRotate = m_rotate;
     PENode *parent = m_parent;
     while (parent != NULL) {
-//        PEMatrix mat;
-        m_worldRotate = cross(m_worldRotate, parent->getRotate());
-//        m_worldRotate = mat;
+        m_worldRotate = cross(parent->getRotate(), m_worldRotate);
         parent = parent->getParentNode();
     }
+}
+
+GLuint &PENode::Texture()
+{
+    return m_texture;
 }

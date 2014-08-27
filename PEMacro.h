@@ -19,4 +19,6 @@
 #define UNIFORM_ROTATE          "u_rotate"
 #define UNIFORM_MODELPROJECT    "u_modelProject"
 #define UNIFORM_COLOR           "u_color"
+#define UNIFORM_TEXTURE         "u_texture"
+
 #endif
