@@ -428,6 +428,31 @@ PEMatrix cross(const PEMatrix &A, const PEMatrix &B)
     return result;
 }
 
+PEVector PEMatrix::getRowVector(int row)
+{
+    if(row >= m_row || row < 0){
+        return PEVector(0);
+    }
+    PEVector vec(m_col);
+    for(int i=0; i<m_col; ++i)
+    {
+        vec[i] = Elm(row, i);
+    }
+    return vec;
+}
+
+PEVector PEMatrix::getColumnVector(int col)
+{
+    if(col >= m_col || col < 0){
+        return PEVector(0);
+    }
+    PEVector vec(m_row);
+    for(int i=0; i<m_row; ++i){
+        vec[i] = Elm(i, col);
+    }
+    return vec;
+}
+
 float *PEMatrix::getData()
 {
     return m_data;

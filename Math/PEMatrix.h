@@ -3,6 +3,7 @@
 
 #include "PEPrefix.h"
 #include "PEDataType.h"
+#include "PEVector.h"
 
 class PEMatrix
 {
@@ -52,7 +53,8 @@ public:
     void transfers();
 
     float *getData();
-    
+    PEVector getRowVector(int row);
+    PEVector getColumnVector(int col);
     
     static PEMatrix RotationMatrix(const V3D &axis, float angle);
 protected:

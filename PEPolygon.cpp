@@ -62,15 +62,11 @@ void PEPolygon::draw()
     if(loc >=0){
         glUniform3f(loc, m_worldSize.x, m_worldSize.y, m_worldSize.z);
     }
-    loc = glGetUniformLocation(m_program, UNIFORM_POSITION);
+    
+    loc = glGetUniformLocation(m_program, UNIFORM_SYSMAT);
     if(loc >= 0){
-        this->setWorldPos();
-        glUniform3f(loc, m_worldPos.x, m_worldPos.y, m_worldPos.z);
-    }
-    loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
-    if(loc >= 0){
-        this->setWorldRotate();
-        glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldRotate.getData());
+        this->setWorldMat();
+        glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldMat.getData());
     }
     loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
     if(loc >= 0){

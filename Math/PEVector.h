@@ -4,6 +4,7 @@
 class PEVector
 {
 public:
+    PEVector():m_num(0), m_data(NULL){};
 	PEVector(int num);
     PEVector(const PEVector &vec);
 	~PEVector();

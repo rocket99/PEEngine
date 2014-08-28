@@ -3,6 +3,10 @@
 PEVector::PEVector(int num)
 {
 	m_num = num;
+    if(m_num == 0){
+        m_data = NULL;
+        return;
+    }
 	m_data = new float[num];
 	for(int i=0; i<m_num; ++i){
 		m_data[i] = 0.0;

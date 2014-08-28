@@ -16,6 +16,15 @@
 class PENode:public PEObject
 {
 public:
+    
+    struct Material{
+        Color4F diffuse;
+        Color4F ambient;
+        Color4F specular;
+        Color4F emission;
+    };
+    
+    
     static PENode *create();
     bool init();
     
@@ -50,33 +59,43 @@ public:
     Color4F &Color();
     GLuint &Texture();
     
+    V3D &RotateAxis();
+    float &RotateAngle();
     void setRotate(V3D axis, float angle);
     PEMatrix &getRotate();
+    
     virtual void update();
+    
+    
 protected:
     PENode();
     ~PENode();
-    bool m_isVisible;
-    P3D m_position;
-    PEMatrix m_rotate;
-    PEMatrix m_displace;
     
+    bool m_isVisible;
+    
+    P3D m_position;
     GLuint m_program;
     
     V3D m_worldSize;
     P3D m_worldPos;
-    PEMatrix m_worldRotate;
-    void setWorldPos();
-    void setWorldRotate();
-    Color4F m_color;
     
-    V3D m_rotateAxis;
-    float m_rotateAngle;
+    void setWorldMat();
+    PEMatrix m_worldMat;
     
+    V3D m_locRotateAxis;
+    float m_locRotateAngle;
+    PEMatrix m_localRotate;
+
     GLuint m_texture;
+    
     PENode *m_parent;
     std::vector<PENode *> m_children;
+    
     int m_tag;
+    Color4F m_color;
+    
+    struct Material m_material;
+    GLuint setMaterialUniformBlock();
 private:
     
 };

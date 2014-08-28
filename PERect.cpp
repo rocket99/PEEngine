@@ -76,25 +76,26 @@ void PERect::draw()
     }
     glUseProgram(m_program);
     
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_POSITION);
-    if(loc >= 0){
-        this->setWorldPos();
-        glUniform3f(loc, m_worldPos.x, m_worldPos.y, m_worldPos.z);
-    }
+    GLint loc = -1;
     loc = glGetUniformLocation(m_program, UNIFORM_SPACE);
     if(loc >= 0){
         glUniform3f(loc, m_worldSize.x, m_worldSize.y, m_worldSize.z);
     }
-    loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
+    loc = glGetUniformLocation(m_program, UNIFORM_SYSMAT);
     if(loc >=0){
-        this->setWorldRotate();
-        glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldRotate.getData());
+        this->setWorldMat();
+        glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldMat.getData());
+    }
+    loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
+    if(loc >= 0)
+    {
+        PEMatrix mat = m_worldMat.complement(3, 3);
+        glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
     }
     loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
     if(loc >= 0){
         glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
     }
-    
     loc = glGetUniformLocation(m_program, UNIFORM_TEXTURE);
     if(loc >=0){
         glActiveTexture(GL_TEXTURE0);

@@ -15,10 +15,14 @@
 #define ATTRIB_COLOR_LOC        3
 
 #define UNIFORM_SPACE           "u_space"
-#define UNIFORM_POSITION        "u_position"
 #define UNIFORM_ROTATE          "u_rotate"
+#define UNIFORM_SYSMAT          "u_sysMat"
 #define UNIFORM_MODELPROJECT    "u_modelProject"
 #define UNIFORM_COLOR           "u_color"
 #define UNIFORM_TEXTURE         "u_texture"
 
+#define UNIFORM_MATERIAL        "u_material"
+
+
+#define UNIFORM_
 #endif
