@@ -12,9 +12,9 @@ PENode::PENode():
 m_tag(0),
 m_parent(nullptr),
 m_program(0),
-m_position(Point3D(0, 0, 0)),
+m_position(Point3D(0.0, 0.0, 0.0)),
 m_isVisible(true),
-m_color(ColorRGBA(0, 0, 0, 0))
+m_color(ColorRGBA(0.0, 0.0, 0.0, 1.0))
 {
     m_children.clear();
 }
@@ -198,7 +198,7 @@ void PENode::draw()
 {
     this->update();
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
     std::vector<PENode *>::iterator it = m_children.begin();
     while(it != m_children.end()){
         (*it)->update();
@@ -252,9 +252,20 @@ PEMatrix &PENode::getRotate()
 void PENode::setWorldRotate()
 {
     m_worldRotate = m_rotate;
+    PEMatrix mat = PEMatrix::IdentityMat(4);
+    mat.Elm(0, 3) += m_position.x/m_worldSize.x;
+    mat.Elm(1, 3) += m_position.y/m_worldSize.y;
+    mat.Elm(2, 3) += m_position.z/m_worldSize.z;
+    m_worldRotate = cross(mat, m_worldRotate);
     PENode *parent = m_parent;
     while (parent != NULL) {
-        m_worldRotate = cross(parent->getRotate(), m_worldRotate);
+        PEMatrix mat0 = parent->getRotate();
+        PEMatrix mat1 = PEMatrix::IdentityMat(4);
+        mat1.Elm(0, 3) = parent->Position().x / parent->World().x;
+        mat1.Elm(1, 3) = parent->Position().y / parent->World().y;
+        mat1.Elm(2, 3) = parent->Position().z / parent->World().z;
+        PEMatrix mat2 = cross(mat1, mat0);
+        m_worldRotate = cross(mat2, m_worldRotate);
         parent = parent->getParentNode();
     }
 }

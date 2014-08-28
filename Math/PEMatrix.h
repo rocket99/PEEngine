@@ -54,7 +54,7 @@ public:
     float *getData();
     
     
-    static PEMatrix RotationMatrix(V3D axis, float angle);
+    static PEMatrix RotationMatrix(const V3D &axis, float angle);
 protected:
     int m_col, m_row;
     float *m_data;

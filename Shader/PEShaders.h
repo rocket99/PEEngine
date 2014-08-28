@@ -23,9 +23,9 @@ static const char *commonVertSrc  =
     "void main()\n"
     "{\n"
     "gl_PointSize=1.0;\n"
-    "vec4 tmp = vec4(a_point, 1.0)*u_rotate;\n"
-    "gl_Position.xyz = (tmp.xyz+u_position)/u_space;\n"
-    "gl_Position.w = 1.0;"
+//    "vec4 tmp = vec4(a_point, 1.0)*u_rotate;\n"
+    "gl_Position = u_rotate * vec4(a_point/u_space, 1.0);\n"
+//    "gl_Position.w = 1.0;"
     "v_texCoord = a_texCoord;\n"
     "}\n";
 
@@ -36,7 +36,7 @@ static const char *commonFragSrc =
     "uniform sampler2D u_texture;\n"
     "uniform mediump vec4 u_color;\n"
     "void main(){\n"
-        "frag_color = texture(u_texture, v_texCoord);\n"
+        "frag_color = mix(u_color, texture(u_texture, v_texCoord), 0.5);\n"
     "}\n";
 #ifdef __cplusplus
 }

@@ -29,8 +29,8 @@ bool PERect::initWithSize(float width, float height)
     }
     m_width = width;
     m_height = height;
-    m_data = (float *)malloc(sizeof(float)*(12+8));
-    
+    m_data = (float *)malloc(sizeof(float)*(12+8+12));
+    //coord
     m_data[0] = -0.5*m_width;
     m_data[1] = -0.5*m_height;
     m_data[2] = 0.0;
@@ -46,11 +46,18 @@ bool PERect::initWithSize(float width, float height)
     m_data[9] = 0.5*m_width;
     m_data[10] = -0.5*m_height;
     m_data[11] = 0.0;
-    
+    //texCoord
     m_data[12] = 0.0; m_data[13] = 0.0;
     m_data[14] = 0.0; m_data[15] = 1.0;
     m_data[16] = 1.0; m_data[17] = 1.0;
     m_data[18] = 1.0; m_data[19] = 0.0;
+    
+    //normal
+    m_data[20] = 0.0; m_data[21] = 0.0; m_data[22] = 1.0;
+    m_data[23] = 0.0; m_data[24] = 0.0; m_data[25] = 1.0;
+    m_data[26] = 0.0; m_data[27] = 0.0; m_data[28] = 1.0;
+    m_data[29] = 0.0; m_data[30] = 0.0; m_data[31] = 1.0;
+    
     return true;
 }
 
@@ -81,7 +88,6 @@ void PERect::draw()
     loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >=0){
         this->setWorldRotate();
-        m_worldRotate.display();
         glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldRotate.getData());
     }
     loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
@@ -100,7 +106,10 @@ void PERect::draw()
     glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, m_data);
     glEnableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 0, &m_data[12]);
+    glEnableVertexAttribArray(ATTRIB_NORMAL_LOC);
+    glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_TRUE, 0, &m_data[20]);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     glDisableVertexAttribArray(ATTRIB_POINT_LOC);
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
+    glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
 }

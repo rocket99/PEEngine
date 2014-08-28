@@ -434,14 +434,15 @@ float *PEMatrix::getData()
 }
 
 
-PEMatrix PEMatrix::RotationMatrix(V3D axis, float angle)
+PEMatrix PEMatrix::RotationMatrix(const V3D &axis, float angle)
 {
     PEMatrix mat(4, 4);
     float sa = sin(angle/180.0*M_PI);
     float ca = cos(angle/180.0*M_PI);
-    float nx = axis.x;
-    float ny = axis.y;
-    float nz = axis.z;
+    V3D n = axis.normal();
+    float nx = n.x;
+    float ny = n.y;
+    float nz = n.z;
     mat.Elm(0, 0) = nx*nx*(1-ca)+ca;
     mat.Elm(0, 1) = nx*ny*(1-ca)+nz*sa;
     mat.Elm(0, 2) = nx*nz*(1-ca)-ny*sa;

@@ -22,5 +22,6 @@
 #include "PELayer3D.h"
 #include "PEPolygon.h"
 #include "PERect.h"
+#include "PEBox.h"
 
 #endif

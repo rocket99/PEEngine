@@ -40,7 +40,7 @@ public:
     
     virtual void draw();
     
-    void setGLProgram(GLuint prog);
+    virtual void setGLProgram(GLuint prog);
     GLuint getGLProgram();
     
     P3D &Position();
@@ -59,6 +59,7 @@ protected:
     bool m_isVisible;
     P3D m_position;
     PEMatrix m_rotate;
+    PEMatrix m_displace;
     
     GLuint m_program;
     
@@ -73,10 +74,11 @@ protected:
     float m_rotateAngle;
     
     GLuint m_texture;
-private:
     PENode *m_parent;
     std::vector<PENode *> m_children;
     int m_tag;
+private:
+    
 };
 
 #endif /* defined(__Engine__PENode__) */
