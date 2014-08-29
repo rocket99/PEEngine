@@ -17,7 +17,7 @@
 #define UNIFORM_SPACE           "u_space"
 #define UNIFORM_ROTATE          "u_rotate"
 #define UNIFORM_SYSMAT          "u_sysMat"
-#define UNIFORM_MODELPROJECT    "u_modelProject"
+#define UNIFORM_MODELPROJECT    "u_modelViewProject"
 #define UNIFORM_COLOR           "u_color"
 #define UNIFORM_TEXTURE         "u_texture"
 

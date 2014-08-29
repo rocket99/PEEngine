@@ -26,7 +26,7 @@ public:
     
     P3D &World(){ return m_worldSize; };
     P3D &WorldPos(){ return  m_worldPos; };
-    P3D &WorldFocus(){ return m_worldFocus; };
+    P3D &WorldFocus(){ return m_worldFocus;};
     P3D &upDirect(){ return m_up; };
     
     void setPerspect(float fovy, float aspect, float zNear, float zFar);

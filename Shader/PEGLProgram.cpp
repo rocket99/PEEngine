@@ -25,7 +25,7 @@ GLint PEGLProgram::compileShader(GLenum type, const char *src)
     GLint shader = glCreateShader(type);
     glShaderSource(shader, 1, &src, NULL);
     glCompileShader(shader);
-    GLint status;
+    GLint status = GL_FALSE;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if(status == GL_FALSE){
         GLint size;
@@ -49,7 +49,7 @@ void PEGLProgram::linkProgram(GLint vert, GLint frag)
     glAttachShader(m_program, vert);
     glAttachShader(m_program, frag);
     glLinkProgram(m_program);
-    GLint linked;
+    GLint linked = GL_FALSE;
     glGetProgramiv(m_program, GL_LINK_STATUS, &linked);
     if(linked == GL_FALSE){
         GLint len;

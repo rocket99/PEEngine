@@ -68,6 +68,11 @@ void PEPolygon::draw()
         this->setWorldMat();
         glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldMat.getData());
     }
+    loc = glGetUniformLocation(m_program, UNIFORM_MODELPROJECT);
+    if(loc >=0){
+        PEMatrix mat = PECamera::getInstance()->modelViewProject();
+        glUniformMatrix4fv(loc, 1, GL_TRUE, mat.getData());
+    }
     loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
     if(loc >= 0){
         glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);

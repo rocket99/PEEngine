@@ -61,7 +61,6 @@ bool PECamera::init(const P3D &world, const P3D &pos, const P3D &focus, const P3
     m_worldPos = pos;
     m_worldFocus = focus;
     m_up = up;
-    this->normalized();
     this->setMatrixData();
     return true;
 }
@@ -72,15 +71,16 @@ void PECamera::normalized()
     m_pos = (m_worldPos / m_worldSize);
     m_center = (m_worldFocus / m_worldSize);
     
-    nz = (m_pos - m_center).normal();
+    nz = (m_center - m_pos).normal();
     ny = m_up;
-    nx = cross(ny, nz).normal();
-    ny = cross(nz, nx).normal();
+    nx = cross(nz, ny).normal();
+    ny = cross(nx, nz).normal();
     m_up = ny;
 }
 
 void PECamera::setMatrixData()
 {
+    this->normalized();
     Elm(0, 0) = nx.x; Elm(0, 1) = nx.y; Elm(0, 2) = nx.z;
     Elm(0, 3) = -nx.dot(m_pos);
     Elm(1, 0) = ny.x; Elm(1, 1) = ny.y; Elm(1, 2) = ny.z;
@@ -90,7 +90,6 @@ void PECamera::setMatrixData()
     Elm(3, 0) = Elm(3, 1) = Elm(3, 2) = 0.0f;
     Elm(3, 3) = 1.0f;
 }
-
 
 void PECamera::setPerspect(float fovy, float aspect, float zNear, float zFar){
     m_fovy = fovy; m_aspect = aspect; m_zNear = zNear; m_zFar = zFar;
@@ -132,7 +131,6 @@ void PECamera::setPerspectMatrix()
 
 PEMatrix PECamera::modelViewProject()
 {
-    this->normalized();
     this->setMatrixData();
     this->setPerspectMatrix();
     return cross(*m_perspect, *this);
@@ -153,7 +151,6 @@ PEMatrix PECamera::modelViewOrtho(float left, float right, float bottom, float t
     mat.Elm(3, 0) = mat.Elm(3, 1) = mat.Elm(3, 2) = 0.0;
     mat.Elm(3, 3) = 1.0;
     
-    this->normalized();
     this->setMatrixData();
     return cross(mat, *this);
 }

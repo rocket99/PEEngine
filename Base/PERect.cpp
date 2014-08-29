@@ -86,6 +86,11 @@ void PERect::draw()
         this->setWorldMat();
         glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldMat.getData());
     }
+    loc = glGetUniformLocation(m_program, UNIFORM_MODELPROJECT);
+    if(loc >=0){
+        PEMatrix mat = PECamera::getInstance()->modelViewProject();
+        glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
+    }
     loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >= 0)
     {
