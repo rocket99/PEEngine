@@ -20,7 +20,14 @@ public:
     static PELight *createWithWorld(const Size3D &world);
     bool initWithWorld(const Size3D &world);
     
+    Size3D &World();
+    P3D &Position();
+    V3D &Direction();
     
+    Color4F & Ambient();
+    Color4F & Diffuse();
+    Color4F & Specular();
+    float & Fovy();
 private:
     Size3D m_world;
     P3D m_position;
