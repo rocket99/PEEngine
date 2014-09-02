@@ -38,7 +38,7 @@ mediump vec4 light_color(mediump vec3 p)
     //漫反射
     mediump vec4 diffuse = max(0.0, dot(eye, outLine))*l_diffuse*m_diffuse;
     //镜面反射
-    mediump vec4 specular = pow(dis, 5.0)*max(0.0, dot(eye, outLine))*l_specular*m_specular;
+    mediump vec4 specular = pow(dis, specularPower)*max(0.0, dot(eye, outLine))*l_specular*m_specular;
     
     return ambient+diffuse+specular;
 }

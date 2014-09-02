@@ -94,8 +94,10 @@ protected:
     int m_tag;
     Color4F m_color;
     
+    GLuint m_materialUbo;
     struct Material m_material;
-    GLuint setMaterialUniformBlock();
+    void setMaterialUniformBlock();
+    void deleteMaterialUbo();
 private:
     
 };

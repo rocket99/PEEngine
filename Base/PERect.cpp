@@ -108,6 +108,8 @@ void PERect::draw()
         glUniform1i(loc, 0);
     }
     
+    this->setMaterialUniformBlock();
+    
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);
     glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, m_data);
     glEnableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
@@ -118,4 +120,5 @@ void PERect::draw()
     glDisableVertexAttribArray(ATTRIB_POINT_LOC);
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
+    this->deleteMaterialUbo();
 }

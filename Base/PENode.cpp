@@ -263,24 +263,24 @@ GLuint &PENode::Texture(){
 }
 
 
-GLuint PENode::setMaterialUniformBlock()
+void PENode::setMaterialUniformBlock()
 {
     if(glIsProgram(m_program) == GL_FALSE){
-        return GL_FALSE;
+        return;
     }
     
     GLint index = glGetUniformBlockIndex(m_program, UNIFORM_MATERIAL);
     if(index == GL_INVALID_OPERATION || index == GL_INVALID_INDEX){
-        return GL_FALSE;
+        return;
     }
     GLint blockSize;
     glGetActiveUniformBlockiv(m_program, index, GL_UNIFORM_BLOCK_DATA_SIZE, &blockSize);
     GLubyte *blockBuffer = (GLubyte *)malloc(sizeof(GLubyte)*blockSize);
     const char *name[] = {"m_ambient", "m_diffuse", "m_specular", "m_emission"};
-    GLuint indices[4];
+    GLuint indices[4]; GLint offset[4];
     glGetUniformIndices(m_program, 4, name, indices);
-    GLint offset[4];
     glGetActiveUniformsiv(m_program, 4, indices, GL_UNIFORM_OFFSET, offset);
+    
     GLfloat ambient[] = {m_material.ambient.r, m_material.ambient.g, m_material.ambient.b, m_material.ambient.a};
     GLfloat diffuse[] = {m_material.diffuse.r, m_material.diffuse.g, m_material.diffuse.b, m_material.diffuse.a};
     GLfloat specular[] = {m_material.specular.r, m_material.specular.g, m_material.specular.b, m_material.specular.a};
@@ -291,13 +291,18 @@ GLuint PENode::setMaterialUniformBlock()
     memcpy(blockBuffer+offset[3], emission, 4*sizeof(GLfloat));
     
     glUniformBlockBinding(m_program, index, 2);
-    GLuint m_uboHandle;
-    glGenBuffers(1, &m_uboHandle);
-    glBindBuffer(GL_UNIFORM_BUFFER, m_uboHandle);
+  
+    glGenBuffers(1, &m_materialUbo);
+    glBindBuffer(GL_UNIFORM_BUFFER, m_materialUbo);
     glBufferData(GL_UNIFORM_BUFFER, blockSize, blockBuffer, GL_DYNAMIC_DRAW);
-    glBindBufferRange(GL_UNIFORM_BUFFER, 2, m_uboHandle, 0, blockSize);
+    glBindBufferRange(GL_UNIFORM_BUFFER, 2, m_materialUbo, 0, blockSize);
     free(blockBuffer);
-    return m_uboHandle;
 }
 
+void PENode::deleteMaterialUbo()
+{
+    if(glIsBuffer(m_materialUbo) == GL_TRUE){
+        glDeleteBuffers(1, &m_materialUbo);
+    }
+}
 

@@ -114,7 +114,6 @@ void PEMeshSurface::setDrawData()
             m_data[k++] = m_coords[(i+1)*(m_col+1)+j+1].z;
         }
     }
-    PELog("%ld\n", k);
     for (int i=0; i<m_row; ++i) {
         for(int j=0; j<m_col; ++j){
             m_data[k++] = m_texCoords[i*(m_col+1)+j].x;
@@ -136,7 +135,6 @@ void PEMeshSurface::setDrawData()
             m_data[k++] = m_texCoords[(i+1)*(m_col+1)+j+1].y;
         }
     }
-    PELog("%ld\n", k);
     for (int i=0; i<m_row; ++i) {
         for(int j=0; j<m_col; ++j){
             m_data[k++] = m_normals[i*(m_col+1)+j].x;
@@ -164,7 +162,6 @@ void PEMeshSurface::setDrawData()
             m_data[k++] = m_normals[(i+1)*(m_col+1)+j+1].z;
         }
     }
-    PELog("%ld\n", k);
     isDataSet = true;
 }
 
@@ -204,7 +201,7 @@ void PEMeshSurface::draw()
         glBindTexture(GL_TEXTURE_2D, m_texture);
         glUniform1i(loc, 0);
     }
-    
+    this->setMaterialUniformBlock();
     glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[0]);
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);
     glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 0, &m_data[m_row*m_col*18]);
@@ -217,6 +214,7 @@ void PEMeshSurface::draw()
     glDisableVertexAttribArray(ATTRIB_POINT_LOC);
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
+    this->deleteMaterialUbo();
 }
 
 

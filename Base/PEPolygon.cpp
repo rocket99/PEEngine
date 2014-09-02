@@ -77,8 +77,10 @@ void PEPolygon::draw()
     if(loc >= 0){
         glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
     }
+    this->setMaterialUniformBlock();
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_data);
     glDrawArrays(GL_LINE_LOOP, 0, m_num);
     glDisableVertexAttribArray(0);
+    this->deleteMaterialUbo();
 }
