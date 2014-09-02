@@ -11,8 +11,6 @@ typedef struct PEPoint2D
     void operator -= (const struct PEPoint2D &P);
     void operator *= (float scalar);
     void operator /= (float scalar);
-
-    
     
 	friend struct PEPoint2D operator + (const struct PEPoint2D &A, const struct PEPoint2D &B);
 	friend struct PEPoint2D operator - (const struct PEPoint2D &A, const struct PEPoint2D &B);
@@ -38,6 +36,8 @@ typedef struct PEPoint2D
 	void normalized();
 	struct PEPoint2D normal() const;
     struct PEPoint2D normal();
+    
+    void display();
 } P2D, V2D, Size2D;
 P2D Point2D(float x, float y);
 
@@ -75,6 +75,7 @@ typedef struct PEPoint3D
     friend bool isParallel(const struct PEPoint3D &A, const struct PEPoint3D &B);
     friend bool operator == (const struct PEPoint3D &A, const PEPoint3D &B);
     
+    void display();
 }P3D, V3D, Size3D;
 P3D Point3D(float x, float y, float z);
 #define P3DZERO Point3D(0.0, 0.0, 0.0)

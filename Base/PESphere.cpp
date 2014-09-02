@@ -33,6 +33,7 @@ bool PESphere::initWithRadius(int row, int col, int radius)
     if(!PEMeshSurface::initWithSize(row, col)){
         return false;
     }
+    m_radius = radius;
     this->setCoordData();
     this->setNormalData();
     this->setTexCoordData();
@@ -43,9 +44,9 @@ void PESphere::setCoordData()
 {
     for (int i=0; i<=m_row; ++i) {
         for (int j=0; j<=m_col; ++j) {
-            m_coords[i*(m_col+1)+j].x = m_radius*sin((float)i/m_row*M_PI)*cos((float)j/m_col*M_PI*2.0);
-            m_coords[i*(m_col+1)+j].y = m_radius*sin((float)i/m_row*M_PI)*sin((float)j/m_col*M_PI*2.0);
-            m_coords[i*(m_col+1)+j].z = m_radius*cos((float)i/m_row*M_PI);
+            m_coords[i*(m_col+1)+j].x = m_radius*sin(M_PI*(float)i/m_row)*cos(2.0*M_PI*(float)j/m_col);
+            m_coords[i*(m_col+1)+j].y = m_radius*sin(M_PI*(float)i/m_row)*sin(2.0*M_PI*(float)j/m_col);
+            m_coords[i*(m_col+1)+j].z = m_radius*cos(M_PI*(float)i/m_row);
         }
     }
 }

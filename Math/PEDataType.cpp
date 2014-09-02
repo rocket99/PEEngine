@@ -205,6 +205,11 @@ P2D Point2D(float x, float y)
 	return point;
 }
 
+void P2D::display()
+{
+    printf("(%.3f, %.3f)\n", x, y);
+}
+
 #pragma mark PEPoint3D implementation
 
 P3D Point3D(float x , float y, float z)
@@ -335,6 +340,10 @@ bool operator == (const P3D &A, const P3D &B)
     return (A.x==B.x) && (A.y==B.y) && (A.z==B.z);
 }
 
+void P3D::display()
+{
+    printf("(%.3f, %.ef, %.3f)", x, y, z);
+}
 
 #pragma mark PEColor
 
