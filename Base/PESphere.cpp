@@ -33,8 +33,9 @@ bool PESphere::initWithRadius(int row, int col, int radius)
     if(!PEMeshSurface::initWithSize(row, col)){
         return false;
     }
-    setCoordData();
-    setNormalData();
+    this->setCoordData();
+    this->setNormalData();
+    this->setTexCoordData();
     return true;
 }
 

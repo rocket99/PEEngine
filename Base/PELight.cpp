@@ -17,6 +17,7 @@ PELight::PELight()
     m_diffuse = ColorRGBA(0.5, 0.5, 0.5, 0.5);
     m_specular = ColorRGBA(1.0, 1.0, 1.0, 1.0);
     m_fovy = 180.0;
+    m_specular_power = 1.0;
     m_camera = NULL;
 }
 
@@ -44,5 +45,105 @@ bool PELight::initWithWorld(const Size3D &world)
     }
     m_world = world;
     return true;
+}
+
+Size3D &PELight::World()
+{
+    return m_world;
+}
+
+P3D &PELight::Position()
+{
+    return m_position;
+}
+
+V3D &PELight::Direction()
+{
+    return m_direction;
+}
+
+Color4F &PELight::Ambient()
+{
+    return m_ambient;
+}
+
+Color4F &PELight::Diffuse()
+{
+    return m_diffuse;
+}
+
+Color4F &PELight::Specular()
+{
+    return m_specular;
+}
+
+float &PELight::Fovy()
+{
+    return m_fovy;
+}
+
+float &PELight::SpecPower()
+{
+    return m_specular_power;
+}
+
+void PELight::setUniformBlock(GLuint program)
+{
+    if(glIsProgram(program) == GL_FALSE){
+        return;
+    }
+    GLuint index = glGetUniformBlockIndex(program, UNIFORM_LIGHT);
+    if(index == GL_INVALID_OPERATION || index == GL_INVALID_INDEX){
+        return;
+    }
+    GLint size;
+    glGetActiveUniformBlockiv(program, index, GL_UNIFORM_BLOCK_DATA_SIZE, &size);
+    const char *name[] = {"l_ambient", "l_diffuse", "l_specular", "l_position", "l_direction", "l_fovy"};
+    GLuint indices[6]; GLint offset[6];
+    glGetUniformIndices(program, 6, name, indices);
+    glGetActiveUniformsiv(program, 6, indices, GL_UNIFORM_OFFSET, offset);
+    GLfloat ambient[4];
+    ambient[0] = m_ambient.r; ambient[1] = m_ambient.g;
+    ambient[2] = m_ambient.b; ambient[3] = m_ambient.a;
+    GLfloat diffuse[4];
+    diffuse[0] = m_diffuse.r; diffuse[1] = m_diffuse.g;
+    diffuse[2] = m_diffuse.b; diffuse[3] = m_diffuse.a;
+    GLfloat specular[4];
+    specular[0] = m_specular.r; specular[1] = m_specular.g;
+    specular[2] = m_specular.b; specular[3] = m_specular.a;
+    GLfloat pos[3];
+    pos[0] = m_position.x/m_world.x;
+    pos[1] = m_position.y/m_world.y;
+    pos[2] = m_position.z/m_world.z;
+    GLfloat direct[3];
+    direct[0] = m_direction.x; direct[1] = m_direction.y; direct[2] = m_direction.z;
+    GLfloat fovy = m_fovy/180.0*M_PI;
+    
+    GLubyte *blockBuffer = new GLubyte[size];
+    memcpy(blockBuffer+offset[0], ambient, sizeof(GLfloat)*4);
+    memcpy(blockBuffer+offset[1], diffuse, sizeof(GLfloat)*4);
+    memcpy(blockBuffer+offset[2], specular, sizeof(GLfloat)*4);
+    memcpy(blockBuffer+offset[3], pos, sizeof(GLfloat)*3);
+    memcpy(blockBuffer+offset[4], direct, sizeof(GLfloat)*3);
+    memcpy(blockBuffer+offset[5], &fovy, sizeof(GLfloat));
+    
+    glGenBuffers(1, &m_ubo);
+    glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
+    glBufferData(GL_UNIFORM_BUFFER, size, blockBuffer, GL_DYNAMIC_DRAW);
+    free(blockBuffer);
+    glUniformBlockBinding(program, index, UNIFORM_LIGHT_BIND);
+    glBindBufferRange(GL_UNIFORM_BUFFER, UNIFORM_LIGHT_BIND, m_ubo, 0, size);
+    
+    GLint loc = glGetUniformLocation(program, "specularPower");
+    if(loc >=0 ){
+        glUniform1f(loc, m_specular_power);
+    }
+}
+
+void PELight::removeUniformBlock()
+{
+    if(glIsBuffer(m_ubo) == GL_TRUE){
+        glDeleteBuffers(1, &m_ubo);
+    }
 }
 

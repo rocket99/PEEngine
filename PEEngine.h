@@ -11,17 +11,19 @@
 
 #include "PEMacro.h"
 //math methods
-#include "PEMath.h"
+#include "Math/PEMath.h"
 //gl program shaders
-#include "PEShaders.h"
-#include "PEShaderManager.h"
+#include "Shader/PEShaders.h"
+#include "Shader/PEShaderManager.h"
 #include "PETexture.h"
 
 //base node
-#include "PENode.h"
-#include "PELayer3D.h"
-#include "PEPolygon.h"
-#include "PERect.h"
-#include "PEBox.h"
+#include "Base/PENode.h"
+#include "Base/PELayer3D.h"
+#include "Base/PEPolygon.h"
+#include "Base/PERect.h"
+#include "Base/PEBox.h"
+#include "Base/PESphere.h"
+#include "Base/PEMeshSurface.h"
 
 #endif

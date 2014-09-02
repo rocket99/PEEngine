@@ -16,7 +16,9 @@ m_position(Point3D(0.0, 0.0, 0.0)),
 m_isVisible(true),
 m_color(ColorRGBA(0.0, 0.0, 0.0, 1.0)),
 m_locRotateAngle(0.0),
-m_locRotateAxis(Point3D(0.0, 0.0, 0.0))
+m_locRotateAxis(Point3D(0.0, 0.0, 0.0)),
+m_worldSize(GLOBAL_WORLD_SIZE),
+m_worldPos(P3DZERO)
 {
     m_children.clear();
 }
