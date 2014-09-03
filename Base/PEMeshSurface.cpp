@@ -172,29 +172,15 @@ void PEMeshSurface::draw()
     }
     this->setDrawData();
     glUseProgram(m_program);
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_SPACE);
-    if(loc >= 0){
-        glUniform3f(loc, m_worldSize.x, m_worldSize.y, m_worldSize.z);
-    }
-    loc = glGetUniformLocation(m_program, UNIFORM_SYSMAT);
-    if(loc >=0){
-        this->setWorldMat();
-        glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldMat.getData());
-    }
-    loc = glGetUniformLocation(m_program, UNIFORM_MODELPROJECT);
-    if(loc >=0){
-        PEMatrix mat = PECamera::getInstance()->modelViewProject();
-        glUniformMatrix4fv(loc, 1, GL_TRUE, mat.getData());
-    }
-    loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
-    if(loc >= 0){
-        glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
-    }
-    loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
+    this->setSpaceUniform();
+    this->setWorldMatUniform();
+    this->setModelViewProjectUniform();
+    GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >= 0){
         PEMatrix mat = m_worldMat.complement(3, 3);
         glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
     }
+    
     loc = glGetUniformLocation(m_program, UNIFORM_TEXTURE);
     if(loc >= 0){
         glActiveTexture(GL_TEXTURE0);

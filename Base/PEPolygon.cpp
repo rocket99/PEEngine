@@ -8,6 +8,7 @@
 
 #include "PEPolygon.h"
 
+
 PEPolygon::PEPolygon():
 m_data(NULL), m_num(0)
 {
@@ -58,26 +59,15 @@ void PEPolygon::draw()
         return;
     }
     glUseProgram(m_program);
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_SPACE);
-    if(loc >=0){
-        glUniform3f(loc, m_worldSize.x, m_worldSize.y, m_worldSize.z);
-    }
-    
-    loc = glGetUniformLocation(m_program, UNIFORM_SYSMAT);
-    if(loc >= 0){
-        this->setWorldMat();
-        glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldMat.getData());
-    }
-    loc = glGetUniformLocation(m_program, UNIFORM_MODELPROJECT);
-    if(loc >=0){
-        PEMatrix mat = PECamera::getInstance()->modelViewProject();
-        glUniformMatrix4fv(loc, 1, GL_TRUE, mat.getData());
-    }
-    loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
+    GLint loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
     if(loc >= 0){
         glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
     }
+    this->setSpaceUniform();
+    this->setWorldMatUniform();
+    this->setModelViewProjectUniform();
     this->setMaterialUniformBlock();
+    
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_data);
     glDrawArrays(GL_LINE_LOOP, 0, m_num);

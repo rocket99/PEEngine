@@ -13,6 +13,7 @@
 #include "PEPrefix.h"
 #include "PEMath.h"
 
+class PELayer3D;
 class PENode:public PEObject
 {
 public:
@@ -23,7 +24,6 @@ public:
         Color4F specular;
         Color4F emission;
     };
-    
     
     static PENode *create();
     bool init();
@@ -43,6 +43,7 @@ public:
     
     PENode * getChildByTag(int tag);
     PENode * getChildByName(string name);
+    std::vector<PENode *> &getChildren();
     
     void setParentNode(PENode *node);
     PENode *getParentNode();
@@ -66,7 +67,8 @@ public:
     
     virtual void update();
     
-    
+    void setSceneIn(PELayer3D *scene);
+    PELayer3D *getSceneIn();
 protected:
     PENode();
     ~PENode();
@@ -98,6 +100,12 @@ protected:
     struct Material m_material;
     void setMaterialUniformBlock();
     void deleteMaterialUbo();
+    PELayer3D *m_sceneIn;
+    
+    void setModelViewProjectUniform();
+    void setWorldMatUniform();
+    void setSpaceUniform();
+    void setColorUniform();
 private:
     
 };

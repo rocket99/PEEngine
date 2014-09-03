@@ -8,7 +8,7 @@
 
 #include "PELayer3D.h"
 
-PELayer3D::PELayer3D():m_size(Point3D(0, 0, 0))
+PELayer3D::PELayer3D():m_size(Point3D(0, 0, 0)), m_camera(NULL)
 {}
 
 PELayer3D::~PELayer3D()
@@ -26,19 +26,25 @@ PELayer3D *PELayer3D::create(const Size3D &size)
 
 bool PELayer3D::initWithSize(const Size3D &size)
 {
-    if(!PENode::init()){
+    if(!PENode::init() || size.x * size.y * size.z == 0.0){
         return false;
     }
+    m_sceneIn = this;
     m_size = size;
-    PECamera::getInstance()->setPerspect(60.0, 1.0, 0.05, 30.0);
-    PECamera::getInstance()->World() = m_size;
-    PECamera::getInstance()->WorldFocus() = P3DZERO;
-    PECamera::getInstance()->WorldPos() = Point3D(0.0, 0.0, m_size.z);
+    m_camera = PECamera::create(size, Point3D(0.0, 0.0, size.z), P3DZERO, Point3D(0.0, 1.0, 0.0));
+    m_camera->setPerspect(60.0, 1.0, 0.05, 30.0);
+    m_camera->World() = m_size;
+    m_camera->WorldFocus() = P3DZERO;
+    m_camera->WorldPos() = Point3D(0.0, 0.0, m_size.z);
+    m_camera->upDirect() = Point3D(0.0, 1.0, 0.0);
     return true;
 }
 
 void PELayer3D::draw(){
-//    PEMatrix modelProject = PECamera::getInstance()->modelViewProject();
     PENode::draw();
 }
 
+PECamera *PELayer3D::getCamera()
+{
+    return m_camera;
+}

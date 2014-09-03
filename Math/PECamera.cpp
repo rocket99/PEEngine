@@ -85,7 +85,7 @@ void PECamera::setMatrixData()
     Elm(0, 3) = -nx.dot(m_pos);
     Elm(1, 0) = ny.x; Elm(1, 1) = ny.y; Elm(1, 2) = ny.z;
     Elm(1, 3) = -ny.dot(m_pos);
-    Elm(2, 0) = nz.x; Elm(2, 1) = nz.y; Elm(2, 2) = nz.z;
+    Elm(2, 0) = -nz.x; Elm(2, 1) = -nz.y; Elm(2, 2) = -nz.z;
     Elm(2, 3) = nz.dot(m_pos);
     Elm(3, 0) = Elm(3, 1) = Elm(3, 2) = 0.0f;
     Elm(3, 3) = 1.0f;

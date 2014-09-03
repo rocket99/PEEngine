@@ -10,7 +10,9 @@
 
 PEBox::PEBox(){}
 
-PEBox::~PEBox(){}
+PEBox::~PEBox(){
+
+}
 
 PEBox *PEBox::createWithSize(const Size3D &size)
 {
@@ -74,12 +76,5 @@ void PEBox::setGLProgram(GLuint program)
     }
 }
 
-void PEBox::setWorld(const Size3D &world)
-{
-    m_worldSize = world;
-    for (int i=0; i<m_children.size(); ++i) {
-        m_children[i]->World() = m_worldSize;
-    }
-}
 
 
