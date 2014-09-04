@@ -91,6 +91,7 @@ void PERealNode::removeAllChildern()
         (*it)->release();
         ++ it;
     }
+    m_children.clear();
 }
 
 void PERealNode::removeFromParentNode()

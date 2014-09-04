@@ -120,32 +120,26 @@ void PENode::removeChild(PENode *node)
             ++ it;
         }
     }
+    for (int i=0; i<node->getChildren().size(); ++i) {
+        node->getChildren()[i]->release();
+    }
 }
 void PENode::removeChildByTag(int tag)
 {
-    std::vector<PENode *>::iterator it = m_children.begin();
-    while(it != m_children.end()){
-        if ((*it)->getTag() == tag) {
-            (*it)->release();
-            m_children.erase(it);
-        }else{
-            ++ it;
-        }
+    PENode *node = this->getChildByTag(tag);
+    if(node != nullptr){
+        this->removeChild(node);
     }
 }
 
 void PENode::removeChildByName(string name)
 {
-    std::vector<PENode *>::iterator it = m_children.begin();
-    while(it != m_children.end()){
-        if ((*it)->getName() == name) {
-            (*it)->release();
-            m_children.erase(it);
-        }else{
-            ++ it;
-        }
+    PENode *node = this->getChildByName(name);
+    if(node != nullptr){
+        this->removeChild(node);
     }
 }
+
 void PENode::removeAllChildern()
 {
     std::vector<PENode *>::iterator it = m_children.begin();
@@ -153,6 +147,7 @@ void PENode::removeAllChildern()
         (*it)->release();
         ++ it;
     }
+    m_children.clear();
 }
 
 std::vector<PENode *> &PENode::getChildren(){
@@ -161,6 +156,9 @@ std::vector<PENode *> &PENode::getChildren(){
 
 void PENode::removeFromParentNode(){
     this->m_parent->removeChild(this);
+    for (int i=0; i<m_children.size(); ++i) {
+        m_children[i]->release();
+    }
 }
 
 PENode * PENode::getChildByTag(int tag)
