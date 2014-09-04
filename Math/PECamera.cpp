@@ -131,7 +131,6 @@ void PECamera::setPerspectMatrix()
     
     m_perspect->Elm(3, 0) = m_perspect->Elm(3, 1) = m_perspect->Elm(3, 3) = 0.0;
     m_perspect->Elm(3, 2) = -1.0;
-    m_perspect->display();
 }
 
 PEMatrix PECamera::modelViewProject()

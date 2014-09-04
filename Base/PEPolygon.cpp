@@ -66,6 +66,7 @@ void PEPolygon::draw()
     this->setSpaceUniform();
     this->setWorldMatUniform();
     this->setModelViewProjectUniform();
+    this->setColorUniform();
     this->setMaterialUniformBlock();
     
     glEnableVertexAttribArray(0);
@@ -74,3 +75,4 @@ void PEPolygon::draw()
     glDisableVertexAttribArray(0);
     this->deleteMaterialUbo();
 }
+

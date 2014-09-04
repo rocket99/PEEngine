@@ -72,7 +72,7 @@ void PEBox::setGLProgram(GLuint program)
 {
     m_program = program;
     for (int i=0; i<m_children.size(); ++i) {
-        m_children[i]->setGLProgram(program);
+        static_cast<PERealNode *>(m_children[i])->setGLProgram(program);
     }
 }
 

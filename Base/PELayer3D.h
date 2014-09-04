@@ -11,8 +11,9 @@
 
 #include <iostream>
 #include "PEMath.h"
-#include "PENode.h"
 #include "PEPrefix.h"
+#include "PELight.h"
+#include "PENode.h"
 
 class PELayer3D: public PENode
 {
@@ -22,6 +23,17 @@ public:
     
     void draw();
     PECamera *getCamera();
+    PELight *getLightSource();
+    
+    void addChild(PENode *node);
+    void addChild(PENode *node, int tag);
+    void addChild(PENode *node, string name);
+    
+    void removeChild(PENode *node);
+    void removeChildByTag(int tag);
+    void removeChildByName(string name);
+    void removeAllChildern();
+    
 protected:
     PELayer3D();
     ~PELayer3D();
@@ -29,6 +41,7 @@ protected:
 private:
     Size3D m_size;
     PECamera *m_camera;
+    PELight *m_light;
 };
 
 #endif /* defined(__Engine__PELayer__) */

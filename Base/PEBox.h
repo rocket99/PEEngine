@@ -19,7 +19,7 @@
 #define BOX_TOP     "top"
 #define BOX_BOTTOM  "bottom"
 
-class PEBox:public PENode
+class PEBox:public PERealNode
 {
 public:
     PEBox();

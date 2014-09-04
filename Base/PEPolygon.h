@@ -10,9 +10,9 @@
 #define __Engine__PEPolygon__
 
 #include <iostream>
-#include "PENode.h"
+#include "PERealNode.h"
 
-class PEPolygon:public PENode
+class PEPolygon:public PERealNode
 {
 public:
     PEPolygon();

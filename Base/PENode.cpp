@@ -11,16 +11,13 @@
 
 PENode::PENode():
 m_tag(0),
-m_parent(nullptr),
-m_program(0),
-m_position(Point3D(0.0, 0.0, 0.0)),
 m_isVisible(true),
-m_color(ColorRGBA(0.0, 0.0, 0.0, 1.0)),
+m_parent(nullptr),
+m_position(Point3D(0.0, 0.0, 0.0)),
 m_locRotateAngle(0.0),
 m_locRotateAxis(Point3D(0.0, 0.0, 0.0)),
 m_worldSize(GLOBAL_WORLD_SIZE),
-m_worldPos(P3DZERO),
-m_sceneIn(NULL)
+m_worldPos(P3DZERO)
 {
     m_children.clear();
 }
@@ -56,19 +53,6 @@ int PENode::getTag()
     return m_tag;
 }
 
-void PENode::setSceneIn(PELayer3D *scene)
-{
-    m_sceneIn = scene;
-    for(int i=0; i<m_children.size(); ++i){
-        m_children[i]->setSceneIn(scene);
-    }
-}
-
-PELayer3D *PENode::getSceneIn()
-{
-    return m_sceneIn;
-}
-
 void PENode::addChild(PENode *node)
 {
     std::vector<PENode *>::iterator it = m_children.begin();
@@ -80,8 +64,11 @@ void PENode::addChild(PENode *node)
     }
     node->retain();
     node->setParentNode(this);
-    node->setSceneIn(m_sceneIn);
     this->m_children.push_back(node);
+    
+    for (int i=0; i<node->getChildren().size(); ++i) {
+        node->getChildren()[i]->retain();
+    }
 }
 
 void PENode::addChild(PENode *node, int tag)
@@ -96,9 +83,11 @@ void PENode::addChild(PENode *node, int tag)
     }
     node->retain();
     node->setParentNode(this);
-    node->setSceneIn(m_sceneIn);
-  
     this->m_children.push_back(node);
+    
+    for (int i=0; i<node->getChildren().size(); ++i) {
+        node->getChildren()[i]->retain();
+    }
 }
 
 void PENode::addChild(PENode *node, string name)
@@ -113,8 +102,11 @@ void PENode::addChild(PENode *node, string name)
     }
     node->retain();
     node->setParentNode(this);
-    node->setSceneIn(m_sceneIn);
     this->m_children.push_back(node);
+    
+    for (int i=0; i<node->getChildren().size(); ++i) {
+        node->getChildren()[i]->retain();
+    }
 }
 
 void PENode::removeChild(PENode *node)
@@ -205,14 +197,6 @@ PENode * PENode::getParentNode(){
     return m_parent;
 }
 
-void PENode::setGLProgram(GLuint prog){
-    m_program = prog;
-}
-
-GLuint PENode::getGLProgram(){
-    return m_program;
-}
-
 void PENode::update(){
 
 }
@@ -222,8 +206,6 @@ void PENode::draw(){
         return;
     
     this->update();
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
     
     std::vector<PENode *>::iterator it = m_children.begin();
     while(it != m_children.end()){
@@ -241,9 +223,6 @@ P3D &PENode::World(){
 }
 bool &PENode::Visible(){
     return m_isVisible;
-}
-Color4F &PENode::Color(){
-    return m_color;
 }
 
 void PENode::setRotate(V3D axis, float angle){
@@ -281,77 +260,13 @@ void PENode::setWorldMat(){
     }
 }
 
-GLuint &PENode::Texture(){
-    return m_texture;
-}
 
-void PENode::setMaterialUniformBlock(){
-    GLint index = glGetUniformBlockIndex(m_program, UNIFORM_MATERIAL);
-    if(index == GL_INVALID_OPERATION || index == GL_INVALID_INDEX){
-        return;
-    }
-    GLint blockSize;
-    glGetActiveUniformBlockiv(m_program, index, GL_UNIFORM_BLOCK_DATA_SIZE, &blockSize);
-    GLubyte *blockBuffer = (GLubyte *)malloc(sizeof(GLubyte)*blockSize);
-    const char *name[] = {"m_ambient", "m_diffuse", "m_specular", "m_emission"};
-    GLuint indices[4]; GLint offset[4];
-    glGetUniformIndices(m_program, 4, name, indices);
-    glGetActiveUniformsiv(m_program, 4, indices, GL_UNIFORM_OFFSET, offset);
-    
-    GLfloat ambient[] = {m_material.ambient.r, m_material.ambient.g, m_material.ambient.b, m_material.ambient.a};
-    GLfloat diffuse[] = {m_material.diffuse.r, m_material.diffuse.g, m_material.diffuse.b, m_material.diffuse.a};
-    GLfloat specular[] = {m_material.specular.r, m_material.specular.g, m_material.specular.b, m_material.specular.a};
-    GLfloat emission[] = {m_material.emission.r, m_material.emission.g, m_material.emission.b, m_material.emission.a};
-    memcpy(blockBuffer+offset[0], ambient, 4*sizeof(GLfloat));
-    memcpy(blockBuffer+offset[1], diffuse, 4*sizeof(GLfloat));
-    memcpy(blockBuffer+offset[2], specular, 4*sizeof(GLfloat));
-    memcpy(blockBuffer+offset[3], emission, 4*sizeof(GLfloat));
-    
-    glUniformBlockBinding(m_program, index, 2);
 
-    glGenBuffers(1, &m_materialUbo);
-    glBindBuffer(GL_UNIFORM_BUFFER, m_materialUbo);
-    glBufferData(GL_UNIFORM_BUFFER, blockSize, blockBuffer, GL_DYNAMIC_DRAW);
-    glBindBufferRange(GL_UNIFORM_BUFFER, 2, m_materialUbo, 0, blockSize);
-    free(blockBuffer);
-}
 
-void PENode::deleteMaterialUbo()
-{
-    if(glIsBuffer(m_materialUbo) == GL_TRUE){
-        glDeleteBuffers(1, &m_materialUbo);
-    }
-}
 
-void PENode::setModelViewProjectUniform()
-{
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_MODELPROJECT);
-    if(loc >= 0){
-        PEMatrix mat = m_sceneIn->getCamera()->modelViewProject();
-//        PEMatrix mat = m_sceneIn->getCamera()->modelViewOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-        glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
-    }
-}
 
-void PENode::setWorldMatUniform()
-{
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_SYSMAT);
-    if(loc >= 0){
-        this->setWorldMat();
-        glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldMat.getData());
-    }
-}
 
-void PENode::setSpaceUniform()
-{
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_SPACE);
-    if(loc >=0){
-        glUniform3f(loc, m_worldSize.x, m_worldSize.y, m_worldSize.z);
-    }
-}
-void PENode::setColorUniform(){
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
-    if(loc >= 0){
-        glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
-    }
-}
+
+
+
+

@@ -16,8 +16,8 @@ uniform mediump mat3 u_rotate;
 void main()
 {
     gl_PointSize = 1.0;
-    gl_Position = u_sysMat * vec4(a_point/u_space, 1.0) * u_modelViewProject;
-    v_point = (u_sysMat * vec4(a_point, 1.0)).xyz;
+    gl_Position = u_modelViewProject * u_sysMat * vec4(a_point/u_space, 1.0);
+    v_point = (u_sysMat * vec4(a_point, 1.0)).xyz / u_space;
     v_normal = u_rotate * a_normal;
     v_texCoord = a_texCoord;
 }

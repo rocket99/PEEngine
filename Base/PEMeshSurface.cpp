@@ -175,6 +175,7 @@ void PEMeshSurface::draw()
     this->setSpaceUniform();
     this->setWorldMatUniform();
     this->setModelViewProjectUniform();
+    this->setColorUniform();
     GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >= 0){
         PEMatrix mat = m_worldMat.complement(3, 3);
@@ -188,6 +189,7 @@ void PEMeshSurface::draw()
         glUniform1i(loc, 0);
     }
     this->setMaterialUniformBlock();
+    this->setLightUniformBlock();
     glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[0]);
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);
     glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 0, &m_data[m_row*m_col*18]);
@@ -199,6 +201,7 @@ void PEMeshSurface::draw()
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
     this->deleteMaterialUbo();
+    this->deleteLightUbo();
 }
 
 

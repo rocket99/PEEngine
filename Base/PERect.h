@@ -10,8 +10,6 @@
 #define __Engine__PERect__
 
 #include <iostream>
-#include "PENode.h"
-#include "PEMath.h"
 #include "PEPolygon.h"
 #include "PETexture.h"
 
@@ -24,11 +22,9 @@ public:
     static PERect *create(float width, float height);
     bool initWithSize(float width, float height);
     void draw();
-    Color4F &Color();
 protected:
     float m_width, m_height;
     float *m_data;
-    Color4F m_color;
 };
 
 #endif /* defined(__Engine__PERect__) */

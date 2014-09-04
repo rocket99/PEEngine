@@ -62,4 +62,3 @@ void PESphere::setNormalData()
     }
 }
 
-

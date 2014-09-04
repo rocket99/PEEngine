@@ -11,9 +11,9 @@
 
 #include <iostream>
 #include "PEMath.h"
-#include "PENode.h"
+#include "PERealNode.h"
 
-class PEMeshSurface:public PENode
+class PEMeshSurface:public PERealNode
 {
 public:
     PEMeshSurface();
