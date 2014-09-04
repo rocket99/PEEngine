@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 rocket99. All rights reserved.
 //
 
-#include "PMCylinder.h"
+#include "PECylinder.h"
 
 PECylinder::PECylinder():m_top(nullptr), m_bottom(nullptr)
 {}

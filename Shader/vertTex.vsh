@@ -12,7 +12,7 @@ out mediump vec2 v_texCoord;
 
 void main(){
     gl_PointSize = 1.0;
-    gl_Position = u_sysMat * vec4(a_point/u_space, 1.0)*u_modelViewProject;
+    gl_Position = u_modelViewProject * u_sysMat * vec4(a_point/u_space, 1.0);
     v_texCoord = a_texCoord;
 }
 

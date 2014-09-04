@@ -60,7 +60,7 @@ typedef struct PEPoint3D
     void operator /= (float scalar);
     
     friend struct PEPoint3D cross (const struct PEPoint3D &A, const struct PEPoint3D &B);
-	float dot(const struct PEPoint3D &P);
+	friend float dot(const struct PEPoint3D &A, const struct PEPoint3D &B);
 	
 	float morel();	
 	void normalized();

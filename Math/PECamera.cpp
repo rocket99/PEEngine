@@ -72,7 +72,8 @@ void PECamera::normalized()
     m_center = (m_worldFocus / m_worldSize);
     
     nz = (m_center - m_pos).normal();
-    ny = m_up;
+    ny = m_up.normal();
+    
     nx = cross(nz, ny).normal();
     ny = cross(nx, nz).normal();
     m_up = ny;
@@ -82,11 +83,14 @@ void PECamera::setMatrixData()
 {
     this->normalized();
     Elm(0, 0) = nx.x; Elm(0, 1) = nx.y; Elm(0, 2) = nx.z;
-    Elm(0, 3) = -nx.dot(m_pos);
+    Elm(0, 3) = -dot(nx, m_pos);
+    
     Elm(1, 0) = ny.x; Elm(1, 1) = ny.y; Elm(1, 2) = ny.z;
-    Elm(1, 3) = -ny.dot(m_pos);
+    Elm(1, 3) = -dot(ny, m_pos);
+    
     Elm(2, 0) = -nz.x; Elm(2, 1) = -nz.y; Elm(2, 2) = -nz.z;
-    Elm(2, 3) = nz.dot(m_pos);
+    Elm(2, 3) = dot(nz, m_pos);
+    
     Elm(3, 0) = Elm(3, 1) = Elm(3, 2) = 0.0f;
     Elm(3, 3) = 1.0f;
 }
@@ -114,8 +118,8 @@ float &PECamera::zFar()
 
 void PECamera::setPerspectMatrix()
 {
-    float sa = sin(m_fovy/180.0*M_PI*0.5);
-    float ca = cos(m_fovy/180.0*M_PI*0.5);
+    float sa = sin(0.5*m_fovy/180.0*M_PI);
+    float ca = cos(0.5*m_fovy/180.0*M_PI);
     m_perspect->Elm(0, 0) = ca/sa/m_aspect;
     m_perspect->Elm(0, 1) = m_perspect->Elm(0, 2) = 0.0;
     m_perspect->Elm(0, 3) = m_perspect->Elm(1, 0) = 0.0;
@@ -127,6 +131,7 @@ void PECamera::setPerspectMatrix()
     
     m_perspect->Elm(3, 0) = m_perspect->Elm(3, 1) = m_perspect->Elm(3, 3) = 0.0;
     m_perspect->Elm(3, 2) = -1.0;
+    m_perspect->display();
 }
 
 PEMatrix PECamera::modelViewProject()

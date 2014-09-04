@@ -288,14 +288,14 @@ P3D cross(const P3D &A, const P3D &B)
 	return Point3D(A.y*B.z-A.z*B.y, A.z*B.x-A.x*B.z, A.x*B.y-A.y*B.x);
 }
 
-float PEPoint3D::dot(const P3D &P)
+float dot(const P3D &A, const P3D &B)
 {
-	return (x*P.x + y*P.y + z*P.z);
+	return (A.x*B.x + A.y*B.y + A.z*B.z);
 }
 
 float P3D::morel()
 {
-	return sqrt(x*x+y*y+z*z);
+	return sqrt(x*x + y*y + z*z);
 }
 
 void P3D::normalized()

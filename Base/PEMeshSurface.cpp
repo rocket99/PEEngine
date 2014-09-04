@@ -194,9 +194,7 @@ void PEMeshSurface::draw()
     glEnableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[m_row*m_col*30]);
     glEnableVertexAttribArray(ATTRIB_NORMAL_LOC);
-    
     glDrawArrays(GL_TRIANGLES, 0, m_row*m_col*6);
-    
     glDisableVertexAttribArray(ATTRIB_POINT_LOC);
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);

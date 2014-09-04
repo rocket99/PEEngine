@@ -8,6 +8,6 @@ uniform sampler2D u_texture;
 uniform mediump vec4 u_color;
 
 void main(){
-    frag_color = texture(u_texture, v_texCoord) + u_color;
+    frag_color = /*texture(u_texture, v_texCoord) +*/ u_color;
 }
 

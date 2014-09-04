@@ -25,5 +25,8 @@
 #include "Base/PEBox.h"
 #include "Base/PESphere.h"
 #include "Base/PEMeshSurface.h"
+#include "Base/PEPolarSurface.h"
+#include "Base/PESphere.h"
+#include "Base/PECylinder.h"
 
 #endif

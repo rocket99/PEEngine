@@ -328,6 +328,7 @@ void PENode::setModelViewProjectUniform()
     GLint loc = glGetUniformLocation(m_program, UNIFORM_MODELPROJECT);
     if(loc >= 0){
         PEMatrix mat = m_sceneIn->getCamera()->modelViewProject();
+//        PEMatrix mat = m_sceneIn->getCamera()->modelViewOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
     }
 }
