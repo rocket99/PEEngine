@@ -53,7 +53,6 @@ void PEPolygon::draw()
     if (!m_isVisible) {
         return;
     }
-    
     this->PENode::draw();
     if (glIsProgram(m_program) == GL_FALSE) {
         return;

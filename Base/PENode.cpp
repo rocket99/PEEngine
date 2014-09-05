@@ -120,10 +120,12 @@ void PENode::removeChild(PENode *node)
             ++ it;
         }
     }
+    node->setParentNode(NULL);
     for (int i=0; i<node->getChildren().size(); ++i) {
         node->getChildren()[i]->release();
     }
 }
+
 void PENode::removeChildByTag(int tag)
 {
     PENode *node = this->getChildByTag(tag);

@@ -56,42 +56,27 @@ void PERealNode::removeChild(PERealNode *node)
 }
 void PERealNode::removeChildByTag(int tag)
 {
-    std::vector<PENode *>::iterator it = m_children.begin();
-    while(it != m_children.end()){
-        if ((*it)->getTag() == tag) {
-            static_cast<PERealNode *>(*it)->setSceneIn(NULL);
-            (*it)->release();
-            m_children.erase(it);
-        }else{
-            ++ it;
-        }
+    PERealNode *node = static_cast<PERealNode *>(this->getChildByTag(tag));
+    if(node == NULL){
+        return;
     }
-
+    this->removeChild(node);
 }
 
 void PERealNode::removeChildByName(string name)
 {
-    std::vector<PENode *>::iterator it = m_children.begin();
-    while(it != m_children.end()){
-        if ((*it)->getName() == name) {
-            static_cast<PERealNode *>(*it)->setSceneIn(NULL);
-            (*it)->release();
-            m_children.erase(it);
-        }else{
-            ++ it;
-        }
+    PERealNode *node = static_cast<PERealNode *>(this->getChildByName(name));
+    if(node == NULL){
+        return;
     }
+    this->removeChild(node);
 }
 
 void PERealNode::removeAllChildern()
 {
-    std::vector<PENode *>::iterator it = m_children.begin();
-    while(it != m_children.end()){
-        static_cast<PERealNode *>(*it)->setSceneIn(NULL);
-        (*it)->release();
-        ++ it;
+    while (m_children.size() != 0) {
+        this->removeChild(static_cast<PERealNode *>(m_children[0]));
     }
-    m_children.clear();
 }
 
 void PERealNode::removeFromParentNode()
