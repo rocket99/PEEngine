@@ -28,7 +28,7 @@ public:
     Color4F & Diffuse();
     Color4F & Specular();
     float & Fovy();
-    float &SpecPower();
+    float &Shininess();
     
     void setUniformBlock(GLuint program);
     void removeUniformBlock();
@@ -37,7 +37,7 @@ private:
     P3D m_position;
     V3D m_direction;
     Color4F m_ambient, m_diffuse, m_specular;
-    float m_fovy, m_specular_power;
+    float m_fovy, m_shininess;
     
     PECamera *m_camera;
     GLuint m_ubo;

@@ -14,10 +14,10 @@ PELight::PELight()
     m_direction = Point3D(0.0, -1.0, 0.0);
     m_world = Point3D(1.0, 1.0, 1.0);
     m_ambient = ColorRGBA(0.1, 0.1, 0.1, 0.1);
-    m_diffuse = ColorRGBA(0.5, 0.5, 0.5, 0.5);
+    m_diffuse = ColorRGBA(0.8, 0.8, 0.8, 0.8);
     m_specular = ColorRGBA(1.0, 1.0, 1.0, 1.0);
     m_fovy = 180.0;
-    m_specular_power = 1.0;
+    m_shininess = 1.0;
     m_camera = NULL;
 }
 
@@ -82,9 +82,9 @@ float &PELight::Fovy()
     return m_fovy;
 }
 
-float &PELight::SpecPower()
+float &PELight::Shininess()
 {
-    return m_specular_power;
+    return m_shininess;
 }
 
 void PELight::setUniformBlock(GLuint program)
@@ -98,10 +98,10 @@ void PELight::setUniformBlock(GLuint program)
     }
     GLint size;
     glGetActiveUniformBlockiv(program, index, GL_UNIFORM_BLOCK_DATA_SIZE, &size);
-    const char *name[] = {"l_ambient", "l_diffuse", "l_specular", "l_position", "l_direction", "l_fovy"};
-    GLuint indices[6]; GLint offset[6];
-    glGetUniformIndices(program, 6, name, indices);
-    glGetActiveUniformsiv(program, 6, indices, GL_UNIFORM_OFFSET, offset);
+    const char *name[] = {"l_ambient", "l_diffuse", "l_specular", "l_position", "l_direction", "l_fovy", "l_shininess"};
+    GLuint indices[7]; GLint offset[7];
+    glGetUniformIndices(program, 7, name, indices);
+    glGetActiveUniformsiv(program, 7, indices, GL_UNIFORM_OFFSET, offset);
     GLfloat ambient[4];
     ambient[0] = m_ambient.r; ambient[1] = m_ambient.g;
     ambient[2] = m_ambient.b; ambient[3] = m_ambient.a;
@@ -118,7 +118,7 @@ void PELight::setUniformBlock(GLuint program)
     GLfloat direct[3];
     direct[0] = m_direction.x; direct[1] = m_direction.y; direct[2] = m_direction.z;
     GLfloat fovy = m_fovy/180.0*M_PI;
-    
+    fovy = fovy<0.0 ? -fovy : fovy;
     GLubyte *blockBuffer = new GLubyte[size];
     memcpy(blockBuffer+offset[0], ambient, sizeof(GLfloat)*4);
     memcpy(blockBuffer+offset[1], diffuse, sizeof(GLfloat)*4);
@@ -126,6 +126,7 @@ void PELight::setUniformBlock(GLuint program)
     memcpy(blockBuffer+offset[3], pos, sizeof(GLfloat)*3);
     memcpy(blockBuffer+offset[4], direct, sizeof(GLfloat)*3);
     memcpy(blockBuffer+offset[5], &fovy, sizeof(GLfloat));
+    memcpy(blockBuffer+offset[6], &m_shininess, sizeof(GLfloat));
     
     glGenBuffers(1, &m_ubo);
     glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
@@ -133,11 +134,6 @@ void PELight::setUniformBlock(GLuint program)
     free(blockBuffer);
     glUniformBlockBinding(program, index, UNIFORM_LIGHT_BIND);
     glBindBufferRange(GL_UNIFORM_BUFFER, UNIFORM_LIGHT_BIND, m_ubo, 0, size);
-    
-    GLint loc = glGetUniformLocation(program, "specularPower");
-    if(loc >=0 ){
-        glUniform1f(loc, m_specular_power);
-    }
 }
 
 void PELight::removeUniformBlock()

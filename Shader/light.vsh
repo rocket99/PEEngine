@@ -4,9 +4,9 @@ layout (location = 0) in mediump vec3 a_point;
 layout (location = 1) in mediump vec2 a_texCoord;
 layout (location = 2) in mediump vec3 a_normal;
 
-out mediump vec3 v_point;
-out mediump vec2 v_texCoord;
-out mediump vec3 v_normal;
+out highp vec3 v_point;
+out highp vec2 v_texCoord;
+out highp vec3 v_normal;
 
 uniform mediump vec3 u_space;
 uniform mediump mat4 u_sysMat;

@@ -58,7 +58,7 @@ void PEMeshSurface::setCoordData()
 {
     for (int i=0; i<=m_row; ++i) {
         for (int j=0; j<=m_col; ++j) {
-            m_coords[i*(m_col+1)+j] = Point3D(0.0, 0.0, 0.0);
+            m_coords[i*(m_col+1)+j] = Point3D((float)j/m_col*100.0-50.0, (float)i/m_row*100.0-50.0, 0.0);
         }
     }
 }

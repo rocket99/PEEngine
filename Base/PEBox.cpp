@@ -76,5 +76,12 @@ void PEBox::setGLProgram(GLuint program)
     }
 }
 
+void PEBox::draw()
+{
+//    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_COLOR, GL_DST_COLOR);
+    PENode::draw();
+    glDisable(GL_BLEND);
+}
 
 

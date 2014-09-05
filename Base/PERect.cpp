@@ -58,6 +58,10 @@ bool PERect::initWithSize(float width, float height)
     m_data[26] = 0.0; m_data[27] = 0.0; m_data[28] = 1.0;
     m_data[29] = 0.0; m_data[30] = 0.0; m_data[31] = 1.0;
     
+    m_material.ambient = ColorRGBA(0.2, 0.2, 0.2, 0.1);
+    m_material.diffuse = ColorRGBA(0.7, 0.7, 0.7, 0.7);
+    m_material.specular = ColorRGBA(0.95, 0.95, 1.0, 1.0);
+    m_material.emission = ColorRGBA(0.0, 0.0, 0.0, 0.0);
     return true;
 }
 

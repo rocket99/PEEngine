@@ -29,6 +29,8 @@ public:
     bool initWithSize(const Size3D &size);
     PERect *getBoxSurfaceByName(string name);
     void setGLProgram(GLuint program);
+    
+    void draw();
 private:
     Size3D m_size;
 };
