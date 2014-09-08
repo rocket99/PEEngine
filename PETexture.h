@@ -14,17 +14,24 @@
 class PETexture
 {
 public:
+	enum {
+		PNG_PIC,
+		JPG_PIC,
+	}PicType;
     PETexture();
     ~PETexture();
     
-    static PETexture *create(const char *fileName);
-    bool initWithPic(const char *fileName);
-    GLuint getTexture();
-    int getWidth();
-    int getHeight();
+    static PETexture *create(const char *fileName, PicType type);
+    bool initWithPic(const char *fileName, PicType type);
+    GLuint Texture();
+    int Width();
+    int Height();
 private:
     int m_width, m_height;
     GLuint m_Id;
+
+	void readPNGFile(const char *fileName);
+	void readJPGFile(const char *fileName);
 };
 
 
