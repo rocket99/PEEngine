@@ -10,8 +10,7 @@
 #define __Engine__PELayer__
 
 #include <iostream>
-#include "PEMath.h"
-#include "PEPrefix.h"
+#include "../Math/PEMath.h"
 #include "PELight.h"
 #include "PENode.h"
 

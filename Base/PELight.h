@@ -10,7 +10,7 @@
 #define __Engine__PELight__
 
 #include <iostream>
-#include "PEMath.h"
+#include "../Math/PEMath.h"
 
 class PELight
 {

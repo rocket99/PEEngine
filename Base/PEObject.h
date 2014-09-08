@@ -9,7 +9,7 @@
 #ifndef __Engine__PEObject__
 #define __Engine__PEObject__
 
-#include "PEPrefix.h"
+#include "../PEPrefix.h"
 
 class PEObject
 {

@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include "PEPolygon.h"
-#include "PETexture.h"
+#include "../PETexture.h"
 
 class PERect:public PEPolygon
 {

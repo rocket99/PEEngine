@@ -10,8 +10,7 @@
 #define __Engine__PENode__
 
 #include "PEObject.h"
-#include "PEPrefix.h"
-#include "PEMath.h"
+#include "../Math/PEMath.h"
 
 class PELayer3D;
 class PENode:public PEObject
