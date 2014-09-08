@@ -7,7 +7,7 @@ string PEShaderReader::readShaderSrc(const char *file)
 {
 	FILE *fp = fopen(file, "rt");
 	if(fp == NULL){
-		return ""
+		return "";
 	}
 	char a;
 	size_t len = 1;

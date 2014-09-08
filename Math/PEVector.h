@@ -1,6 +1,6 @@
 #ifndef __PEVector_H__
 #define __PEVector_H__
-#include "PEPrefix.h"
+#include "../PEPrefix.h"
 class PEVector
 {
 public:

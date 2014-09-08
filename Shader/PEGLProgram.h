@@ -10,7 +10,7 @@
 #define __Engine__PEGLProgram__
 
 #include <iostream>
-#include "PEPrefix.h"
+#include "../PEPrefix.h"
 
 class PEGLProgram
 {

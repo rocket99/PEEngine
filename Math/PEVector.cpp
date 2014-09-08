@@ -1,5 +1,5 @@
 #include "PEVector.h"
-
+#include <stdarg.h>
 PEVector::PEVector(int num)
 {
 	m_num = num;

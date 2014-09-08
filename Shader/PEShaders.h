@@ -8,7 +8,7 @@
 
 #ifndef Engine_PEShaders_h
 #define Engine_PEShaders_h
-#include "PEPrefix.h"
+#include "../PEPrefix.h"
 
 class PEShaderReader
 {

@@ -1,7 +1,7 @@
 #ifndef __PEDataType_H__
 #define __PEDataType_H__
 
-#include "PEPrefix.h"
+#include "../PEPrefix.h"
 
 typedef struct PEPoint2D
 {

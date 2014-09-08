@@ -10,7 +10,7 @@
 #define __Engine__PEShaderManager__
 
 #include <iostream>
-#include "PEPrefix.h"
+#include "../PEPrefix.h"
 #include "PEGLProgram.h"
 
 class PEShaderManager

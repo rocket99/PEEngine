@@ -1,7 +1,7 @@
 #ifndef __PEMatrix_H__
 #define __PEMatrix_H__
 
-#include "PEPrefix.h"
+#include "../PEPrefix.h"
 #include "PEDataType.h"
 #include "PEVector.h"
 
