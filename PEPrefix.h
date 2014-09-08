@@ -39,9 +39,10 @@ using namespace std;
 #endif
 
 #ifdef GL_LINUX
-#include <glfw.h>
-#include <gl.h>
-#include <glext.h>
+#include <GL/gl.h>
+#include <GL/glext.h>
+#define GLFW_INCLUDE_GLFW
+#include <GLFW/glfw3.h>
 #endif
 
 #include "PEMacro.h"

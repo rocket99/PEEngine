@@ -7,8 +7,14 @@ MATH:PECamera.o PEDataType.o PEMatrix.o PEVector.o
 SHADER:PEGLProgram.o PEGLShaderManager.o PEShaders.o
 CC = g++ --std=c++11
 ALL:main
-main:main.o $(BASE) $(MATH) $(SHADER)
-	$(CC) -o main main.o $(BASE) $(MATH) $(SHADER) $(LINK)
+main:main.o PEScene.o $(BASE) $(MATH) $(SHADER)
+	$(CC) -o main main.o PEScene.o $(BASE) $(MATH) $(SHADER) $(LINK)
+
+main.o:main.cpp PEEngine.h PEMacro.h
+	$(CC) -c main.cpp
+PEScene.o:PEScene.cpp PEScene.h
+	$(CC) -c PEScene.cpp
+
 $(BASE):
 	cd ./Base && $(MAKE)	
 $(MATH):
