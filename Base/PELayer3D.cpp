@@ -45,55 +45,52 @@ bool PELayer3D::initWithSize(const Size3D &size)
     return true;
 }
 
+void PELayer3D::drawFBO()
+{
+    PENode::drawFBO();
+}
+
 void PELayer3D::draw(){
     PENode::draw();
 }
 
-PECamera *PELayer3D::getCamera()
-{
+PECamera *PELayer3D::getCamera(){
     return m_camera;
 }
 
-PELight *PELayer3D::getLightSource()
-{
+PELight *PELayer3D::getLightSource(){
     return m_light;
 }
 
-void PELayer3D::addChild(PENode *node)
-{
+void PELayer3D::addChild(PENode *node){
     PENode::addChild(node);
     static_cast<PERealNode *>(node)->setSceneIn(this);
 }
 
-void PELayer3D::addChild(PENode *node, int tag)
-{
+void PELayer3D::addChild(PENode *node, int tag){
     PENode::addChild(node, tag);
     if(static_cast<PERealNode *>(node) != nullptr)
         static_cast<PERealNode *>(node)->setSceneIn(this);
 }
 
-void PELayer3D::addChild(PENode *node, string name)
-{
+void PELayer3D::addChild(PENode *node, string name){
     PENode::addChild(node, name);
     if(static_cast<PERealNode *>(node) != nullptr)
         static_cast<PERealNode *>(node)->setSceneIn(this);
 }
 
-void PELayer3D::removeChild(PENode *node)
-{
+void PELayer3D::removeChild(PENode *node){
     if(static_cast<PERealNode *>(node) != nullptr)
         static_cast<PERealNode *>(node)->setSceneIn(NULL);
     PENode::removeChild(node);
 }
 
-void PELayer3D::removeChildByTag(int tag)
-{
+void PELayer3D::removeChildByTag(int tag){
     PENode *node = this->getChildByTag(tag);
     this->removeChild(node);
 }
 
-void PELayer3D::removeChildByName(string name)
-{
+void PELayer3D::removeChildByName(string name){
     PENode *node = this->getChildByName(name);
     this->removeChild(node);
 }

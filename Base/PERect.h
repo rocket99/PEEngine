@@ -22,9 +22,11 @@ public:
     static PERect *create(float width, float height);
     bool initWithSize(float width, float height);
     void draw();
+    void drawFBO();
 protected:
     float m_width, m_height;
     float *m_data;
+    void drawFunc();
 };
 
 #endif /* defined(__Engine__PERect__) */

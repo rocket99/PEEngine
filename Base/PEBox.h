@@ -28,9 +28,13 @@ public:
     static PEBox *createWithSize(const Size3D &size);
     bool initWithSize(const Size3D &size);
     PERect *getBoxSurfaceByName(string name);
-    void setGLProgram(GLuint program);
+    
+    void setGLProgram0(GLuint program);
+    void setGLProgram1(GLuint program);
     
     void draw();
+    void drawFBO();
+    
 private:
     Size3D m_size;
 };

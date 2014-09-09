@@ -42,12 +42,16 @@ public:
     void removeAllChildern();
     void removeFromParentNode();
     
-    virtual void setGLProgram(GLuint prog);
-    GLuint getGLProgram();
+    GLuint getCurrentGLProgram();
+    
+    GLuint &Program0();
+    GLuint &Program1();
     
     Color4F &Color();
     GLuint &Texture();
+    
 protected:
+    GLuint m_program0, m_program1;
     GLuint m_program;
     PELayer3D *m_sceneIn;
     
@@ -55,7 +59,7 @@ protected:
     virtual void deleteLightUbo();
     
     void setModelViewProjectUniform();
-    
+    void setLightProjectViewUniform();
     GLuint m_materialUbo;
     struct Material m_material;
     virtual void setMaterialUniformBlock();

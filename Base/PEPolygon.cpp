@@ -54,6 +54,22 @@ void PEPolygon::draw()
         return;
     }
     this->PENode::draw();
+    m_program = m_program1;
+    this->drawMethod();
+}
+
+void PEPolygon::drawFBO()
+{
+    if (!m_isVisible) {
+        return;
+    }
+    this->PENode::draw();
+    m_program = m_program0;
+    this->drawMethod();
+}
+
+void PEPolygon::drawMethod()
+{
     if (glIsProgram(m_program) == GL_FALSE) {
         return;
     }
@@ -73,5 +89,5 @@ void PEPolygon::draw()
     glDrawArrays(GL_LINE_LOOP, 0, m_num);
     glDisableVertexAttribArray(0);
     this->deleteMaterialUbo();
-}
 
+}

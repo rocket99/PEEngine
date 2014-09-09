@@ -20,6 +20,7 @@ public:
     static PELayer3D *create(const Size3D &size);
     virtual bool initWithSize(const Size3D &size);
     
+    void drawFBO();
     void draw();
     PECamera *getCamera();
     PELight *getLightSource();

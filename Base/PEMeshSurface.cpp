@@ -167,14 +167,31 @@ void PEMeshSurface::setDrawData()
 
 void PEMeshSurface::draw()
 {
+    m_program = m_program1;
+    if(glIsProgram(m_program) == GL_FALSE){
+        return;
+    }
+    glUseProgram(m_program);
+    this->setModelViewProjectUniform();
+    this->drawFunc();
+}
+
+void PEMeshSurface::drawFBO()
+{
+    m_program = m_program0;
     if(glIsProgram(m_program) == GL_FALSE){
         return;
     }
     this->setDrawData();
     glUseProgram(m_program);
+    this->setLightProjectViewUniform();
+    this->drawFunc();
+}
+
+void PEMeshSurface::drawFunc()
+{
     this->setSpaceUniform();
     this->setWorldMatUniform();
-    this->setModelViewProjectUniform();
     this->setColorUniform();
     GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >= 0){
@@ -203,5 +220,4 @@ void PEMeshSurface::draw()
     this->deleteMaterialUbo();
     this->deleteLightUbo();
 }
-
 

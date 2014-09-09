@@ -21,6 +21,7 @@ public:
     static PEMeshSurface *create(int row, int col);
     bool initWithSize(int row, int col);
     virtual void draw();
+    virtual void drawFBO();
 protected:
     bool isDataSet;
     void setDrawData();
@@ -33,6 +34,8 @@ protected:
     P3D *m_normals;
     P2D *m_texCoords;
     GLfloat *m_data;
+    
+    void drawFunc();
 };
 #endif /* defined(__Engine__PEMeshSurface__) */
 

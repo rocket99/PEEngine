@@ -40,6 +40,7 @@ public:
     PENode *getParentNode();
     
     virtual void draw();
+    virtual void drawFBO();
     
     bool &Visible();
     P3D &Position();

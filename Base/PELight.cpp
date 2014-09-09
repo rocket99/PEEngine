@@ -141,7 +141,30 @@ void PELight::removeUniformBlock()
     if(glIsBuffer(m_ubo) == GL_TRUE){
         glDeleteBuffers(1, &m_ubo);
     }
+    
 }
+
+void PELight::setCamera(){
+    if(m_camera != NULL ){
+        return;
+    }
+    P3D center = m_position + 100 *m_direction;
+    V3D up;
+    if(dot(m_direction, Point3D(1.0, 0.0, 0.0)) != 0){
+        up = (m_direction+Point3D(1.0, 0.0, 0.0)).normal();
+    }else if(dot(m_direction, Point3D(0.0, 1.0, 0.0)) != 0){
+        up = (m_direction+Point3D(0.0, 1.0, 0.0)).normal();
+    }else if(dot(m_direction, Point3D(0.0, 0.0, 1.0)) != 0){
+        up = (m_direction+Point3D(0.0, 0.0, 1.0)).normal();
+    }
+    m_camera = PECamera::create(m_world, m_position, center, up);
+    m_camera->setPerspect(m_fovy, 1.0, 0.01, 300.0);
+}
+
+PECamera *PELight::getCamera(){
+    return m_camera;
+}
+
 
 
 

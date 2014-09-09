@@ -20,9 +20,11 @@ public:
     static PEPolygon *createWithPoints(P2D *points, int num);
     bool initWithPoints(P2D *points, int num);
     virtual void draw();
+    virtual void drawFBO();
 private:
     float *m_data;
     vector <P2D> m_points;
     int m_num;
+    void drawMethod();
 };
 #endif /* defined(__Engine__PEPolygon__) */

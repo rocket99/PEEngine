@@ -10,11 +10,12 @@
 #include "PELayer3D.h"
 
 PERealNode::PERealNode():
-m_sceneIn(NULL),
 m_color(ColorRGBA(0.0f, 0.0f, 0.0f, 0.0f)),
+m_sceneIn(NULL),
 m_texture(GL_FALSE),
-m_program(GL_FALSE)
-{}
+m_program(GL_FALSE),
+m_program0(GL_FALSE),
+m_program1(GL_FALSE){}
 
 PERealNode::~PERealNode(){}
 
@@ -103,6 +104,15 @@ void PERealNode::setModelViewProjectUniform()
     }
 }
 
+void PERealNode::setLightProjectViewUniform()
+{
+    GLint loc = glGetUniformLocation(m_program, UNIFORM_MODELPROJECT);
+    if(loc >= 0){
+        PEMatrix mat = m_sceneIn->getLightSource()->getCamera()->modelViewProject();
+        glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
+    }
+}
+
 PERealNode::Material & PERealNode::getMaterial(){
     return m_material;
 }
@@ -161,6 +171,7 @@ void PERealNode::setSpaceUniform()
         glUniform3f(loc, m_worldSize.x, m_worldSize.y, m_worldSize.z);
     }
 }
+
 void PERealNode::setColorUniform(){
     GLint loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
     if(loc >= 0){
@@ -168,12 +179,16 @@ void PERealNode::setColorUniform(){
     }
 }
 
-void PERealNode::setGLProgram(GLuint prog){
-    m_program = prog;
+GLuint PERealNode::getCurrentGLProgram(){
+    return m_program;
 }
 
-GLuint PERealNode::getGLProgram(){
-    return m_program;
+GLuint &PERealNode::Program0(){
+    return m_program0;
+}
+
+GLuint &PERealNode::Program1(){
+    return m_program1;
 }
 
 Color4F &PERealNode::Color(){
@@ -183,3 +198,5 @@ Color4F &PERealNode::Color(){
 GLuint &PERealNode::Texture(){
     return m_texture;
 }
+
+

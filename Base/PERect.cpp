@@ -8,8 +8,7 @@
 
 #include "PERect.h"
 
-PERect::PERect():m_width(1.0f),m_height(1.0f)
-{}
+PERect::PERect():m_width(1.0f),m_height(1.0f){}
 PERect::~PERect(){}
 
 PERect *PERect::create(float width, float height)
@@ -71,15 +70,34 @@ void PERect::draw()
     if(m_isVisible == false){
         return;
     }
+    m_program = m_program1;
     if(glIsProgram(m_program) == GL_FALSE){
         return;
     }
     glUseProgram(m_program);
+    this->setModelViewProjectUniform();
+    this->drawFunc();
+}
+
+void PERect::drawFBO()
+{
+    if(m_isVisible == false){
+        return;
+    }
+    m_program = m_program0;
+    if(glIsProgram(m_program) == GL_FALSE){
+        return;
+    }
+    glUseProgram(m_program);
+    this->setLightProjectViewUniform();
+    this->drawFunc();
+}
+
+void PERect::drawFunc(){
     this->setSpaceUniform();
     this->setWorldMatUniform();
-    this->setModelViewProjectUniform();
     this->setColorUniform();
-
+    
     GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >= 0){
         PEMatrix mat = m_worldMat.complement(3, 3);
@@ -106,6 +124,7 @@ void PERect::draw()
     this->deleteMaterialUbo();
     this->deleteLightUbo();
 }
+
 
 
 

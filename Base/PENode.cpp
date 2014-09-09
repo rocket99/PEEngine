@@ -202,15 +202,26 @@ void PENode::update(){
 }
 
 void PENode::draw(){
-    if(!m_isVisible)
+    if(!m_isVisible){
         return;
-    
+    }
+    std::vector<PENode *>::iterator it = m_children.begin();
+    while(it != m_children.end()){
+        (*it)->draw();
+        ++ it;
+    }
+}
+
+void PENode::drawFBO()
+{
+    if(!m_isVisible){
+        return;
+    }
     this->update();
     
     std::vector<PENode *>::iterator it = m_children.begin();
     while(it != m_children.end()){
-        (*it)->update();
-        (*it)->draw();
+        (*it)->drawFBO();
         ++ it;
     }
 }

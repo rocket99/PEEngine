@@ -32,12 +32,16 @@ public:
     
     void setUniformBlock(GLuint program);
     void removeUniformBlock();
+    
+    void setCamera();
+    PECamera *getCamera();
 private:
     Size3D m_world;
     P3D m_position;
     V3D m_direction;
     Color4F m_ambient, m_diffuse, m_specular;
     float m_fovy, m_shininess;
+    
     
     PECamera *m_camera;
     GLuint m_ubo;

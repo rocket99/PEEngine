@@ -68,17 +68,27 @@ PERect *PEBox::getBoxSurfaceByName(string name)
     return static_cast<PERect *>(this->getChildByName(name));
 }
 
-void PEBox::setGLProgram(GLuint program)
+void PEBox::setGLProgram0(GLuint program)
 {
-    m_program = program;
+    m_program0 = program;
     for (int i=0; i<m_children.size(); ++i) {
-        static_cast<PERealNode *>(m_children[i])->setGLProgram(program);
+        static_cast<PERealNode *>(m_children[i])->Program0() = program;
     }
 }
 
-void PEBox::draw()
+void PEBox::setGLProgram1(GLuint program)
 {
-//    glEnable(GL_BLEND);
+    m_program1 = program;
+    for (int i=0; i<m_children.size(); ++i) {
+        static_cast<PERealNode *>(m_children[i])->Program1() = program;
+    }
+}
+
+void PEBox::drawFBO(){
+    PENode::drawFBO();
+}
+
+void PEBox::draw(){
     glBlendFunc(GL_SRC_COLOR, GL_DST_COLOR);
     PENode::draw();
     glDisable(GL_BLEND);
