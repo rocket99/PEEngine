@@ -11,6 +11,9 @@
 
 #include "PEPrefix.h"
 
+static GLuint DepthTex;
+static GLuint ColorTex;
+
 class PETexture
 {
 public:
@@ -27,7 +30,10 @@ public:
     GLuint Texture();
     int Width();
     int Height();
+    
+   
 private:
+    
     int m_width, m_height;
     GLuint m_Id;
 

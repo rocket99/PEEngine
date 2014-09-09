@@ -69,6 +69,7 @@ protected:
     void setSpaceUniform();
     void setColorUniform();
     
+    void setDepthTexUnifrom();
     Color4F m_color;
     GLuint m_texture;
 };

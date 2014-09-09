@@ -1,7 +1,8 @@
 #version 300 es
-in highp vec3 v_point;
-in highp vec2 v_texCoord;
-in highp vec3 v_normal;
+in mediump vec3 v_point;
+in mediump vec2 v_texCoord;
+in mediump vec3 v_normal;
+in mediump vec4 v_shadowCoord;
 
 layout (location = 0) out mediump vec4 frag_color;
 
@@ -25,6 +26,7 @@ uniform u_material
 };
 
 uniform mediump vec3 cameraPos;
+uniform mediump sampler2DShadow u_depthTex;
 
 mediump float Pi = asin(1.0)*2.0;
 
@@ -39,6 +41,7 @@ mediump float attenu (mediump vec3 p)
 
 mediump vec4 light_color(mediump vec3 p)
 {
+    highp float sum = textureProj(u_depthTex, v_shadowCoord);
     mediump vec3 i = normalize(p - l_position);
     mediump vec3 n = normalize(v_normal);
     mediump vec3 o = normalize(reflect(i, n));
@@ -58,7 +61,7 @@ mediump vec4 light_color(mediump vec3 p)
             specular = l_specular*m_specular*pow(max(dot(s, n), 0.0), l_shininess);
         }
     }
-    return ambient+diffuse+specular;
+    return ambient+diffuse*sum+specular*sum;
 }
 
 void main(){

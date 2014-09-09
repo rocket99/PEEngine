@@ -30,33 +30,21 @@ bool PERect::initWithSize(float width, float height)
     m_height = height;
     m_data = (float *)malloc(sizeof(float)*(12+8+12));
     //coord
-    m_data[0] = -0.5*m_width;
-    m_data[1] = -0.5*m_height;
-    m_data[2] = 0.0;
-    
-    m_data[3] = -0.5*m_width;
-    m_data[4] = 0.5*m_height;
-    m_data[5] = 0.0;
-    
-    m_data[6] = 0.5*m_width;
-    m_data[7] = 0.5*m_height;
-    m_data[8] = 0.0;
-    
-    m_data[9] = 0.5*m_width;
-    m_data[10] = -0.5*m_height;
-    m_data[11] = 0.0;
+    m_data[0] = -0.5*m_width; m_data[1] = -0.5*m_height; m_data[2] = 0.0;
+    m_data[3] = -0.5*m_width; m_data[4] =  0.5*m_height; m_data[5] = 0.0;
+    m_data[6] =  0.5*m_width; m_data[7] =  0.5*m_height; m_data[8] = 0.0;
+    m_data[9] =  0.5*m_width; m_data[10] = -0.5*m_height; m_data[11] = 0.0;
     //texCoord
     m_data[12] = 0.0; m_data[13] = 0.0;
     m_data[14] = 0.0; m_data[15] = 1.0;
     m_data[16] = 1.0; m_data[17] = 1.0;
     m_data[18] = 1.0; m_data[19] = 0.0;
-    
     //normal
     m_data[20] = 0.0; m_data[21] = 0.0; m_data[22] = 1.0;
     m_data[23] = 0.0; m_data[24] = 0.0; m_data[25] = 1.0;
     m_data[26] = 0.0; m_data[27] = 0.0; m_data[28] = 1.0;
     m_data[29] = 0.0; m_data[30] = 0.0; m_data[31] = 1.0;
-    
+    //material
     m_material.ambient = ColorRGBA(0.2, 0.2, 0.2, 0.1);
     m_material.diffuse = ColorRGBA(0.7, 0.7, 0.7, 0.7);
     m_material.specular = ColorRGBA(0.95, 0.95, 1.0, 1.0);
@@ -76,6 +64,7 @@ void PERect::draw()
     }
     glUseProgram(m_program);
     this->setModelViewProjectUniform();
+    this->setDepthTexUnifrom();
     this->drawFunc();
 }
 
@@ -93,7 +82,8 @@ void PERect::drawFBO()
     this->drawFunc();
 }
 
-void PERect::drawFunc(){
+void PERect::drawFunc()
+{
     this->setSpaceUniform();
     this->setWorldMatUniform();
     this->setColorUniform();

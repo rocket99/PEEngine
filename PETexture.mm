@@ -62,17 +62,14 @@ bool PETexture::initWithPic(const char *fileName, PicType type)
     return true;
 }
 
-int PETexture::Width()
-{
+int PETexture::Width(){
     return m_width;
 }
 
-int PETexture::Height()
-{
+int PETexture::Height(){
     return m_height;
 }
 
-GLuint PETexture::Texture()
-{
+GLuint PETexture::Texture(){
     return m_Id;
 }

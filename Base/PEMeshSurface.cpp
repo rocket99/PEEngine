@@ -173,6 +173,7 @@ void PEMeshSurface::draw()
     }
     glUseProgram(m_program);
     this->setModelViewProjectUniform();
+    this->setDepthTexUnifrom();
     this->drawFunc();
 }
 

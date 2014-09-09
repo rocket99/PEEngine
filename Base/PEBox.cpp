@@ -89,9 +89,10 @@ void PEBox::drawFBO(){
 }
 
 void PEBox::draw(){
-    glBlendFunc(GL_SRC_COLOR, GL_DST_COLOR);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_COLOR, GL_DST_COLOR);
     PENode::draw();
-    glDisable(GL_BLEND);
+//    glDisable(GL_BLEND);
 }
 
 

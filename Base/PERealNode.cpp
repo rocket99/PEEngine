@@ -8,6 +8,7 @@
 
 #include "PERealNode.h"
 #include "PELayer3D.h"
+#include "PETexture.h"
 
 PERealNode::PERealNode():
 m_color(ColorRGBA(0.0f, 0.0f, 0.0f, 0.0f)),
@@ -176,6 +177,16 @@ void PERealNode::setColorUniform(){
     GLint loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
     if(loc >= 0){
         glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
+    }
+}
+
+void PERealNode::setDepthTexUnifrom()
+{
+    GLint loc = glGetUniformLocation(m_program, UNIFORM_DEPTH_TEX);
+    if(loc >= 0){
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, DepthTex);
+        glUniform1i(loc, 1);
     }
 }
 
