@@ -14,10 +14,11 @@
 class PETexture
 {
 public:
-	enum {
+	enum PicType{
 		PNG_PIC,
 		JPG_PIC,
-	}PicType;
+	};
+    
     PETexture();
     ~PETexture();
     

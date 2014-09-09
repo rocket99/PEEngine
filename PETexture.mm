@@ -17,10 +17,10 @@ PETexture::~PETexture()
     glDeleteTextures(1, &m_Id);
 }
 
-PETexture *PETexture::create(const char *fileName)
+PETexture *PETexture::create(const char *fileName, PicType type)
 {
     PETexture *texture = new PETexture;
-    if(texture->initWithPic(fileName)){
+    if(texture->initWithPic(fileName, type)){
         return texture;
     }
     delete texture;
@@ -28,7 +28,7 @@ PETexture *PETexture::create(const char *fileName)
     
 }
 
-bool PETexture::initWithPic(const char *fileName)
+bool PETexture::initWithPic(const char *fileName, PicType type)
 {
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:
                     [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%s",fileName]
@@ -62,17 +62,17 @@ bool PETexture::initWithPic(const char *fileName)
     return true;
 }
 
-int PETexture::getWidth()
+int PETexture::Width()
 {
     return m_width;
 }
 
-int PETexture::getHeight()
+int PETexture::Height()
 {
     return m_height;
 }
 
-GLuint PETexture::getTexture()
+GLuint PETexture::Texture()
 {
     return m_Id;
 }
