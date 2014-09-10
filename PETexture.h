@@ -37,8 +37,8 @@ private:
     int m_width, m_height;
     GLuint m_Id;
 
-	void readPNGFile(const char *fileName);
-	void readJPGFile(const char *fileName);
+	bool readPNGFile(const char *fileName);
+	bool readJPGFile(const char *fileName);
 };
 
 
