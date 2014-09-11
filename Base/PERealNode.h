@@ -59,8 +59,8 @@ protected:
     virtual void setLightUniformBlock();
     virtual void deleteLightUbo();
     
-    void setModelViewProjectUniform();
-    void setLightProjectViewUniform();
+    void setModelViewProjectUniform(string uniform = UNIFORM_MODELPROJECT);
+    void setLightProjectViewUniform(string uniform = UNIFORM_LIGHT_CAMERA);
     GLuint m_materialUbo;
     struct Material m_material;
     virtual void setMaterialUniformBlock();

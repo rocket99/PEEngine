@@ -173,6 +173,7 @@ void PEMeshSurface::draw()
     }
     glUseProgram(m_program);
     this->setModelViewProjectUniform();
+    this->setLightProjectViewUniform();
     this->setDepthTexUnifrom();
     this->setTextureUniform();
     this->drawFunc();
@@ -186,7 +187,7 @@ void PEMeshSurface::drawFBO()
     }
     this->setDrawData();
     glUseProgram(m_program);
-    this->setLightProjectViewUniform();
+    this->setLightProjectViewUniform(UNIFORM_MODELPROJECT);
     this->drawFunc();
 }
 

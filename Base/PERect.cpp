@@ -64,6 +64,7 @@ void PERect::draw()
     }
     glUseProgram(m_program);
     this->setModelViewProjectUniform();
+    this->setLightProjectViewUniform();
     this->setDepthTexUnifrom();
     this->setTextureUniform();
     this->drawFunc();
@@ -79,7 +80,7 @@ void PERect::drawFBO()
         return;
     }
     glUseProgram(m_program);
-    this->setLightProjectViewUniform();
+    this->setLightProjectViewUniform(UNIFORM_MODELPROJECT);
     this->drawFunc();
 }
 

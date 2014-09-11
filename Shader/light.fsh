@@ -65,7 +65,7 @@ mediump vec4 light_color(mediump vec3 p)
 }
 
 void main(){
-    frag_color = m_emission + l_ambient * m_ambient + light_color(v_point) * attenu(v_point);
+    frag_color = m_emission + l_ambient * m_ambient + light_color(v_point) * attenu(v_point) + 0.1*texture(u_texture, v_texCoord);
 //    frag_color += 0.3 * texture(u_texture, v_texCoord);
 }
 

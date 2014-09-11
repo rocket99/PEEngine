@@ -59,6 +59,7 @@ void PEPolygon::draw()
     }
     glUseProgram(m_program);
     this->setModelViewProjectUniform();
+    this->setLightProjectViewUniform();
     this->setDepthTexUnifrom();
     this->drawMethod();
 }
@@ -74,7 +75,7 @@ void PEPolygon::drawFBO()
         return;
     }
     glUseProgram(m_program);
-    this->setLightProjectViewUniform();
+    this->setLightProjectViewUniform(UNIFORM_MODELPROJECT);
     this->drawMethod();
 }
 

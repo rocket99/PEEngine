@@ -8,6 +8,6 @@ layout (location = 0) out mediump vec4 frag_color;
 void main()
 {
     mediump vec4 color = texture(pic, v_texCoord);
-    frag_color = 0.5*(color+1.0);
+    frag_color = 2.0*(color-0.5);
 }
 

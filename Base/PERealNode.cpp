@@ -96,18 +96,18 @@ void PERealNode::deleteLightUbo(){
     m_sceneIn->getLightSource()->removeUniformBlock();
 }
 
-void PERealNode::setModelViewProjectUniform()
+void PERealNode::setModelViewProjectUniform(string uniform)
 {
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_MODELPROJECT);
+    GLint loc = glGetUniformLocation(m_program, uniform.c_str());
     if(loc >= 0){
         PEMatrix mat = m_sceneIn->getCamera()->modelViewProject();
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
     }
 }
 
-void PERealNode::setLightProjectViewUniform()
+void PERealNode::setLightProjectViewUniform(string uniform)
 {
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_MODELPROJECT);
+    GLint loc = glGetUniformLocation(m_program, uniform.c_str());
     if(loc >= 0){
         PEMatrix mat = m_sceneIn->getLightSource()->getCamera()->modelViewProject();
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
