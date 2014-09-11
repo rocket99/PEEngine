@@ -174,6 +174,7 @@ void PEMeshSurface::draw()
     glUseProgram(m_program);
     this->setModelViewProjectUniform();
     this->setDepthTexUnifrom();
+    this->setTextureUniform();
     this->drawFunc();
 }
 
@@ -198,13 +199,6 @@ void PEMeshSurface::drawFunc()
     if(loc >= 0){
         PEMatrix mat = m_worldMat.complement(3, 3);
         glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
-    }
-    
-    loc = glGetUniformLocation(m_program, UNIFORM_TEXTURE);
-    if(loc >= 0){
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, m_texture);
-        glUniform1i(loc, 0);
     }
     this->setMaterialUniformBlock();
     this->setLightUniformBlock();

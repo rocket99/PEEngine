@@ -16,6 +16,7 @@
 #include "Shader/PEShaders.h"
 #include "Shader/PEShaderManager.h"
 #include "PETexture.h"
+#include "PETextureManager.h"
 
 //base node
 #include "Base/PENode.h"

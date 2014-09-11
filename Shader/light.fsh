@@ -27,11 +27,11 @@ uniform u_material
 
 uniform mediump vec3 cameraPos;
 uniform mediump sampler2DShadow u_depthTex;
+uniform sampler2D u_texture;
 
 mediump float Pi = asin(1.0)*2.0;
 
-mediump float attenu (mediump vec3 p)
-{
+mediump float attenu (mediump vec3 p){
     if(l_fovy == 0.0){
         return 1.0;
     }
@@ -61,10 +61,11 @@ mediump vec4 light_color(mediump vec3 p)
             specular = l_specular*m_specular*pow(max(dot(s, n), 0.0), l_shininess);
         }
     }
-    return ambient+diffuse*sum+specular*sum;
+    return ambient+diffuse+specular*sum;
 }
 
 void main(){
     frag_color = m_emission + l_ambient * m_ambient + light_color(v_point) * attenu(v_point);
+//    frag_color += 0.3 * texture(u_texture, v_texCoord);
 }
 

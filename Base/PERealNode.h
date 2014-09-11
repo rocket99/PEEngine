@@ -44,6 +44,7 @@ public:
     
     GLuint getCurrentGLProgram();
     
+    
     GLuint &Program0();
     GLuint &Program1();
     
@@ -70,6 +71,7 @@ protected:
     void setColorUniform();
     
     void setDepthTexUnifrom();
+    void setTextureUniform();
     Color4F m_color;
     GLuint m_texture;
 };
