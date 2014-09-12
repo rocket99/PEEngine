@@ -39,9 +39,25 @@ mediump float attenu (mediump vec3 p){
     return 1.0/(0.005*dis*dis + 0.5*dis + 1.0);
 }
 
+mediump float shadowFactor(){
+    mediump float sum = 0.0;
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(-0.002, -0.002, 0.0, 0.0));
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.0, -0.002, 0.0, 0.0));
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.002, -0.002, 0.0, 0.0));
+    
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(-0.002, 0.0, 0.0, 0.0));
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.0, 0.0, 0.0, 0.0));
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.002, 0.0, 0.0, 0.0));
+    
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(-0.002, 0.002, 0.0, 0.0));
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.0, 0.002, 0.0, 0.0));
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.002, 0.002, 0.0, 0.0));
+    
+    return sum/9.0;
+}
+
 mediump vec4 light_color(mediump vec3 p)
 {
-    highp float sum = textureProj(u_depthTex, v_shadowCoord);
     mediump vec3 i = normalize(p - l_position);
     mediump vec3 n = normalize(v_normal);
     mediump vec3 o = normalize(reflect(i, n));
@@ -61,11 +77,11 @@ mediump vec4 light_color(mediump vec3 p)
             specular = l_specular*m_specular*pow(max(dot(s, n), 0.0), l_shininess);
         }
     }
-    return ambient+diffuse+specular*sum;
+    return (ambient+diffuse+specular);
 }
 
 void main(){
-    frag_color = m_emission + l_ambient * m_ambient + light_color(v_point) * attenu(v_point) + 0.1*texture(u_texture, v_texCoord);
+    frag_color = m_emission + light_color(v_point)*shadowFactor();// + 0.1*texture(u_texture, v_texCoord);
 //    frag_color += 0.3 * texture(u_texture, v_texCoord);
 }
 

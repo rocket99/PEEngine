@@ -23,9 +23,13 @@ public:
     
     void setNormalData();
     void setCoordData();
-    
+    virtual void draw() override;
+    virtual void drawFBO() override;
+    PEPolarSurface *TopSurface();
+    PEPolarSurface *BottomSurface();
 private:
     float m_radius, m_height;
     PEPolarSurface *m_bottom, *m_top;
 };
 #endif /* defined(__Engine__PMCylinder__) */
+

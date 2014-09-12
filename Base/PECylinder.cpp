@@ -37,13 +37,16 @@ bool PECylinder::initWithParameters(int row, int col, float height, float radius
     this->setTexCoordData();
     
     m_bottom = PEPolarSurface::create(2, m_col, m_radius, 0.0);
-    m_bottom->setRotate(Point3D(1.0, 0.0, 0.0), 180.0);
+    m_bottom->setRotate(Point3D(1.0, 0.0, 0), 180.0);
+    m_bottom->Position() = Point3D(0.0, 0.0, -0.5*m_height);
     this->addChild(m_bottom);
+    
     m_top = PEPolarSurface::create(2, m_col, m_radius, 0.0);
+    m_top->Position() = Point3D(0.0, 0.0, 0.5*m_height);
     this->addChild(m_top);
+    
     return true;
 }
-
 
 void PECylinder::setNormalData()
 {
@@ -67,4 +70,31 @@ void PECylinder::setCoordData()
     }
 }
 
+void PECylinder::draw()
+{
+    PEMeshSurface::draw();
+    m_top->Program1() = m_program1;
+    m_bottom->Program1() = m_program1;
+    m_top->draw();
+    m_bottom->draw();
+}
+
+void PECylinder::drawFBO()
+{
+    PEMeshSurface::drawFBO();
+    m_top->Program0() = m_program0;
+    m_bottom->Program0() = m_program0;
+    m_top->drawFBO();
+    m_bottom->drawFBO();
+}
+
+PEPolarSurface *PECylinder::TopSurface()
+{
+    return m_top;
+}
+
+PEPolarSurface *PECylinder::BottomSurface()
+{
+    return m_bottom;
+}
 

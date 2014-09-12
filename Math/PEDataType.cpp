@@ -342,7 +342,7 @@ bool operator == (const P3D &A, const P3D &B)
 
 void P3D::display()
 {
-    printf("(%.3f, %.ef, %.3f)", x, y, z);
+    PELog("(%.3f, %.3f, %.3f)", x, y, z);
 }
 
 #pragma mark PEColor

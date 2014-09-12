@@ -21,13 +21,13 @@ public:
     static PERealNode *create();
     bool init();
 
-    struct Material{
+    struct Material_Color{
         Color4F diffuse;
         Color4F ambient;
         Color4F specular;
         Color4F emission;
     };
-    struct Material &getMaterial();
+    struct Material_Color &Material();
     
     void setSceneIn(PELayer3D *scene);
     PELayer3D *getSceneIn();
@@ -62,7 +62,7 @@ protected:
     void setModelViewProjectUniform(string uniform = UNIFORM_MODELPROJECT);
     void setLightProjectViewUniform(string uniform = UNIFORM_LIGHT_CAMERA);
     GLuint m_materialUbo;
-    struct Material m_material;
+    struct Material_Color m_material;
     virtual void setMaterialUniformBlock();
     virtual void deleteMaterialUbo();
     

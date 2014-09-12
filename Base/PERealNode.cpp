@@ -114,7 +114,7 @@ void PERealNode::setLightProjectViewUniform(string uniform)
     }
 }
 
-PERealNode::Material & PERealNode::getMaterial(){
+PERealNode::Material_Color & PERealNode::Material(){
     return m_material;
 }
 

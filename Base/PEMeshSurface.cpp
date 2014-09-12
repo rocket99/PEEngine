@@ -167,6 +167,10 @@ void PEMeshSurface::setDrawData()
 
 void PEMeshSurface::draw()
 {
+    if(!m_isVisible){
+        return;
+    }
+    PENode::draw();
     m_program = m_program1;
     if(glIsProgram(m_program) == GL_FALSE){
         return;
@@ -181,6 +185,10 @@ void PEMeshSurface::draw()
 
 void PEMeshSurface::drawFBO()
 {
+    if(!m_isVisible){
+        return;
+    }
+    PENode::drawFBO();
     m_program = m_program0;
     if(glIsProgram(m_program) == GL_FALSE){
         return;

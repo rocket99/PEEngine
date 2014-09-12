@@ -36,6 +36,9 @@ bool PEPolarSurface::initWithParmeters(int row, int col, float radius, float del
     }
     m_radius = radius;
     m_height = delta_h;
+    this->setNormalData();
+    this->setCoordData();
+    this->setTexCoordData();
     return true;
 }
 
@@ -54,9 +57,9 @@ void PEPolarSurface::setCoordData()
 {
     for(int i=0; i<=m_row; ++i){
         for(int j=0; j<=m_col; ++j){
-            m_coords[i*(m_col+1)+j].x = m_radius *cos((float)j/m_col*M_PI*2.0);
-            m_coords[i*(m_col+1)+j].y = m_radius *sin((float)j/m_col*M_PI*2.0);
-            m_coords[i*(m_col+1)+j].z = (float)i/m_row * m_height;
+            m_coords[i*(m_col+1)+j].x = m_radius*i/m_row *cos(2.0*M_PI*(float)j/m_col);
+            m_coords[i*(m_col+1)+j].y = m_radius*i/m_row *sin(2.0*M_PI*(float)j/m_col);
+            m_coords[i*(m_col+1)+j].z = m_height*(float)i/m_row;
         }
     }
 }
