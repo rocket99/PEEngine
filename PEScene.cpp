@@ -47,7 +47,7 @@ bool PEScene::initWithSize(string name, int width, int height)
 
 void PEScene::start()
 {
-	while(!glfwWindowShouldClose(m_pWindow)){
+	while(!glfwWindowShouldClose(m_pWindow)&& glfwGetKey(m_pWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS){
 		this->draw();
 		glfwSwapBuffers(m_pWindow);
 		glfwPollEvents();
@@ -57,7 +57,7 @@ void PEScene::start()
 void PEScene::draw()
 {
 	glViewport(0, 0, m_width, m_height);
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(0.4, 0.4, 0.4, 0.5);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
