@@ -30,9 +30,9 @@
 #include "Base/PESphere.h"
 #include "Base/PECylinder.h"
 
-
+#define GL_LINUX
 #ifdef GL_LINUX 
-#include "PEScene.h"
+//#include "PEScene.h"
 #endif
 
 #endif

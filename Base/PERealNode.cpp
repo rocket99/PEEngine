@@ -8,7 +8,7 @@
 
 #include "PERealNode.h"
 #include "PELayer3D.h"
-#include "PETextureManager.h"
+#include "../PETextureManager.h"
 
 PERealNode::PERealNode():
 m_color(ColorRGBA(0.0f, 0.0f, 0.0f, 0.0f)),

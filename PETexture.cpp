@@ -1,9 +1,9 @@
-//
+
 //PETexture.cpp
 //
 
 #include "PETexture.h"
-
+#include <png.h>
 PETexture::PETexture()
 {
 	m_Id = 0;
@@ -61,17 +61,25 @@ bool PETexture::readPNGFile(const char *fileName)
 	if(NULL == fp){
 		return false;
 	}
-
+	
 	return true;
 }
 
 bool PETexture::readJPGFile(const char *fileName)
 {
+	/*
 	FILE *fp = fopen(fileName, "rb");
 	if(NULL == fp){
 		return false;
 	}
-
+	char header[10];
+	fread(header, 1, 8, fp);
+	header[8] - '\0';
+	bool is_png = !png_sig_cmp(header, 0, 8);
+	if(!is_png){
+		return false;
+	}
+*/
 	return true;
 }
 

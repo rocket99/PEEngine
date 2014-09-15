@@ -1,4 +1,5 @@
 #include "PEEngine.h"
+#include "PEScene.h"
 
 //edit test to local sync
 int main(int argc, char *argv[])
@@ -11,3 +12,5 @@ int main(int argc, char *argv[])
 	scene->release();
 	return 0;
 }
+
+

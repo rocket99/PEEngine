@@ -1,26 +1,29 @@
 #ifndef 	__PEScene_H__
 #define 	__PEScene_H__
 
-#include "PEPrefix.h"
+#include "Base/PEObject.h"
+#include "Shader/PEShaderManager.h"
+#include "TestScene.h"
 
-class PEScene
+class PEScene: public PEObject
 {
 public:
 	PEScene();
 	~PEScene();
-	static createWithSize(string name, int width, int height);
+	static PEScene *createWithSize(string name, int width, int height);
 	bool initWithSize(string name, int width, int height);
-	
 	void start();
-
 	int Width();
 	int Height();
-
 private:
 	string m_name;
 	GLint m_width, m_height;
 	GLFWwindow *m_pWindow;
 	void draw();
+	GLuint m_colorTex, m_depthTex, m_fbo;
+	void setFrameBuffer();
+
+	TestScene *m_scene;
 };
 
 

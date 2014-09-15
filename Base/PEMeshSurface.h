@@ -9,8 +9,8 @@
 #ifndef __Engine__PEMeshSurface__
 #define __Engine__PEMeshSurface__
 
-#include <iostream>
-#include "PEMath.h"
+#include "../PEPrefix.h"
+#include "../Math/PEMath.h"
 #include "PERealNode.h"
 
 class PEMeshSurface:public PERealNode
