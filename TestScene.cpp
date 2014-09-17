@@ -1,0 +1,22 @@
+#include "TestScene.h"
+
+TestScene *TestScene::create(const Size3D &size)
+{
+	TestScene *scene = new TestScene();
+	if(scene->initWithSize(size)){
+		return scene;
+	}
+	delete scene;
+	return NULL;
+}
+
+bool TestScene::initWithSize(const Size3D &size)
+{
+	if(!PELayer3D::initWithSize(size)){
+		return false;
+	}
+
+	return true;
+}
+
+

@@ -32,6 +32,7 @@ bool PELayer3D::initWithSize(const Size3D &size)
     if(!PENode::init() || size.x * size.y * size.z == 0.0){
         return false;
     }
+	PELog("3D layer create");
     m_size = size;
     m_camera = PECamera::create(size, Point3D(0.0, 0.0, size.z), P3DZERO, Point3D(0.0, 1.0, 0.0));
     m_camera->setPerspect(60.0, 1.0, 0.05, 30.0);

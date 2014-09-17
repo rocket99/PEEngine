@@ -25,4 +25,6 @@ private:
     GLuint m_colorTex;
 
 };
-#endif /* defined(__Engine__PETextureMananger__) */
+#endif 
+/* defined(__Engine__PETextureMananger__) */
+

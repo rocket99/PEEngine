@@ -12,7 +12,7 @@
 PENode::PENode():
 m_tag(0),
 m_isVisible(true),
-m_parent(nullptr),
+m_parent(NULL),
 m_position(Point3D(0.0, 0.0, 0.0)),
 m_locRotateAngle(0.0),
 m_locRotateAxis(Point3D(0.0, 0.0, 0.0)),
@@ -129,7 +129,7 @@ void PENode::removeChild(PENode *node)
 void PENode::removeChildByTag(int tag)
 {
     PENode *node = this->getChildByTag(tag);
-    if(node != nullptr){
+    if(node != NULL){
         this->removeChild(node);
     }
 }
@@ -137,7 +137,7 @@ void PENode::removeChildByTag(int tag)
 void PENode::removeChildByName(string name)
 {
     PENode *node = this->getChildByName(name);
-    if(node != nullptr){
+    if(node != NULL){
         this->removeChild(node);
     }
 }
@@ -270,7 +270,6 @@ void PENode::setWorldMat(){
         parent = parent->getParentNode();
     }
 }
-
 
 
 

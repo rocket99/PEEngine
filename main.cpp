@@ -1,9 +1,11 @@
 #include "PEEngine.h"
+#include "PEScene.h"
 
 //edit test to local sync
 int main(int argc, char *argv[])
 {
-	PEScene *scene = PEScene::createWithSize("test", 800, 600);
+	Size3D size = GLOBAL_WORLD_SIZE;
+	PEScene *scene = PEScene::createWithSize("test", size.x, size.y);
 	if(scene == NULL){
 		return -1;
 	}
@@ -11,3 +13,5 @@ int main(int argc, char *argv[])
 	scene->release();
 	return 0;
 }
+
+
