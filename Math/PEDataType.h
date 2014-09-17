@@ -20,8 +20,8 @@ typedef struct PEPoint2D
 	friend struct PEPoint2D operator / (const struct PEPoint2D &A, float scalar);
 	friend struct PEPoint2D operator / (const struct PEPoint2D &A, const struct PEPoint2D &B);//复述除法
 
-	float dot(struct PEPoint2D &P); //点积
-	struct PEPoint2D cross(struct PEPoint2D &P);
+	friend float dot(struct PEPoint2D &A, const PEPoint2D &B); //点积
+	friend struct PEPoint2D cross(struct PEPoint2D &A, struct PEPoint2D &B);
     
 	float morel() const;
 	float arg() const;

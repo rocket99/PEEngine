@@ -17,7 +17,8 @@
 using namespace std;
 #endif
 
-#define PELog(format, ...) printf("%s:(%d)" format "\n", __FILE__, __LINE__, ##__VA_ARGS__)
+#define PELog(format, ...)      printf("%s:(%d)" format "\n", __FILE__, __LINE__, ##__VA_ARGS__)
+#define PEWarning(format, ...)  printf("warning:" format "\n", ##__VA_ARGS__)
 
 #define ASSERT_ENABLE 1
 #if ASSERT_ENABLE>0

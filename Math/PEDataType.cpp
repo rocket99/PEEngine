@@ -47,14 +47,6 @@ P2D operator * (const P2D &A, const P2D &B)
 	return result;
 }
 
-P2D P2D::cross (P2D &P)
-{
-	P2D result;
-	result.x = x*P.x - y*P.y;
-	result.y = x*P.y + y*P.x;
-	return result;
-}
-
 P2D operator * (const P2D &A, float scalar)
 {
 	P2D result;
@@ -98,9 +90,17 @@ bool P2D::operator != (const P2D &P)
 	return (x!=P.x || y!=P.y);
 }
 
-float P2D::dot(P2D &P)
+float dot(P2D &A, P2D &B)
 {
-	return x*P.x + y*P.y;
+	return A.x*B.x + A.y*B.y;
+}
+
+P2D cross (P2D &A, P2D &B)
+{
+	P2D result;
+	result.x = A.x*B.x - A.y*B.y;
+	result.y = A.x*B.y + A.y*B.x;
+	return result;
 }
 
 float P2D::morel() const

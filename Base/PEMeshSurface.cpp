@@ -163,10 +163,17 @@ void PEMeshSurface::setDrawData()
         }
     }
     isDataSet = true;
+//    this->setVAO();
+}
+
+void PEMeshSurface::update()
+{
+    this->setDrawData();
 }
 
 void PEMeshSurface::draw()
 {
+    this->update();
     if(!m_isVisible){
         return;
     }
@@ -204,6 +211,7 @@ void PEMeshSurface::drawFunc()
     this->setSpaceUniform();
     this->setWorldMatUniform();
     this->setColorUniform();
+    this->setTextureUniform();
     GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >= 0){
         PEMatrix mat = m_worldMat.complement(3, 3);
@@ -217,11 +225,47 @@ void PEMeshSurface::drawFunc()
     glEnableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[m_row*m_col*30]);
     glEnableVertexAttribArray(ATTRIB_NORMAL_LOC);
+//    glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, m_row*m_col*6);
+//    glBindVertexArray(0);
     glDisableVertexAttribArray(ATTRIB_POINT_LOC);
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
     this->deleteMaterialUbo();
     this->deleteLightUbo();
 }
+
+void PEMeshSurface::setVAO()
+{
+    GLuint pointBuf, normalBuf, texCoordBuf;
+    glGenBuffers(1, &pointBuf);
+    glBindBuffer(GL_ARRAY_BUFFER, pointBuf);
+    glBufferData(GL_ARRAY_BUFFER, m_row*m_col*18*sizeof(GLfloat), &m_data[0], GL_STATIC_DRAW);
+    glGenBuffers(1, &normalBuf);
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuf);
+    glBufferData(GL_ARRAY_BUFFER, 18*m_row*m_col, &m_data[m_row*m_col*18], GL_STATIC_DRAW);
+    glGenBuffers(1, &texCoordBuf);
+    glBindBuffer(GL_ARRAY_BUFFER, texCoordBuf);
+    glBufferData(GL_ARRAY_BUFFER, 12*m_row*m_col*sizeof(GLfloat), &m_data[m_row*m_col*12], GL_STATIC_DRAW);
+    
+    glGenVertexArrays(1, &m_VAO);
+    glBindVertexArray(m_VAO);
+    glEnableVertexAttribArray(ATTRIB_POINT_LOC);
+    glEnableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
+    glEnableVertexAttribArray(ATTRIB_NORMAL_LOC);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, pointBuf);
+    glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuf);
+    glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, texCoordBuf);
+    glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
+    
+    glDisableVertexAttribArray(ATTRIB_POINT_LOC);
+    glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
+    glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
+}
+
 

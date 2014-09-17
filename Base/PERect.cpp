@@ -95,6 +95,7 @@ void PERect::drawFunc()
         PEMatrix mat = m_worldMat.complement(3, 3);
         glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
     }
+    
     this->setMaterialUniformBlock();
     this->setLightUniformBlock();
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);

@@ -95,3 +95,9 @@ void PEPolygon::drawMethod()
     glDisableVertexAttribArray(0);
     this->deleteMaterialUbo();
 }
+
+PEPolygon *PEPolygon::convexPolygon(P2D *points, int num)
+{
+    
+    return NULL;
+}

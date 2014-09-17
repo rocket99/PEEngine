@@ -100,7 +100,8 @@ void PERealNode::setModelViewProjectUniform(string uniform)
 {
     GLint loc = glGetUniformLocation(m_program, uniform.c_str());
     if(loc >= 0){
-        PEMatrix mat = m_sceneIn->getCamera()->modelViewProject();
+        PEMatrix mat = m_sceneIn->getCamera()-> modelViewProject();
+//        PEMatrix mat = m_sceneIn->getCamera()->modelViewOrtho(-4, 4, -4, 4, -4, 4);
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
     }
 }
@@ -109,7 +110,12 @@ void PERealNode::setLightProjectViewUniform(string uniform)
 {
     GLint loc = glGetUniformLocation(m_program, uniform.c_str());
     if(loc >= 0){
-        PEMatrix mat = m_sceneIn->getLightSource()->getCamera()->modelViewProject();
+        PEMatrix mat;
+        if (m_sceneIn->getLightSource()->Fovy() > 0.0) {
+            mat = m_sceneIn->getLightSource()->getCamera()->modelViewProject();
+        }else{
+            mat = m_sceneIn->getLightSource()->getCamera()->modelViewOrtho(-4.0, 4.0, -4.0, 4.0, -4.0, 4.0);
+        }
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
     }
 }

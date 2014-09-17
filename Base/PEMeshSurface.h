@@ -22,10 +22,12 @@ public:
     bool initWithSize(int row, int col);
     virtual void draw();
     virtual void drawFBO();
+    virtual void update();
 protected:
     bool isDataSet;
     void setDrawData();
-    
+    GLuint m_VAO;
+    void setVAO();
     virtual void setNormalData();
     virtual void setCoordData();
     virtual void setTexCoordData();
