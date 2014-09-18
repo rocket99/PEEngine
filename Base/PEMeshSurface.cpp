@@ -179,9 +179,12 @@ void PEMeshSurface::draw()
     }
     PENode::draw();
     m_program = m_program1;
+//	PELog("mesh program1 %d", m_program1);
     if(glIsProgram(m_program) == GL_FALSE){
+//		PELog("mesh draw error:program error!");
         return;
     }
+//	PELog("draw mesh");
     glUseProgram(m_program);
     this->setModelViewProjectUniform();
     this->setLightProjectViewUniform();

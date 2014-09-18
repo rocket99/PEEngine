@@ -44,7 +44,6 @@ public:
     
     GLuint getCurrentGLProgram();
     
-    
     GLuint &Program0();
     GLuint &Program1();
     
