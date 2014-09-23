@@ -47,5 +47,5 @@ using namespace std;
 #endif
 
 #include "PEMacro.h"
-GL
+
 #endif

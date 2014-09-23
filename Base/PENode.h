@@ -50,13 +50,18 @@ public:
     void setRotate(V3D axis, float angle);
     PEMatrix &getRotate();
     
-    virtual void update();
+    float &ScaleX();
+    float &ScaleY();
+    float &ScaleZ();
+    P3D &Scale();
     
+    virtual void update();
 protected:
     PENode();
     ~PENode();
     int m_tag;
     bool m_isVisible;
+    P3D m_scale;
     P3D m_position;
     V3D m_worldSize;
     P3D m_worldPos;

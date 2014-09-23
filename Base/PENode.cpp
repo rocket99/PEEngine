@@ -17,7 +17,8 @@ m_position(Point3D(0.0, 0.0, 0.0)),
 m_locRotateAngle(0.0),
 m_locRotateAxis(Point3D(0.0, 0.0, 0.0)),
 m_worldSize(GLOBAL_WORLD_SIZE),
-m_worldPos(P3DZERO)
+m_worldPos(P3DZERO),
+m_scale(Point3D(1.0, 1.0, 1.0))
 {
     m_children.clear();
 }
@@ -236,6 +237,26 @@ bool &PENode::Visible(){
     return m_isVisible;
 }
 
+P3D &PENode::Scale()
+{
+    return m_scale;
+}
+
+float &PENode::ScaleX()
+{
+    return m_scale.x;
+}
+
+float &PENode::ScaleY()
+{
+    return m_scale.y;
+}
+
+float &PENode::ScaleZ()
+{
+    return m_scale.z;
+}
+
 void PENode::setRotate(V3D axis, float angle){
     m_locRotateAxis = axis;
     m_locRotateAngle = angle;
@@ -259,6 +280,9 @@ void PENode::setWorldMat(){
     mat.Elm(0, 3) += m_position.x/m_worldSize.x;
     mat.Elm(1, 3) += m_position.y/m_worldSize.y;
     mat.Elm(2, 3) += m_position.z/m_worldSize.z;
+    mat.Elm(0, 0) *= m_scale.x;
+    mat.Elm(1, 1) *= m_scale.y;
+    mat.Elm(2, 2) *= m_scale.z;
     m_worldMat = cross(mat, m_localRotate);
     PENode *parent = m_parent;
     while (parent != NULL) {
@@ -266,6 +290,9 @@ void PENode::setWorldMat(){
         mat1.Elm(0, 3) = parent->Position().x / parent->World().x;
         mat1.Elm(1, 3) = parent->Position().y / parent->World().y;
         mat1.Elm(2, 3) = parent->Position().z / parent->World().z;
+        mat.Elm(0, 0) *= m_scale.x;
+        mat.Elm(1, 1) *= m_scale.y;
+        mat.Elm(2, 2) *= m_scale.z;
         m_worldMat = cross(cross(mat1, parent->getRotate()), m_worldMat);
         parent = parent->getParentNode();
     }

@@ -17,6 +17,7 @@ public:
 	enum PicType{
 		PNG_PIC,
 		JPG_PIC,
+        CUBE_PIC,
 	};
     
     PETexture();
@@ -27,6 +28,9 @@ public:
     GLuint Texture();
     int Width();
     int Height();
+    
+    static PETexture *createCubeTex(const char *fileName);
+    bool initWithCubeMap(const char *fileName);
 private:
     
     int m_width, m_height;
@@ -34,6 +38,8 @@ private:
 
 	bool readPNGFile(const char *fileName);
 	bool readJPGFile(const char *fileName);
+    
+    
 };
 
 
