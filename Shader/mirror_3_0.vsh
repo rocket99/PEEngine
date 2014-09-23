@@ -9,7 +9,7 @@ uniform mediump mat4 u_sysMat;
 uniform mediump mat4 u_modelViewProject;
 uniform mediump mat3 u_rotate;
 
-out mediump vec4 v_point;
+out mediump vec3 v_point;
 out mediump vec2 v_texCoord;
 out mediump vec3 v_normal;
 

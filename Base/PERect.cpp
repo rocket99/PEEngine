@@ -89,7 +89,7 @@ void PERect::drawFunc()
     this->setSpaceUniform();
     this->setWorldMatUniform();
     this->setColorUniform();
-    
+    this->setCameraPosUniform();
     GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
     if(loc >= 0){
         PEMatrix mat = m_worldMat.complement(3, 3);

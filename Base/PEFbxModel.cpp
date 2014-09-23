@@ -7,3 +7,23 @@
 //
 
 #include "PEFbxModel.h"
+
+PEModelFBX *PEModelFBX::createWithFBX(const char *fileName)
+{
+    PEModelFBX *model = new PEModelFBX();
+    if(model->initWithFBX(fileName)){
+        return model;
+    }
+    delete model;
+    return NULL;
+}
+
+bool PEModelFBX::initWithFBX(const char *fileName)
+{
+    if(!PERealNode::init()){
+        return false;
+    }
+    
+    
+    return true;
+}

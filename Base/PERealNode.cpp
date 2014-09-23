@@ -206,6 +206,16 @@ void PERealNode::setTextureUniform()
     }
 }
 
+void PERealNode::setCameraPosUniform()
+{
+    GLint loc = glGetUniformLocation(m_program, UNIFORM_CAMERA_POS);
+    if(loc >= 0){
+        P3D ss = m_sceneIn->getCamera()->World();
+        P3D pos = m_sceneIn->getCamera()->WorldPos();
+        glUniform3f(loc, pos.x/ss.x, pos.y/ss.y, pos.z/ss.z);
+    }
+}
+
 GLuint PERealNode::getCurrentGLProgram(){
     return m_program;
 }
@@ -225,5 +235,6 @@ Color4F &PERealNode::Color(){
 GLuint &PERealNode::Texture(){
     return m_texture;
 }
+
 
 

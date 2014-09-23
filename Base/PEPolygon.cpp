@@ -86,6 +86,7 @@ void PEPolygon::drawMethod()
         glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
     }
     this->setSpaceUniform();
+    this->setCameraPosUniform();
     this->setWorldMatUniform();
     this->setColorUniform();
     this->setMaterialUniformBlock();

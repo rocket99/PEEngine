@@ -25,7 +25,7 @@ uniform u_material
     mediump vec4 m_emission;
 };
 
-uniform mediump vec3 cameraPos;
+uniform mediump vec3 u_cameraPos;
 uniform mediump sampler2DShadow u_depthTex;
 uniform sampler2D u_texture;
 
@@ -68,14 +68,14 @@ mediump vec4 light_color(mediump vec3 p)
     
     if (l_fovy == 0.0) {//平行光
         diffuse = max(0.0, dot(-normalize(l_direction), n))*l_diffuse*m_diffuse;
-        mediump vec3 s = normalize((l_position-p)+(cameraPos-p));
+        mediump vec3 s = normalize((l_position-p)+(u_cameraPos-p));
         specular = l_specular*m_specular*pow(max(dot(s, n), 0.0), l_shininess);
     }else{
         ambient *= attenu(p);
         diffuse = l_diffuse*m_diffuse * max(0.0, dot(-i, n));
         mediump float angle = acos(dot(normalize(l_direction), i));
         if(dot(-i, n) > 0.0 && angle < l_fovy){
-            mediump vec3 s = normalize((l_position-p)+(cameraPos-p));
+            mediump vec3 s = normalize((l_position-p)+(u_cameraPos-p));
             specular = l_specular*m_specular*pow(max(dot(s, n), 0.0), l_shininess);
         }
     }

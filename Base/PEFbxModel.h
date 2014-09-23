@@ -16,7 +16,8 @@
 class PEModelFBX:public PERealNode
 {
 public:
-    
+    static PEModelFBX *createWithFBX(const char *fileName);
+    bool initWithFBX(const char *fileName);
 private:
     
 };

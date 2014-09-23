@@ -26,6 +26,7 @@
 #define UNIFORM_MATERIAL        "u_material"
 #define UNIFORM_LIGHT_CAMERA    "u_lightViewProject"
 #define UNIFORM_DEPTH_TEX       "u_depthTex"
+#define UNIFORM_CAMERA_POS      "u_cameraPos"
 
 #define UNIFORM_LIGHT_BIND      1
 #define UNIFORM_MATERIAL_BIND   0

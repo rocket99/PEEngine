@@ -95,6 +95,51 @@ PETexture *PETexture::createCubeTex(const char *fileName)
 
 bool PETexture::initWithCubeMap(const char *fileName)
 {
+    glGenTextures(1, &m_Id);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_Id);
+   
+    const char *suffixes[] = {
+      "posx", "negx", "posy", "negy", "posz", "negz",
+    };
+    GLuint targets[] = {
+        GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+        GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+        GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+        GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+        GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+        GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+    };
+    
+    for (int i=0; i<6; ++i) {
+        string file = fileName;
+        file.append(suffixes[i]);
+        file.append(".png");
+        UIImage *img = [[UIImage alloc] initWithContentsOfFile:
+                        [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%s",file.c_str()]
+                                                        ofType:nil]];
+        if(img == nil){
+            return false;
+        }
+        CGImageRef imgRef = img.CGImage;
+        size_t width = CGImageGetWidth(imgRef);
+        size_t height = CGImageGetHeight(imgRef);
+        GLubyte *data = (GLubyte *)malloc(sizeof(GLubyte)*width*height*4);
+        CGContextRef context = CGBitmapContextCreate(data, width, height, 8, width*4,
+                                                     CGImageGetColorSpace(imgRef),
+                                                     kCGImageAlphaPremultipliedLast);
+        CGContextDrawImage(context, CGRectMake(0, 0, width, height), imgRef);
+        CGContextRelease(context);
+        
+        glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexImage2D(targets[i], 0, GL_RGBA, (GLsizei)width, (GLsizei)height, 0,
+                     GL_RGBA, GL_UNSIGNED_BYTE, data);
+        delete [] data;
+        [img release];
+    }
     
     return true;
 }
