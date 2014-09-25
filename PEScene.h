@@ -19,6 +19,7 @@ private:
 	string m_name;
 	GLint m_width, m_height;
 	GLFWwindow *m_pWindow;
+	void drawFBO();
 	void draw();
 	GLuint m_colorTex, m_depthTex, m_fbo;
 	void setFrameBuffer();

@@ -41,14 +41,19 @@ bool PEScene::initWithSize(string name, int width, int height)
 		return false;
 	}
 	glfwMakeContextCurrent(m_pWindow);	
+	
+	this->setFrameBuffer();
 	this->setGLPrograms();
+
 	m_scene = TestScene::create(GLOBAL_WORLD_SIZE);
+	
 	return true;
 }
 
 void PEScene::start()
 {
 	while(!glfwWindowShouldClose(m_pWindow)&& glfwGetKey(m_pWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS){
+		this->drawFBO();
 		this->draw();
 		glfwSwapBuffers(m_pWindow);
 		glfwPollEvents();
@@ -57,10 +62,20 @@ void PEScene::start()
 
 void PEScene::draw()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, m_width, m_height);
 	glClearColor(0.4, 0.4, 0.4, 0.5);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	m_scene->draw();
+}
+
+void PEScene::drawFBO()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+	glViewport(0, 0, (GLsizei)m_width, (GLsizei)m_height);
+	glClearColor(0.40, 0.4, 0.4, 0.5);
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	m_scene->drawFBO();
 }
 
 int PEScene::Width()
