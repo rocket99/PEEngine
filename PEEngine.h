@@ -29,6 +29,6 @@
 #include "Base/PEPolarSurface.h"
 #include "Base/PESphere.h"
 #include "Base/PECylinder.h"
-
+#include "Base/PEFbxModel.h"
 
 #endif

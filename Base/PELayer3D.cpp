@@ -64,6 +64,9 @@ PELight *PELayer3D::getLightSource(){
 }
 
 void PELayer3D::addChild(PENode *node){
+    if(NULL == node){
+        return;
+    }
     PENode::addChild(node);
     static_cast<PERealNode *>(node)->setSceneIn(this);
 }

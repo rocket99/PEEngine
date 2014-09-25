@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include "PERealNode.h"
-#include "fbxsdk.h"
+#include <fbxsdk.h>
 
 class PEModelFBX:public PERealNode
 {
@@ -20,6 +20,7 @@ public:
     bool initWithFBX(const char *fileName);
 private:
     
+    void processNodeInfo(FbxNode *node);
 };
 
 #endif /* defined(__Engine__PEFbxModel__) */

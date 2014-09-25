@@ -20,6 +20,20 @@ m_program1(GL_FALSE){}
 
 PERealNode::~PERealNode(){}
 
+PERealNode *PERealNode::create()
+{
+    PERealNode *node = new PERealNode;
+    if(node->init()){
+        return node;
+    }
+    delete node;
+    return NULL;
+}
+
+bool PERealNode::init()
+{
+    return true;
+}
 
 void PERealNode::setSceneIn(PELayer3D *scene)
 {
@@ -36,17 +50,26 @@ PELayer3D *PERealNode::getSceneIn()
 
 void PERealNode::addChild(PERealNode *node)
 {
+    if(node == NULL){
+        return;
+    }
     PENode::addChild(node);
     node->setSceneIn(m_sceneIn);
 }
 
 void PERealNode::addChild(PERealNode *node, int tag)
 {
+    if(node == NULL){
+        return;
+    }
     PENode::addChild(node, tag);
     node->setSceneIn(m_sceneIn);
 }
 void PERealNode::addChild(PERealNode *node, string name)
 {
+    if(node == NULL){
+        return;
+    }
     PENode::addChild(node, name);
     node->setSceneIn(m_sceneIn);
 }

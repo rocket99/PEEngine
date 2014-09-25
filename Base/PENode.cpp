@@ -56,6 +56,9 @@ int PENode::getTag()
 
 void PENode::addChild(PENode *node)
 {
+    if(NULL == node){
+        return;
+    }
     std::vector<PENode *>::iterator it = m_children.begin();
     while(it != m_children.end()){
         if (*it == node) {
@@ -74,6 +77,9 @@ void PENode::addChild(PENode *node)
 
 void PENode::addChild(PENode *node, int tag)
 {
+    if(NULL == node){
+        return;
+    }
     node->setTag(tag);
     std::vector<PENode *>::iterator it = m_children.begin();
     while(it != m_children.end()){
@@ -93,6 +99,9 @@ void PENode::addChild(PENode *node, int tag)
 
 void PENode::addChild(PENode *node, string name)
 {
+    if(NULL == node){
+        return;
+    }
     node->setName(name.c_str());
     std::vector<PENode *>::iterator it = m_children.begin();
     while(it != m_children.end()){
