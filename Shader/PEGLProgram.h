@@ -15,7 +15,9 @@
 class PEGLProgram
 {
 public:
-    PEGLProgram(const char *vert, const char *frag);
+	static PEGLProgram *createWithVertFragSrc(const char *vert, const char *frag);
+	bool initWithVertFragSrc(const char *vert, const char *frag);
+    PEGLProgram();
     ~PEGLProgram();
     
     GLuint getProgram();

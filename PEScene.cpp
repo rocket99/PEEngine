@@ -41,6 +41,7 @@ bool PEScene::initWithSize(string name, int width, int height)
 		return false;
 	}
 	glfwMakeContextCurrent(m_pWindow);	
+	this->setGLPrograms();
 	m_scene = TestScene::create(GLOBAL_WORLD_SIZE);
 	return true;
 }
@@ -59,6 +60,7 @@ void PEScene::draw()
 	glViewport(0, 0, m_width, m_height);
 	glClearColor(0.4, 0.4, 0.4, 0.5);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	m_scene->draw();
 }
 
 int PEScene::Width()
@@ -97,5 +99,11 @@ void PEScene::setFrameBuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-
+void PEScene::setGLPrograms()
+{
+	std::string vert = PEShaderReader::readShaderSrc("./Shader/vertColor_Linux.vsh");
+	std::string frag = PEShaderReader::readShaderSrc("./Shader/vertColor_Linux.fsh");
+	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	PEShaderManager::Instance()->setProgramForKey(program, "vertColor");
+}
 

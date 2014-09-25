@@ -8,16 +8,42 @@
 
 #include "PEGLProgram.h"
 
-PEGLProgram::PEGLProgram(const char *vert, const char *frag)
-{
-    GLint vShader = compileShader(GL_VERTEX_SHADER, vert);
-    GLint fShader = compileShader(GL_FRAGMENT_SHADER, frag);
-    linkProgram(vShader, fShader);
-}
+PEGLProgram::PEGLProgram():m_program(0)
+{}
 
 PEGLProgram::~PEGLProgram()
 {
-    glDeleteProgram(m_program);
+	if(GL_FALSE == glIsProgram(m_program)){
+		glDeleteProgram(m_program);
+	}
+}
+
+PEGLProgram *PEGLProgram::createWithVertFragSrc(const char *vert, const char *frag)
+{
+//	printf("vertex shader: %s\n", vert);
+//	printf("frag shader:%s\n", frag);
+
+	PEGLProgram *program = new PEGLProgram();
+	if(program->initWithVertFragSrc(vert, frag)){
+		return program;
+	}
+	delete program;
+	return NULL;
+}
+
+bool PEGLProgram::initWithVertFragSrc(const char *vert, const char *frag)
+{
+    GLint vShader = compileShader(GL_VERTEX_SHADER, vert);
+	if(GL_FALSE == glIsShader(vShader)){
+		return false;
+	}
+	GLint fShader = compileShader(GL_FRAGMENT_SHADER, frag);
+    if(GL_FALSE == glIsShader(fShader)){
+		return false;
+	}
+	linkProgram(vShader, fShader);
+
+	return true;
 }
 
 GLint PEGLProgram::compileShader(GLenum type, const char *src)
