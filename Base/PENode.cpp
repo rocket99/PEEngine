@@ -14,11 +14,12 @@ m_tag(0),
 m_isVisible(true),
 m_parent(NULL),
 m_position(Point3D(0.0, 0.0, 0.0)),
-m_locRotateAngle(0.0),
-m_locRotateAxis(Point3D(0.0, 0.0, 0.0)),
+//m_locRotateAngle(0.0),
+//m_locRotateAxis(Point3D(0.0, 0.0, 0.0)),
 m_worldSize(GLOBAL_WORLD_SIZE),
 m_worldPos(P3DZERO),
-m_scale(Point3D(1.0, 1.0, 1.0))
+m_scale(Point3D(1.0, 1.0, 1.0)),
+m_locEuler(P3DZERO)
 {
     m_children.clear();
 }
@@ -40,7 +41,7 @@ PENode *PENode::create()
 
 bool PENode::init()
 {
-    this->setRotate(Point3D(0.0, 0.0, 1.0), 0.0);
+    this->setRotate(P3DZERO, PENode::Euler_XYZ);
     return true;
 }
 
@@ -266,22 +267,36 @@ float &PENode::ScaleZ()
     return m_scale.z;
 }
 
-void PENode::setRotate(V3D axis, float angle){
-    m_locRotateAxis = axis;
-    m_locRotateAngle = angle;
-    m_localRotate  = PEMatrix::RotationMatrix(m_locRotateAxis, m_locRotateAngle);
+void PENode::Rotate(V3D axis, float angle){
+
+    m_localRotate  = cross(PEMatrix::RotationMatrix(axis, angle), m_localRotate);
 }
 
-PEMatrix &PENode::getRotate(){
+void PENode::setRotate(P3D EulerAngle, EulerOrder order)
+{
+    m_locEuler = EulerAngle;
+    PEMatrix matAlpha = PEMatrix::RotationMatrix(Point3D(0.0, 0.0, 1.0), EulerAngle.x);
+    PEMatrix matBeta = PEMatrix::RotationMatrix(Point3D(0.0, 1.0, 0.0), EulerAngle.y);
+    PEMatrix matGama = PEMatrix::RotationMatrix(Point3D(0.0, 0.0, 1.0), EulerAngle.z);
+    m_localRotate = cross(matAlpha, cross(matBeta, matGama));
+}
+
+
+PEMatrix &PENode::RotateMatrix(){
     return m_localRotate;
 }
 
-V3D &PENode::RotateAxis(){
-    return  m_locRotateAxis;
-}
+//V3D &PENode::RotateAxis(){
+//    return  m_locRotateAxis;
+//}
+//
+//float &PENode::RotateAngle(){
+//    return m_locRotateAngle;
+//}
 
-float &PENode::RotateAngle(){
-    return m_locRotateAngle;
+P3D &PENode::EulerRotate()
+{
+    return m_locEuler;
 }
 
 void PENode::setWorldMat(){
@@ -302,7 +317,7 @@ void PENode::setWorldMat(){
         mat.Elm(0, 0) *= m_scale.x;
         mat.Elm(1, 1) *= m_scale.y;
         mat.Elm(2, 2) *= m_scale.z;
-        m_worldMat = cross(cross(mat1, parent->getRotate()), m_worldMat);
+        m_worldMat = cross(cross(mat1, parent->RotateMatrix()), m_worldMat);
         parent = parent->getParentNode();
     }
 }

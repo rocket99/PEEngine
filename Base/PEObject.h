@@ -23,6 +23,7 @@ public:
 protected:
     PEObject(){m_retain = 1;};
     virtual ~PEObject(){};
+    
 private:
     int m_retain;
     string m_name;

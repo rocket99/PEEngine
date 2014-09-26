@@ -16,6 +16,16 @@ class PELayer3D;
 class PENode:public PEObject
 {
 public:
+    //Euler旋转顺序
+    enum EulerOrder{
+        Euler_XYZ,
+        Euler_YZX,
+        Euler_ZXY,
+        Euler_XZY,
+        Euler_ZYX,
+        Euler_YXZ,
+    };
+    
     static PENode *create();
     bool init();
     
@@ -45,10 +55,13 @@ public:
     bool &Visible();
     P3D &Position();
     P3D &World();
-    V3D &RotateAxis();
-    float &RotateAngle();
-    void setRotate(V3D axis, float angle);
-    PEMatrix &getRotate();
+//    V3D &RotateAxis();
+//    float &RotateAngle();
+    
+    void Rotate(V3D axis, float angle);
+    void setRotate(P3D EulerAngle, EulerOrder order);
+    P3D &EulerRotate();
+    PEMatrix &RotateMatrix();
     
     float &ScaleX();
     float &ScaleY();
@@ -56,6 +69,7 @@ public:
     P3D &Scale();
     
     virtual void update();
+    
 protected:
     PENode();
     ~PENode();
@@ -69,8 +83,11 @@ protected:
     void setWorldMat();
     PEMatrix m_worldMat;
     
-    V3D m_locRotateAxis;
-    float m_locRotateAngle;
+//    V3D m_locRotateAxis;
+//    float m_locRotateAngle;
+    
+    EulerOrder m_eOrder;
+    V3D m_locEuler;
     PEMatrix m_localRotate;
 
     PENode *m_parent;

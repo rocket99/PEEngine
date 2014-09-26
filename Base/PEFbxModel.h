@@ -18,9 +18,16 @@ class PEModelFBX:public PERealNode
 public:
     static PEModelFBX *createWithFBX(const char *fileName);
     bool initWithFBX(const char *fileName);
-private:
     
+    static PEModelFBX *createWithFbxNode(FbxNode *node);
+    bool initWithFbxNode(FbxNode *node);
+    
+private:
     void processNodeInfo(FbxNode *node);
+    void ProcessMeshInfo(FbxNode *node);
+    
+    void displayControlPoints(FbxMesh *mesh);
+    void displayPolygons(FbxMesh *mesh);
 };
 
 #endif /* defined(__Engine__PEFbxModel__) */

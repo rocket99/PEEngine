@@ -39,8 +39,7 @@ using namespace std;
 #include <OpenGLES/ES3/glext.h>
 #endif
 
-#define GL_LINUX
-#ifdef GL_LINUX
+#ifdef  GL_LINUX
 #include <GL/gl.h>
 #include <GL/glext.h>
 #define GLFW_INCLUDE_GLFW

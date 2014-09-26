@@ -42,22 +42,22 @@ bool PEBox::initWithSize(const Size3D &size)
     
     rect = PERect::create(m_size.z, m_size.y);
     rect->Position() = Point3D(-0.5*m_size.x, 0.0, 0.0);
-    rect->setRotate(Point3D(0.0, 1.0, 0.0), 90.0);
+    rect->Rotate(Point3D(0.0, 1.0, 0.0), 90.0);
     this->addChild(rect, "left");
     
     rect = PERect::create(m_size.z, m_size.y);
     rect->Position() = Point3D(0.5*m_size.x, 0.0, 0.0);
-    rect->setRotate(Point3D(0.0, 1.0, 0.0), -90.0);
+    rect->Rotate(Point3D(0.0, 1.0, 0.0), -90.0);
     this->addChild(rect, "right");
     
     rect = PERect::create(m_size.x, m_size.z);
     rect->Position() = Point3D(0.0, 0.5*m_size.y, 0.0);
-    rect->setRotate(Point3D(1.0, 0.0, 0.0), 90.0);
+    rect->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
     this->addChild(rect, "top");
     
     rect = PERect::create(m_size.x, m_size.z);
     rect->Position() = Point3D(0.0, -0.5*m_size.y, 0.0);
-    rect->setRotate(Point3D(1.0, 0.0, 0.0), -90.0);
+    rect->Rotate(Point3D(1.0, 0.0, 0.0), -90.0);
     this->addChild(rect, "bottom");
     
     return true;
