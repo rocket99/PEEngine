@@ -259,5 +259,25 @@ GLuint &PERealNode::Texture(){
     return m_texture;
 }
 
+void PERealNode::setGLProgram0(GLuint program)
+{
+    m_program0 = program;
+    for(int i=0; i<m_children.size(); ++i){
+        PERealNode *node = static_cast<PERealNode *>( m_children[i]);
+        if(node != NULL){
+            node->setGLProgram0(program);
+        }
+    }
+}
 
+void PERealNode::setGLProgram1(GLuint program)
+{
+    m_program1 = program;
+    for(int i=0; i<m_children.size(); ++i){
+        PERealNode *node = static_cast<PERealNode *>( m_children[i]);
+        if(node != NULL){
+            node->setGLProgram1(program);
+        }
+    }
+}
 

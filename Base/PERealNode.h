@@ -47,6 +47,10 @@ public:
     GLuint &Program0();
     GLuint &Program1();
     
+    
+    void setGLProgram0(GLuint program);//递归方式设定子结点的program0
+    void setGLProgram1(GLuint program);//递归方式设定子结点的program1
+    
     Color4F &Color();
     GLuint &Texture();
     

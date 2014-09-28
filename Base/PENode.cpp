@@ -314,9 +314,9 @@ void PENode::setWorldMat(){
         mat1.Elm(0, 3) = parent->Position().x / parent->World().x;
         mat1.Elm(1, 3) = parent->Position().y / parent->World().y;
         mat1.Elm(2, 3) = parent->Position().z / parent->World().z;
-        mat.Elm(0, 0) *= m_scale.x;
-        mat.Elm(1, 1) *= m_scale.y;
-        mat.Elm(2, 2) *= m_scale.z;
+        mat.Elm(0, 0) *= parent->ScaleX();
+        mat.Elm(1, 1) *= parent->ScaleY();
+        mat.Elm(2, 2) *= parent->ScaleZ();
         m_worldMat = cross(cross(mat1, parent->RotateMatrix()), m_worldMat);
         parent = parent->getParentNode();
     }
