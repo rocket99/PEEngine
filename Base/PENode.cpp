@@ -269,7 +269,8 @@ float &PENode::ScaleZ()
 
 void PENode::Rotate(V3D axis, float angle){
 
-    m_localRotate  = cross(PEMatrix::RotationMatrix(axis, angle), m_localRotate);
+    m_localRotate = cross(PEMatrix::RotationMatrix(axis, angle), m_localRotate);
+	m_localRotate.display();
 }
 
 void PENode::setRotate(P3D EulerAngle, EulerOrder order)
@@ -286,13 +287,6 @@ PEMatrix &PENode::RotateMatrix(){
     return m_localRotate;
 }
 
-//V3D &PENode::RotateAxis(){
-//    return  m_locRotateAxis;
-//}
-//
-//float &PENode::RotateAngle(){
-//    return m_locRotateAngle;
-//}
 
 P3D &PENode::EulerRotate()
 {
@@ -314,9 +308,9 @@ void PENode::setWorldMat(){
         mat1.Elm(0, 3) = parent->Position().x / parent->World().x;
         mat1.Elm(1, 3) = parent->Position().y / parent->World().y;
         mat1.Elm(2, 3) = parent->Position().z / parent->World().z;
-        mat.Elm(0, 0) *= parent->ScaleX();
-        mat.Elm(1, 1) *= parent->ScaleY();
-        mat.Elm(2, 2) *= parent->ScaleZ();
+        mat1.Elm(0, 0) *= parent->ScaleX();
+        mat1.Elm(1, 1) *= parent->ScaleY();
+        mat1.Elm(2, 2) *= parent->ScaleZ();
         m_worldMat = cross(cross(mat1, parent->RotateMatrix()), m_worldMat);
         parent = parent->getParentNode();
     }

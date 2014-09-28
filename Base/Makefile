@@ -5,7 +5,7 @@ DGL= -DGL_GLEXT_PROTOTYPES
 
 ALL:PEObject.o PENode.o PERealNode.o PELayer3D.o PEPolygon.o \
 	PERect.o PESphere.o PEPolarSurface.o PEMeshSurface.o \
-	PELight.o PEBox.o PECylinder.o
+	PELight.o PEBox.o PECylinder.o PEFbxModel.o
 
 PEObject.o:PEObject.cpp PEObject.h
 	$(CC) -c PEObject.cpp
@@ -31,7 +31,8 @@ PEBox.o:PEBox.cpp PEBox.h
 	$(CC) -c PEBox.cpp		$(DGL)
 PECylinder.o:PECylinder.cpp PECylinder.h
 	$(CC) -c PECylinder.cpp $(DGL)
-
+PEFbxModel.o: PEFbxModel.cpp PEFbxModel.h
+	$(CC) -c PEFbxModel.cpp $(DGL)
 clean:
 	rm *.o
 
