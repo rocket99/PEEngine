@@ -248,25 +248,75 @@ void PEModelFBX::setPolygonData(FbxMesh *mesh)
             //法线
             for (int l=0; l<mesh->GetElementNormalCount(); ++l) {
                 FbxGeometryElementNormal *leNormal = mesh->GetElementNormal(l);
-                if (leNormal->GetMappingMode() == FbxGeometryElement::eByPolygonVertex) {
-                    switch (leNormal->GetReferenceMode()) {
-                        case FbxGeometryElement::eDirect:
-                        {
-                            FbxDouble3 tmpNormal = leNormal->GetDirectArray().GetAt(vertexId);
-                            m_polygonData[i].normals[j] = Point3D(tmpNormal[0], tmpNormal[1], tmpNormal[2]);
+                switch (leNormal->GetMappingMode()) {
+                    case FbxGeometryElement::eByPolygonVertex:
+                        switch (leNormal->GetReferenceMode()) {
+                            case FbxGeometryElement::eDirect:
+                            {
+                                FbxDouble3 tmpNormal = leNormal->GetDirectArray().GetAt(vertexId);
+                                m_polygonData[i].normals[j] = Point3D(-tmpNormal[0], -tmpNormal[1], -tmpNormal[2]);
+                            }
+                                break;
+                            case FbxGeometryElement::eIndexToDirect:
+                            {
+                                int id = leNormal->GetIndexArray().GetAt(vertexId);
+                                FbxDouble3 tmpNormal = leNormal->GetDirectArray().GetAt(id);
+                                m_polygonData[i].normals[j] = Point3D(tmpNormal[0], tmpNormal[1], tmpNormal[2]);
+                            }
+                                break;
+                            case FbxGeometryElement::eIndex:
+                            {
+                                
+                            }
+                                break;
+                            default:
+                                break;
                         }
-                            break;
-                        case FbxGeometryElement::eIndexToDirect:
-                        {
-                            int id = leNormal->GetIndexArray().GetAt(vertexId);
-                            FbxDouble3 tmpNormal = leNormal->GetDirectArray().GetAt(id);
-                            m_polygonData[i].normals[j] = Point3D(tmpNormal[0], tmpNormal[1], tmpNormal[2]);
+                        break;
+                    case FbxGeometryElement::eByControlPoint:
+                        switch (leNormal->GetReferenceMode()) {
+                            case FbxGeometryElement::eDirect:
+                            {
+                                FbxDouble3 tmpNormal = leNormal->GetDirectArray().GetAt(index);
+                                m_polygonData[i].normals[j] = Point3D(tmpNormal[0], tmpNormal[1], tmpNormal[2]);
+                            }
+                                break;
+                            case FbxGeometryElement::eIndexToDirect:
+                                break;
+                            case FbxGeometryElement::eIndex:
+                                break;
+                            default:
+                                break;
                         }
-                            break;
-                        default:
-                            break;
-                    }
-                }
+
+                        break;
+                    case FbxGeometryElement::eByPolygon:
+                        switch (leNormal->GetReferenceMode()) {
+                            case FbxGeometryElement::eDirect:
+                                break;
+                            case FbxGeometryElement::eIndexToDirect:
+                                break;
+                            case FbxGeometryElement::eIndex:
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case FbxGeometryElement::eByEdge:
+                        switch (leNormal->GetReferenceMode()) {
+                            case FbxGeometryElement::eDirect:
+                                break;
+                            case FbxGeometryElement::eIndexToDirect:
+                                break;
+                            case FbxGeometryElement::eIndex:
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                };
             }
             //纹理坐标
             for(int l=0; l<mesh->GetElementUVCount(); ++l){
@@ -443,21 +493,24 @@ void PEModelFBX::drawFunc()
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
         glUniform1i(loc, 0);
     }
-    
+    this->setMaterialUniformBlock();
+    this->setLightUniformBlock();
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);
     glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_vertData[0]);
     
     glEnableVertexAttribArray(ATTRIB_NORMAL_LOC);
-    glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_TRUE, 0, &m_vertData[m_triangleNum*9]);
+    glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_vertData[m_triangleNum*9]);
     
     glEnableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 0, &m_vertData[m_triangleNum*18]);
     
-    glDrawArrays(GL_TRIANGLES, 0, 300);
+    glDrawArrays(GL_TRIANGLES, 0, 3*m_triangleNum);
     
     glDisableVertexAttribArray(ATTRIB_POINT_LOC);
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
+    this->deleteMaterialUbo();
+    this->deleteLightUbo();
 }
 
 void PEModelFBX::setTexture(GLuint tex)

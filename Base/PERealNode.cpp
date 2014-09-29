@@ -124,9 +124,10 @@ void PERealNode::setModelViewProjectUniform(string uniform)
     GLint loc = glGetUniformLocation(m_program, uniform.c_str());
     if(loc >= 0){
         PEMatrix mat = m_sceneIn->getCamera()->modelViewProject();
-        mat.display();
 //        PEMatrix mat = m_sceneIn->getCamera()->modelViewOrtho(-4, 4, -4, 4, -4, 4);
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
+//        GLint err = glGetError();
+//        printf("A error %d\n", err);
     }
 }
 
@@ -141,6 +142,8 @@ void PERealNode::setLightProjectViewUniform(string uniform)
             mat = m_sceneIn->getLightSource()->getCamera()->modelViewOrtho(-4.0, 4.0, -4.0, 4.0, -4.0, 4.0);
         }
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
+//        GLint err = glGetError();
+//        printf("B error %d\n", err);
     }
 }
 
@@ -223,6 +226,8 @@ void PERealNode::setDepthTexUnifrom()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, PETextureManager::Instance()->DepthTex());
         glUniform1i(loc, 1);
+//        GLint err = glGetError();
+//        printf("C error %d\n", err);
     }
 }
 
