@@ -217,18 +217,19 @@ void PEMeshSurface::drawFunc()
     this->setTextureUniform();
     this->setCameraPosUniform();
     
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
-    if(loc >= 0){
-        PEMatrix mat = m_worldMat.complement(3, 3);
-        glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
-    }
+//    GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
+//    if(loc >= 0){
+//        PEMatrix mat = m_worldMat.complement(3, 3);
+//        glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
+//    }
     
-    loc = glGetUniformLocation(m_program, "u_skyBox");
+    GLint loc = glGetUniformLocation(m_program, "u_skyBox");
     if(loc >= 0){
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
         glUniform1i(loc, 0);
     }
+    
     this->setMaterialUniformBlock();
     this->setLightUniformBlock();
     glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[0]);

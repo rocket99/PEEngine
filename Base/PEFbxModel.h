@@ -27,7 +27,7 @@ public:
     
     void draw();
     void drawFBO();
-
+    void setTexture(GLuint tex);
 private:
     
     typedef struct polygonData {

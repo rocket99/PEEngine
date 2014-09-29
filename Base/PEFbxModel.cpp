@@ -345,37 +345,51 @@ void PEModelFBX::setDrawTriangleData()
         m_triangleNum += m_polygonData[i].pointNum-2;
     }
     int index = 0;
-    m_vertData = new GLfloat [m_triangleNum *(3*3+3*3+3*2)];
+    m_vertData = new GLfloat [m_triangleNum*3*(3+3+2)];
     for(int i=0; i<m_polygonNum; ++i){
         for(int j=1; j<m_polygonData[i].pointNum-1; ++j){
             m_vertData[index ++] = m_polygonData[i].coodinates[0].x;
             m_vertData[index ++] = m_polygonData[i].coodinates[0].y;
             m_vertData[index ++] = m_polygonData[i].coodinates[0].z;
-            m_vertData[index ++] = m_polygonData[i].normals[0].x;
-            m_vertData[index ++] = m_polygonData[i].normals[0].y;
-            m_vertData[index ++] = m_polygonData[i].normals[0].z;
-            m_vertData[index ++] = m_polygonData[i].uvCoords[0].x;
-            m_vertData[index ++] = m_polygonData[i].uvCoords[0].y;
             
             m_vertData[index ++] = m_polygonData[i].coodinates[j].x;
             m_vertData[index ++] = m_polygonData[i].coodinates[j].y;
             m_vertData[index ++] = m_polygonData[i].coodinates[j].z;
-            m_vertData[index ++] = m_polygonData[i].normals[j].x;
-            m_vertData[index ++] = m_polygonData[i].normals[j].y;
-            m_vertData[index ++] = m_polygonData[i].normals[j].z;
-            m_vertData[index ++] = m_polygonData[i].uvCoords[j].x;
-            m_vertData[index ++] = m_polygonData[i].uvCoords[j].y;
             
             m_vertData[index ++] = m_polygonData[i].coodinates[j+1].x;
             m_vertData[index ++] = m_polygonData[i].coodinates[j+1].y;
             m_vertData[index ++] = m_polygonData[i].coodinates[j+1].z;
+        }
+    }
+    for(int i=0; i<m_polygonNum; ++i){
+        for(int j=1; j<m_polygonData[i].pointNum-1; ++j){
+            m_vertData[index ++] = m_polygonData[i].normals[0].x;
+            m_vertData[index ++] = m_polygonData[i].normals[0].y;
+            m_vertData[index ++] = m_polygonData[i].normals[0].z;
+            
+            m_vertData[index ++] = m_polygonData[i].normals[j].x;
+            m_vertData[index ++] = m_polygonData[i].normals[j].y;
+            m_vertData[index ++] = m_polygonData[i].normals[j].z;
+            
             m_vertData[index ++] = m_polygonData[i].normals[j+1].x;
             m_vertData[index ++] = m_polygonData[i].normals[j+1].y;
             m_vertData[index ++] = m_polygonData[i].normals[j+1].z;
+        }
+    }
+
+    for(int i=0; i<m_polygonNum; ++i){
+        for(int j=1; j<m_polygonData[i].pointNum-1; ++j){
+            m_vertData[index ++] = m_polygonData[i].uvCoords[0].x;
+            m_vertData[index ++] = m_polygonData[i].uvCoords[0].y;
+            
+            m_vertData[index ++] = m_polygonData[i].uvCoords[j].x;
+            m_vertData[index ++] = m_polygonData[i].uvCoords[j].y;
+            
             m_vertData[index ++] = m_polygonData[i].uvCoords[j+1].x;
             m_vertData[index ++] = m_polygonData[i].uvCoords[j+1].y;
         }
     }
+
 }
 
 void PEModelFBX::draw()
@@ -423,16 +437,36 @@ void PEModelFBX::drawFunc()
     this->setTextureUniform();
     this->setCameraPosUniform();
     
+    GLint loc = glGetUniformLocation(m_program, "u_skyBox");
+    if(loc >= 0){
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
+        glUniform1i(loc, 0);
+    }
+    
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);
-    glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 8, &m_vertData[0]);
+    glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_vertData[0]);
+    
     glEnableVertexAttribArray(ATTRIB_NORMAL_LOC);
-    glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_FALSE, 8, &m_vertData[3]);
+    glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_TRUE, 0, &m_vertData[m_triangleNum*9]);
+    
     glEnableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
-    glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 8, &m_vertData[6]);
-    glDrawArrays(0, GL_TRIANGLES, m_triangleNum*3);
+    glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 0, &m_vertData[m_triangleNum*18]);
+    
+    glDrawArrays(GL_TRIANGLES, 0, 300);
+    
     glDisableVertexAttribArray(ATTRIB_POINT_LOC);
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
 }
 
-
+void PEModelFBX::setTexture(GLuint tex)
+{
+    m_texture = tex;
+    for (int i=0; i<this->getChildren().size(); ++i) {
+        PEModelFBX *model = static_cast<PEModelFBX *>(this->getChildren()[i]);
+        if(NULL != model){
+            model->Texture() = m_texture;
+        }
+    }
+}

@@ -270,7 +270,7 @@ float &PENode::ScaleZ()
 void PENode::Rotate(V3D axis, float angle){
 
     m_localRotate = cross(PEMatrix::RotationMatrix(axis, angle), m_localRotate);
-	m_localRotate.display();
+//	m_localRotate.display();
 }
 
 void PENode::setRotate(P3D EulerAngle, EulerOrder order)

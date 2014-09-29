@@ -123,7 +123,8 @@ void PERealNode::setModelViewProjectUniform(string uniform)
 {
     GLint loc = glGetUniformLocation(m_program, uniform.c_str());
     if(loc >= 0){
-        PEMatrix mat = m_sceneIn->getCamera()-> modelViewProject();
+        PEMatrix mat = m_sceneIn->getCamera()->modelViewProject();
+        mat.display();
 //        PEMatrix mat = m_sceneIn->getCamera()->modelViewOrtho(-4, 4, -4, 4, -4, 4);
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
     }
@@ -191,6 +192,12 @@ void PERealNode::setWorldMatUniform()
     if(loc >= 0){
         this->setWorldMat();
         glUniformMatrix4fv(loc, 1, GL_FALSE, m_worldMat.getData());
+    }
+    
+    loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
+    if(loc >= 0){
+        PEMatrix mat = m_worldMat.complement(3, 3);
+        glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
     }
 }
 
@@ -263,7 +270,7 @@ void PERealNode::setGLProgram0(GLuint program)
 {
     m_program0 = program;
     for(int i=0; i<m_children.size(); ++i){
-        PERealNode *node = static_cast<PERealNode *>( m_children[i]);
+        PERealNode *node = static_cast<PERealNode *>(m_children[i]);
         if(node != NULL){
             node->setGLProgram0(program);
         }
@@ -274,7 +281,7 @@ void PERealNode::setGLProgram1(GLuint program)
 {
     m_program1 = program;
     for(int i=0; i<m_children.size(); ++i){
-        PERealNode *node = static_cast<PERealNode *>( m_children[i]);
+        PERealNode *node = static_cast<PERealNode *>(m_children[i]);
         if(node != NULL){
             node->setGLProgram1(program);
         }

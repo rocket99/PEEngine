@@ -68,7 +68,8 @@ void PELayer3D::addChild(PENode *node){
         return;
     }
     PENode::addChild(node);
-    static_cast<PERealNode *>(node)->setSceneIn(this);
+    if(static_cast<PERealNode *>(node) != nullptr)
+        static_cast<PERealNode *>(node)->setSceneIn(this);
 }
 
 void PELayer3D::addChild(PENode *node, int tag){
