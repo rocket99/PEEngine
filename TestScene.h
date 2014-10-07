@@ -11,7 +11,8 @@ class TestScene:public PELayer3D
 public:
 	static TestScene *create(const Size3D &size);
 	bool initWithSize(const Size3D &size);
-
+	
+	void update();
 private:
 
 };

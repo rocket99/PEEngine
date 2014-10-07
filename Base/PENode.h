@@ -83,9 +83,6 @@ protected:
     void setWorldMat();
     PEMatrix m_worldMat;
     
-//    V3D m_locRotateAxis;
-//    float m_locRotateAngle;
-    
     EulerOrder m_eOrder;
     V3D m_locEuler;
     PEMatrix m_localRotate;

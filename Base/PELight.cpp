@@ -16,7 +16,7 @@ PELight::PELight()
     m_ambient = ColorRGBA(0.1, 0.1, 0.1, 0.1);
     m_diffuse = ColorRGBA(0.8, 0.8, 0.8, 0.8);
     m_specular = ColorRGBA(1.0, 1.0, 1.0, 1.0);
-    m_fovy = 180.0;
+    m_fovy = 60.0;
     m_shininess = 1.0;
     m_camera = NULL;
 }

@@ -44,7 +44,7 @@ bool PEScene::initWithSize(string name, int width, int height)
 	
 	this->setFrameBuffer();
 	this->setGLPrograms();
-
+	glEnable(GL_DEPTH_TEST);
 	m_scene = TestScene::create(GLOBAL_WORLD_SIZE);
 	
 	return true;
@@ -120,5 +120,9 @@ void PEScene::setGLPrograms()
 	std::string frag = PEShaderReader::readShaderSrc("./Shader/vertColor_Linux.fsh");
 	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "vertColor");
+	vert = PEShaderReader::readShaderSrc("./Shader/light_Linux.vsh");
+	frag = PEShaderReader::readShaderSrc("./Shader/light_Linux.fsh");
+	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	PEShaderManager::Instance()->setProgramForKey(program, "light");
 }
 

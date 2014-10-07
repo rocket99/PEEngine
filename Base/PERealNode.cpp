@@ -32,6 +32,13 @@ PERealNode *PERealNode::create()
 
 bool PERealNode::init()
 {
+	if(!PENode::init()){
+		return false;
+	}
+	m_material.ambient = ColorRGBA(0.2, 0.2, 0.2, 0.2);
+	m_material.diffuse = ColorRGBA(0.6, 0.6, 0.6, 1.0);
+	m_material.specular = ColorRGBA(0.8, 0.8, 0.8, 1.0);
+	m_material.emission = ColorRGBA(0.4, 0.4, 0.4, 1.0);
     return true;
 }
 
@@ -126,8 +133,6 @@ void PERealNode::setModelViewProjectUniform(string uniform)
         PEMatrix mat = m_sceneIn->getCamera()->modelViewProject();
 //        PEMatrix mat = m_sceneIn->getCamera()->modelViewOrtho(-4, 4, -4, 4, -4, 4);
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
-//        GLint err = glGetError();
-//        printf("A error %d\n", err);
     }
 }
 
@@ -142,8 +147,6 @@ void PERealNode::setLightProjectViewUniform(string uniform)
             mat = m_sceneIn->getLightSource()->getCamera()->modelViewOrtho(-4.0, 4.0, -4.0, 4.0, -4.0, 4.0);
         }
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
-//        GLint err = glGetError();
-//        printf("B error %d\n", err);
     }
 }
 

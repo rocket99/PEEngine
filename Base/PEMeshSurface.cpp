@@ -41,7 +41,7 @@ PEMeshSurface *PEMeshSurface::create(int row, int col)
 
 bool PEMeshSurface::initWithSize(int row, int col)
 {
-    if(!PENode::init()){
+    if(!PERealNode::init()){
         return false;
     }
     m_row = row;
