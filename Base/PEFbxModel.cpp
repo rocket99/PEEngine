@@ -208,7 +208,7 @@ void PEModelFBX::processNodeInfo(FbxNode *node)
                 break;
         }
     }else{
-        printf("------\n");
+//        printf("------\n");
         m_position = Point3D(translation[0], translation[1], translation[2]);
         m_scale = Point3D(scaling[0], scaling[1], scaling[2]);
         m_locEuler = Point3D(rotation[0], rotation[1], rotation[2]);
@@ -367,10 +367,6 @@ void PEModelFBX::setPolygonData(FbxMesh *mesh)
                         break;
                 }
             }
-//            printf("[%d]:coord(%.3f, %.3f, %.3f), normal(%.3f, %.3f, %.3f), uv(%.3f, %.3f)\n", j,
-//                   m_polygonData[i].coodinates[j].x, m_polygonData[i].coodinates[j].y, m_polygonData[i].coodinates[j].z,
-//                   m_polygonData[i].normals[j].x, m_polygonData[i].normals[j].y, m_polygonData[i].normals[j].z,
-//                   m_polygonData[i].uvCoords[j].x, m_polygonData[i].uvCoords[j].y);
         }
         ++ vertexId;
     }

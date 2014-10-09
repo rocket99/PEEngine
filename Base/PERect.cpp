@@ -23,7 +23,7 @@ PERect *PERect::create(float width, float height)
 
 bool PERect::initWithSize(float width, float height)
 {
-    if (!PENode::init()) {
+    if (!PERealNode::init()) {
         return false;
     }
     m_width = width;

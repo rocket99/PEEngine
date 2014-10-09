@@ -29,11 +29,16 @@ public:
     
     float slope();
     float intercept();
+    P3D parameters();
+    
+    float slope() const;
+    float intercept() const;
+    P3D parameters() const;
     
     friend P2D CrossPoint(const PELine2D &A, const PELine2D &B);
-private:
-    float m_slope, m_intercept;
     
+private:
+    float m_Px, m_Py, m_Pc; //m_Px*x + m_Py*y + m_Pc = 0.0;
     P2D m_A, m_B;
 };
 

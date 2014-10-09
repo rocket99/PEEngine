@@ -36,9 +36,9 @@ bool PERealNode::init()
 		return false;
 	}
 	m_material.ambient = ColorRGBA(0.2, 0.2, 0.2, 0.2);
-	m_material.diffuse = ColorRGBA(0.6, 0.6, 0.6, 1.0);
-	m_material.specular = ColorRGBA(0.8, 0.8, 0.8, 1.0);
-	m_material.emission = ColorRGBA(0.4, 0.4, 0.4, 1.0);
+	m_material.diffuse = ColorRGBA(0.6, 0.6, 0.6, 0.6);
+	m_material.specular = ColorRGBA(0.8, 0.8, 0.8, 0.6);
+	m_material.emission = ColorRGBA(0.4, 0.4, 0.4, 0.4);
     return true;
 }
 
