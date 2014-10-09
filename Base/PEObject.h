@@ -20,6 +20,7 @@ public:
     int retainCount();
     void retain();
     void release();
+	void autoRelease();
 protected:
     PEObject(){m_retain = 1;};
     virtual ~PEObject(){};

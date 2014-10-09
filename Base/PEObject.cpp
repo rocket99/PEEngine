@@ -7,6 +7,7 @@
 //
 
 #include "PEObject.h"
+#include "PEAutoReleasePool.h"
 
 PEObject *PEObject::create(const char *str)
 {
@@ -26,6 +27,12 @@ void PEObject::release()
     if(m_retain == 0){
         delete this;
     }
+}
+
+void PEObject::autoRelease()
+{
+	-- m_retain;
+	PEAutoReleasePool::Instance()->addObject(this);
 }
 
 void PEObject::setName(const char *str)
