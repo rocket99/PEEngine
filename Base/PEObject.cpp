@@ -35,6 +35,16 @@ void PEObject::autoRelease()
 	PEAutoReleasePool::Instance()->addObject(this);
 }
 
+void PEObject::safeDelete()
+{
+    if(PEAutoReleasePool::Instance()->isObjectInPool(this)){
+        this->m_retain = 0;
+        
+    }else{
+        delete this;
+    }
+}
+
 void PEObject::setName(const char *str)
 {
     this->m_name = str;

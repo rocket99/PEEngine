@@ -24,6 +24,7 @@ PERealNode *PERealNode::create()
 {
     PERealNode *node = new PERealNode;
     if(node->init()){
+        node->autoRelease();
         return node;
     }
     delete node;

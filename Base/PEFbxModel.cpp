@@ -21,6 +21,7 @@ PEModelFBX *PEModelFBX::createWithFBX(const char *fileName)
 {
     PEModelFBX *model = new PEModelFBX();
     if(model->initWithFBX(fileName)){
+        model->autoRelease();
         return model;
     }
     delete model;
@@ -87,6 +88,7 @@ PEModelFBX *PEModelFBX::createWithFbxNode(FbxNode *node)
 {
     PEModelFBX *fbx = new PEModelFBX;
     if(fbx->initWithFbxNode(node)){
+        fbx->autoRelease();
         return fbx;
     }
     delete fbx;

@@ -22,6 +22,7 @@ PESphere *PESphere::create(int row, int col, float radius)
 {
     PESphere *sphere = new PESphere;
     if(sphere->initWithRadius(row, col, radius)){
+        sphere->autoRelease();
         return sphere;
     }
     delete sphere;

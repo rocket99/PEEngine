@@ -23,6 +23,7 @@ PEPolarSurface *PEPolarSurface::create(int row, int col, float radius, float del
 {
     PEPolarSurface *surface = new PEPolarSurface;
     if(surface->initWithParmeters(row, col, radius, delta_h)){
+        surface->autoRelease();
         return surface;
     }
     delete surface;

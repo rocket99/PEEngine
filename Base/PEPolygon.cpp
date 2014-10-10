@@ -25,6 +25,7 @@ PEPolygon *PEPolygon::createWithPoints(P2D *points, int num)
 {
     PEPolygon *polygon = new PEPolygon;
     if(polygon->initWithPoints(points, num)){
+        polygon->autoRelease();
         return polygon;
     }
     return polygon;

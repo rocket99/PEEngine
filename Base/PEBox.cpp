@@ -18,6 +18,7 @@ PEBox *PEBox::createWithSize(const Size3D &size)
 {
     PEBox *box = new PEBox();
     if(box->initWithSize(size)){
+        box->autoRelease();
         return box;
     }
     delete box;

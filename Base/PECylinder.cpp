@@ -19,6 +19,7 @@ PECylinder *PECylinder::create(int row, int col, float height, float radius)
 {
     PECylinder *cylinder = new PECylinder;
     if(cylinder->initWithParameters(row, col, height, radius)){
+        cylinder->autoRelease();
         return cylinder;
     }
     delete cylinder;

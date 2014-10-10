@@ -21,6 +21,7 @@ PELayer3D *PELayer3D::create(const Size3D &size)
 {
     PELayer3D *layer = new PELayer3D;
     if(layer->initWithSize(size)){
+        layer->autoRelease();
         return layer;
     }
     delete layer;

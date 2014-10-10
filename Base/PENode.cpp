@@ -31,6 +31,7 @@ PENode *PENode::create()
 {
     PENode *node = new PENode();
     if(node->init()){
+        node->autoRelease();
         return node;
     }
     delete node;

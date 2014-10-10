@@ -15,6 +15,7 @@ PERect *PERect::create(float width, float height)
 {
     PERect *rect = new PERect();
     if(rect->initWithSize(width, height)){
+        rect->autoRelease();
         return rect;
     }
     delete rect;

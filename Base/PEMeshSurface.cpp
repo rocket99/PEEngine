@@ -33,6 +33,7 @@ PEMeshSurface *PEMeshSurface::create(int row, int col)
 {
     PEMeshSurface *obj = new PEMeshSurface();
     if(obj->initWithSize(row, col)){
+        obj->autoRelease();
         return obj;
     }
     delete obj;

@@ -9,14 +9,11 @@ class PEAutoReleasePool
 public:
 	static PEAutoReleasePool *Instance();
 	static void purge();
-	
 	void addObject(PEObject *obj);
-	
 	void clearNoReferenceCountObj();
+    bool isObjectInPool(PEObject *obj);
 private:
-	bool isObjectInPool(PEObject *obj);
-
-
+	
 	vector<PEObject *> m_objs;
 
 };
