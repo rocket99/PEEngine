@@ -19,6 +19,10 @@ public:
     ~PEPolygon();
     static PEPolygon *createWithPoints(P2D *points, int num);
     bool initWithPoints(P2D *points, int num);
+    
+    static PEPolygon *createWithPoints(const vector<P2D> &points);
+    bool initWithPoints(const vector<P2D> &points);
+    
     virtual void draw();
     virtual void drawFBO();
     PEPolygon *convexPolygon(P2D *points, int num);

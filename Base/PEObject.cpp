@@ -8,6 +8,7 @@
 
 #include "PEObject.h"
 #include "PEAutoReleasePool.h"
+#include "PENode.h"
 
 PEObject *PEObject::create(const char *str)
 {
@@ -18,11 +19,23 @@ PEObject *PEObject::create(const char *str)
 
 void PEObject::retain()
 {
+    PENode *node = static_cast<PENode *>(this);
+    if (node != NULL) {
+        for(int i=0; i<node->getChildren().size(); ++i){
+            node->getChildren()[i]->retain();
+        }
+    }
     ++ m_retain;
 }
 
 void PEObject::release()
 {
+    PENode *node = static_cast<PENode *>(this);
+    if (node != NULL) {
+        for(int i=0; i<node->getChildren().size(); ++i){
+            node->getChildren()[i]->release();
+        }
+    }
     -- m_retain;
     if(m_retain == 0){
         delete this;

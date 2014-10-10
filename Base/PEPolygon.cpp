@@ -49,6 +49,33 @@ bool PEPolygon::initWithPoints(P2D *points, int num)
     return true;
 }
 
+PEPolygon *PEPolygon::createWithPoints(const vector<P2D> &points)
+{
+    PEPolygon *poly = new PEPolygon;
+    if(poly->initWithPoints(points)){
+        poly->autoRelease();
+        return poly;
+    }
+    delete poly;
+    return NULL;
+}
+
+bool PEPolygon::initWithPoints(const vector<P2D> &points)
+{
+    if(!PERealNode::init()){
+        return false;
+    }
+    m_num = (int)points.size();
+    m_points = points;
+    m_data = (float *)malloc(sizeof(float)*m_num*3);
+    for(int i=0; i<m_num; ++i){
+        m_data[3*i+0] = m_points[i].x;
+        m_data[3*i+1] = m_points[i].y;
+        m_data[3*i+2] = 0.0;
+    }
+    return true;
+}
+
 void PEPolygon::draw()
 {
     if (!m_isVisible) {

@@ -25,6 +25,8 @@ public:
     PELine2D();
     ~PELine2D();
     PELine2D(const P2D &A, const P2D &B);
+    PELine2D(float px, float py, float pc);
+    
     LineSide PointAtWhichSide(const P2D &C);
     
     float slope();
@@ -36,7 +38,7 @@ public:
     P3D parameters() const;
     
     friend P2D CrossPoint(const PELine2D &A, const PELine2D &B);
-    
+    float distance(const P2D &P);
 private:
     float m_Px, m_Py, m_Pc; //m_Px*x + m_Py*y + m_Pc = 0.0;
     P2D m_A, m_B;
