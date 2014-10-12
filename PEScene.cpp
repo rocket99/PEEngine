@@ -112,6 +112,8 @@ void PEScene::setFrameBuffer()
 				GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	PETextureManager::Instance()->DepthTex() = m_depthTex;
+	PETextureManager::Instance()->ColorTex() = m_colorTex;
 }
 
 void PEScene::setGLPrograms()
