@@ -1,6 +1,6 @@
 #Makefile
 
-LINK = -lglfw3 -lGL -lGLU -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lm -lrt -luuid -lc -ldl
+LINK = -lglfw3 -lGL -lGLU -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lm -lrt -luuid -lc -ldl -lpng -ljpeg
 BPath = Base/
 MPath = Math/
 SPath = Shader/

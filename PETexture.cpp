@@ -4,6 +4,9 @@
 
 #include "PETexture.h"
 #include <png.h>
+#include <jpeglib.h>
+
+#define PNG_BYTES_TO_CHECK 4
 PETexture::PETexture()
 {
 	m_Id = 0;
@@ -11,7 +14,9 @@ PETexture::PETexture()
 
 PETexture::~PETexture()
 {
-
+	if(GL_TRUE == glIsTexture(m_Id)){
+		glDeleteTextures(1, &m_Id);
+	}
 }
 
 PETexture *PETexture::create(const char *fileName, PicType type)
@@ -75,7 +80,7 @@ bool PETexture::readPNGFile(const char *fileName)
 		png_destroy_read_struct(&png_ptr, &info_ptr, 0);
 		return false;
 	}
-	temp = png_sig_cmp((png_bytep)buf, (png_size)0, PNG_BYTES_TO_CHECK);
+	temp = png_sig_cmp((png_bytep)buf, (png_size_t)0, PNG_BYTES_TO_CHECK);
 	if(temp != 0){
 		fclose(fp);
 		png_destroy_read_struct(&png_ptr, &info_ptr, 0);
@@ -89,24 +94,24 @@ bool PETexture::readPNGFile(const char *fileName)
 	m_width = png_get_image_width(png_ptr, info_ptr);
 	m_height = png_get_image_height(png_ptr, info_ptr);
 	row_pointers = png_get_rows(png_ptr, info_ptr);
-	GLbyte *data = new GLbyte [m_width*m_height*4];;
+	GLubyte *data = new GLubyte [m_width*m_height*4];;
 	switch(color_type){
 		case PNG_COLOR_TYPE_RGB_ALPHA:
 			for(y=0; y<h;++y){
 				for(x=0; x<w; ++x){
-					data[(y*w+x)*4+0] = row_pointer[y][x+0];
-					data[(y*w+x)*4+1] = row_pointer[y][x+1];
-					data[(y*w+x)*4+2] = row_pointer[y][x+2];
-					data[(y*w+x)*4+3] = row_pointer[y][x+3];
+					data[(y*w+x)*4+0] = row_pointers[y][x+0];
+					data[(y*w+x)*4+1] = row_pointers[y][x+1];
+					data[(y*w+x)*4+2] = row_pointers[y][x+2];
+					data[(y*w+x)*4+3] = row_pointers[y][x+3];
 				}
 			}
 			break;
 		case PNG_COLOR_TYPE_RGB:
 			for(y=0; y<h; ++y){
 				for(x=0; x<w; ++x){
-					data[(y*w+x)*4+0] = row_pointer[y][x+0];
-					data[(y*w+x)*4+1] = row_pointer[y][x+1];
-					data[(y*w+x)*4+2] = row_pointer[y][x+2];
+					data[(y*w+x)*4+0] = row_pointers[y][x+0];
+					data[(y*w+x)*4+1] = row_pointers[y][x+1];
+					data[(y*w+x)*4+2] = row_pointers[y][x+2];
 					data[(y*w+x)*4+3] = 255;
 				}
 			}
@@ -129,25 +134,48 @@ bool PETexture::readJPGFile(const char *fileName)
 	if(NULL == fp){
 		return false;
 	}
-	char header[10];
-	fread(header, 1, 8, fp);
-	header[8] - '\0';
-	bool is_png = !png_sig_cmp(header, 0, 8);
-	if(!is_png){
-		return false;
+	struct jpeg_decompress_struct cinfo;
+	struct jpeg_error_mgr jerr;
+	cinfo.err = jpeg_std_error(&jerr);
+	jpeg_create_decompress(&cinfo);
+	jpeg_stdio_src(&cinfo, fp);
+	jpeg_read_header(&cinfo, true);
+	m_width = cinfo.image_width;
+	m_height = cinfo.image_height;
+	
+	GLubyte *data = new GLubyte[m_width*m_height*cinfo.num_components];
+	jpeg_start_decompress(&cinfo);
+	JSAMPROW row_pointer[1];
+	while(cinfo.output_scanline < cinfo.output_height){
+		row_pointer[0] = &data[cinfo.output_scanline*cinfo.image_width*cinfo.num_components];
+		jpeg_read_scanlines(&cinfo, row_pointer, 1);
 	}
-
+	jpeg_finish_decompress(&cinfo);
+	jpeg_destroy_decompress(&cinfo);
+	fclose(fp);
+	GLubyte *data0 = new GLubyte[m_width*m_height*4];
+	for(int i=0; i<m_height; ++i){
+		for(int j=0; j<m_width; ++j){
+			data0[4*(i*m_width+j)+0] = data[3*(i*m_width+j)+0];
+			data0[4*(i*m_width+j)+1] = data[3*(i*m_width+j)+1];
+			data0[4*(i*m_width+j)+2] = data[3*(i*m_width+j)+2];
+			data0[4*(i*m_width+j)+3] = 255;
+		}
+	}
+	delete [] data;
+	this->createTexture(data0);
+	delete [] data0;
 	return true;
 }
 
-void PETexture::createTexture(GLbyte *data)
+void PETexture::createTexture(GLubyte *data)
 {
 	glGenTextures(1, &m_Id);
 	glBindTexture(GL_TEXTURE_2D, m_Id);
-	glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)m_width, (GLsizei)m_height,
 			0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 }

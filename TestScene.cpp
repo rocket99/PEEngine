@@ -14,8 +14,10 @@ bool TestScene::initWithSize(const Size3D &size)
 {
 	if(!PELayer3D::initWithSize(size)){
 		return false;
-	}
+	}	
+	PETexture *tex = PETexture::create("15182.jpg", PETexture::PicType::JPG_PIC);
 	
+
 	PELight *light = this->getLightSource();
 	light->Fovy() = 90.0;
 	light->Shininess() = 3.0;
@@ -35,6 +37,7 @@ bool TestScene::initWithSize(const Size3D &size)
 	plane->Material().diffuse = ColorRGBA(0.5, 0.5, 0.5, 1.0);
 	plane->Material().specular = ColorRGBA(0.8, 0.3, 0.2, 1.0);
 	plane->Material().emission = ColorRGBA(0.3, 0.3, 0.2, 1.0);
+	plane->Texture() = tex->Texture();
 	this->addChild(plane);
 	
 	for(int i=0; i<11; ++i){
