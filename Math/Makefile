@@ -1,7 +1,7 @@
 #Makefile
 
 CC = g++ -std=c++11
-all:PEDataType.o PEMatrix.o PEVector.o PECamera.o
+all:PEDataType.o PEMatrix.o PEVector.o PECamera.o PELine.o
 
 PEDataType.o:PEDataType.cpp PEDataType.h
 	$(CC) -c PEDataType.cpp
@@ -11,5 +11,7 @@ PEVector.o:PEVector.cpp PEVector.h
 	$(CC) -c PEVector.cpp 
 PECamera.o:PECamera.cpp PECamera.h
 	$(CC) -c PECamera.cpp 
+PELine.o:PELine.cpp PELine.h
+	$(CC) -c PELine.cpp
 clean:
 	rm *.o

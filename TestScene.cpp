@@ -22,12 +22,13 @@ bool TestScene::initWithSize(const Size3D &size)
 	light->Position() = Point3D(0.0, 700.0, 0.0);
 	light->Direction() = Point3D(0.0, -1.0, 0.0);
 	light->Ambient() = ColorRGBA(0.3, 0.2, 0.1, 1.0); 
-//	light->setCamera();
+	light->setCamera();
 	this->getCamera()->World() = size;
 
 	PERect *plane= PERect::create(1000, 1000);
 	plane->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
 	plane->Position() = Point3D(0.0, 0.0, 0.0);
+	plane->Program0() = PEShaderManager::Instance()->getProgramForKey("common");
 	plane->Program1() = PEShaderManager::Instance()->getProgramForKey("light");
 	plane->Color() = ColorRGBA(0.4, 0.4, 0.2, 1.0);
 	plane->Material().ambient = ColorRGBA(0.1, 0.1, 0.1, 1.0);

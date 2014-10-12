@@ -7,7 +7,7 @@
 //
 
 #include "PEPolygon.h"
-#include "PELine.h"
+#include "../Math/PEMath.h"
 
 
 PEPolygon::PEPolygon():

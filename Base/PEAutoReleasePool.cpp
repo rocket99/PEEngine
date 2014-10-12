@@ -24,7 +24,7 @@ void PEAutoReleasePool::addObject(PEObject *obj)
 	if(isObjectInPool(obj)){
 		return;
 	}
-    PELog("%p is added into auto release pool", obj);
+//    PELog("%p is added into auto release pool", obj);
 	m_objs.push_back(obj);
 }
 
@@ -33,7 +33,7 @@ void PEAutoReleasePool::clearNoReferenceCountObj()
 	vector<PEObject *>::iterator it = m_objs.begin();
 	while(it != m_objs.end()){
 		if((*it)->retainCount() == 0){
-            PELog("%p is cleared.", *it);
+  //          PELog("%p is cleared.", *it);
             PENode *node = static_cast<PENode *>(*it);
             if(node != NULL){
                 for(int i=0; i<node->getChildren().size(); ++i){

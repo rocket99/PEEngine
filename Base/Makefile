@@ -3,11 +3,13 @@
 CC=g++ --std=c++11 
 DGL= -DGL_GLEXT_PROTOTYPES
 
-ALL:PEObject.o PENode.o PERealNode.o PELayer3D.o PEPolygon.o \
-	PERect.o PESphere.o PEPolarSurface.o PEMeshSurface.o \
-	PELight.o PEBox.o PECylinder.o PEFbxModel.o
+ALL:	PEAutoReleasePool.o PEObject.o PENode.o PERealNode.o PELayer3D.o \
+		PEPolygon.o PERect.o PESphere.o PEPolarSurface.o PEMeshSurface.o \
+		PELight.o PEBox.o PECylinder.o PEFbxModel.o
 
-PEObject.o:PEObject.cpp PEObject.h
+PEAutoReleasePool.o: PEAutoReleasePool.cpp PEAutoReleasePool.h
+	$(CC) -c PEAutoReleasePool.cpp
+PEObject.o:PEObject.cpp PEObject.h PEAutoReleasePool.h
 	$(CC) -c PEObject.cpp
 PENode.o:PENode.cpp PENode.h
 	$(CC) -c PENode.cpp		$(DGL)
