@@ -38,8 +38,7 @@ private:
 
 	bool readPNGFile(const char *fileName);
 	bool readJPGFile(const char *fileName);
-    
-    
+    void createTexture(GLByte *data);
 };
 
 
