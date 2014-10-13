@@ -19,6 +19,7 @@ PELine2D::PELine2D(const P2D &A, const P2D &B)
     m_Py = B.y - A.y;
     m_Pc = A.x*B.y - A.y*B.x;
 }
+
 PELine2D::PELine2D(float px, float py, float pc)
 {
     m_Px = px; m_Py = py; m_Pc = pc;
@@ -29,6 +30,15 @@ PELine2D::PELine2D(float px, float py, float pc)
         m_A = Point2D(-1.0, (m_Px-m_Pc)/m_Py);
         m_B = Point2D(1.0, -(m_Px+m_Pc)/m_Py);
     }
+}
+
+PELine2D::PELine2D(const PELine2D &line)
+{
+    m_A = line.m_A;
+    m_B = line.m_B;
+    m_Px = m_A.x - m_B.x;
+    m_Py = m_B.y - m_A.y;
+    m_Pc = m_A.x*m_B.y - m_A.y*m_B.x;
 }
 
 PELine2D::LineSide PELine2D::PointAtWhichSide(const P2D &C)
@@ -85,6 +95,28 @@ P2D CrossPoint(const PELine2D &A, const PELine2D &B)
 
 float PELine2D::distance(const P2D &P)
 {
-    return 0.0;
+    V2D PA = P-m_A;
+    V2D PB = P-m_B;
+    float dd = (PA.x *PB.y - PA.y*PB.x)/(m_A-m_B).morel();
+    dd = dd > 0.0 ? dd : -dd;
+    return dd;
 }
+
+PELine2D PELine2D::verticalLineAtPoint(const P2D &P)
+{
+    PELine2D line;
+    line.m_Px = -m_Py;
+    line.m_Py =  m_Px;
+    line.m_Pc = -(line.m_Px*P.x+line.m_Py*P.y);
+    if (m_Py == 0.0) {
+        m_A = Point2D(-m_Pc/m_Px, 1.0);
+        m_B = Point2D(-m_Pc/m_Px, -1.0);
+    }else{
+        m_A = Point2D(-1.0, (m_Px-m_Pc)/m_Py);
+        m_B = Point2D(1.0, -(m_Px+m_Pc)/m_Py);
+    }
+    return line;
+}
+
+
 

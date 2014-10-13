@@ -11,9 +11,7 @@
 PECylinder::PECylinder():m_top(nullptr), m_bottom(nullptr)
 {}
 
-PECylinder::~PECylinder()
-{
-}
+PECylinder::~PECylinder(){}
 
 PECylinder *PECylinder::create(int row, int col, float height, float radius)
 {
