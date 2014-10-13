@@ -24,7 +24,7 @@ PELight::PELight()
 PELight::~PELight()
 {
     if(m_camera != NULL){
-        delete m_camera;
+        m_camera->release();
     }
 }
 
@@ -144,14 +144,17 @@ void PELight::removeUniformBlock()
 }
 
 void PELight::setCamera(){
-    P3D center = m_position + 1000*m_direction;
-    V3D up;
+    P3D center = m_position + m_world.morel()*m_direction;
+    V3D up = cross(m_direction, Point3D(0.0, 1.0, 0.0));
     if(dot(m_direction, Point3D(1.0, 0.0, 0.0)) == 0){
         up = Point3D(1.0, 0.0, 0.0).normal();
     }else if(dot(m_direction, Point3D(0.0, 1.0, 0.0)) == 0){
         up = Point3D(0.0, 1.0, 0.0).normal();
     }else if(dot(m_direction, Point3D(0.0, 0.0, 1.0)) == 0){
         up = Point3D(0.0, 0.0, 1.0).normal();
+    }else{
+        up = cross(m_direction, Point3D(0.0, 1.0, 0.0)).normal();
+
     }
     
     if(m_camera != NULL ){
@@ -160,8 +163,10 @@ void PELight::setCamera(){
         m_camera->upDirect() = up;
         return;
     }
+    
     m_camera = PECamera::create(m_world, m_position, center, up);
     m_camera->setPerspect(2.0*m_fovy, 1.0, 0.01, 300.0);
+    m_camera->retain();
 }
 
 PECamera *PELight::getCamera(){

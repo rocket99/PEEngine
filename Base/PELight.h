@@ -9,7 +9,7 @@
 #define __Engine__PELight__
 
 #include <iostream>
-#include "../Math/PEMath.h"
+#include "PECamera.h"
 
 class PELight
 {

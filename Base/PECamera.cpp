@@ -8,32 +8,14 @@
 
 #include "PECamera.h"
 
-static PECamera *instance = NULL;
-
-PECamera *PECamera::getInstance()
-{
-    if (instance == NULL) {
-        instance = new PECamera;
-    }
-    return instance;
-}
-
-void PECamera::purge()
-{
-    if(instance != NULL){
-        delete instance;
-    }
-    instance = NULL;
-}
 
 PECamera::PECamera()
 {
     m_up = Point3D(0.0, 1.0, 0.0);
     m_center = Point3D(0.0, 0.0, 0.0);
     m_pos = Point3D(0.0, 0.0, 1.0);
-    m_row = m_col = 4;
-    m_data = (float *)malloc(sizeof(float) * m_row*m_col);
-    m_perspect = new PEMatrix(4, 4);
+    m_camera = NULL;
+    m_perspect = NULL;
 }
 
 PECamera::~PECamera()
@@ -45,6 +27,7 @@ PECamera *PECamera::create(const P3D &world, const P3D &pos, const P3D &focus, c
 {
     PECamera *camera = new PECamera();
     if(camera->init(world, pos, focus, up)){
+        camera->autoRelease();
         return camera;
     }
     delete camera;
@@ -57,6 +40,8 @@ bool PECamera::init(const P3D &world, const P3D &pos, const P3D &focus, const P3
         PELog("pay attention to paramemters such as pos, focus and up, there is some invalid paramemter.\n");
         return false;
     }
+    m_camera = new PEMatrix(4, 4);
+    m_perspect = new PEMatrix(4, 4);
     m_worldSize = world;
     m_worldPos = pos;
     m_worldFocus = focus;
@@ -81,18 +66,16 @@ void PECamera::normalized()
 
 void PECamera::setMatrixData()
 {
+    
     this->normalized();
-    Elm(0, 0) = nx.x; Elm(0, 1) = nx.y; Elm(0, 2) = nx.z;
-    Elm(0, 3) = -dot(nx, m_pos);
-    
-    Elm(1, 0) = ny.x; Elm(1, 1) = ny.y; Elm(1, 2) = ny.z;
-    Elm(1, 3) = -dot(ny, m_pos);
-    
-    Elm(2, 0) = -nz.x; Elm(2, 1) = -nz.y; Elm(2, 2) = -nz.z;
-    Elm(2, 3) = dot(nz, m_pos);
-    
-    Elm(3, 0) = Elm(3, 1) = Elm(3, 2) = 0.0f;
-    Elm(3, 3) = 1.0f;
+    m_camera->Elm(0, 0) = nx.x;  m_camera->Elm(0, 1) = nx.y;
+    m_camera->Elm(0, 2) = nx.z;  m_camera->Elm(0, 3) = -dot(nx, m_pos);
+    m_camera->Elm(1, 0) = ny.x;  m_camera->Elm(1, 1) = ny.y;
+    m_camera->Elm(1, 2) = ny.z;  m_camera->Elm(1, 3) = -dot(ny, m_pos);
+    m_camera->Elm(2, 0) = -nz.x; m_camera->Elm(2, 1) = -nz.y;
+    m_camera->Elm(2, 2) = -nz.z; m_camera->Elm(2, 3) = dot(nz, m_pos);
+    m_camera->Elm(3, 0) = m_camera->Elm(3, 1) = m_camera->Elm(3, 2) = 0.0f;
+    m_camera->Elm(3, 3) = 1.0f;
 }
 
 void PECamera::setPerspect(float fovy, float aspect, float zNear, float zFar){
@@ -137,7 +120,7 @@ PEMatrix PECamera::modelViewProject()
 {
     this->setMatrixData();
     this->setPerspectMatrix();
-    return cross(*m_perspect, *this);
+    return cross(*m_perspect, *m_camera);
 }
 
 PEMatrix PECamera::modelViewOrtho(float left, float right, float bottom, float top, float near, float far)
@@ -156,7 +139,7 @@ PEMatrix PECamera::modelViewOrtho(float left, float right, float bottom, float t
     mat.Elm(3, 3) = 1.0;
     
     this->setMatrixData();
-    return cross(mat, *this);
+    return cross(mat, *m_camera);
 }
 
 void PECamera::move(const P3D &delta)
@@ -221,5 +204,7 @@ void PECamera::yaw(float angle)
     nx = Point3D(X.Elm(0, 0), X.Elm(1, 0), X.Elm(2, 0)).normal();
     m_worldFocus = m_worldPos + (m_worldFocus - m_worldPos)*nz;
 }
+
+
 
 

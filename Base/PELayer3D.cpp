@@ -41,6 +41,7 @@ bool PELayer3D::initWithSize(const Size3D &size)
     m_camera->WorldFocus() = P3DZERO;
     m_camera->WorldPos() = Point3D(0.0, 0.0, m_size.z);
     m_camera->upDirect() = Point3D(0.0, 1.0, 0.0);
+    m_camera->retain();
     
     m_light = PELight::createWithWorld(size);
     

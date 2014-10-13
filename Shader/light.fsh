@@ -79,7 +79,7 @@ mediump vec4 light_color(mediump vec3 p)
             specular = l_specular*m_specular*pow(max(dot(o, normalize(u_cameraPos-p)), 0.0), l_shininess);
         }
     }
-    return (ambient + diffuse + specular*shadowFactor());
+    return (ambient + diffuse*shadowFactor() + specular*shadowFactor());
 }
 
 void main(){

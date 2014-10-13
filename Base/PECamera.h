@@ -10,22 +10,18 @@
 #define __Engine__PECamera__
 
 #include <iostream>
-#include "PEMatrix.h"
-#include "PEDataType.h"
+#include "../Math/PEMath.h"
+#include "PENode.h"
 
-class PECamera:public PEMatrix
+class PECamera:public PENode
 {
 public:
-    static PECamera *getInstance();
-    static void purge();
-    PECamera();
-    ~PECamera();
     static PECamera *create(const P3D &world, const P3D &pos, const P3D &focus, const V3D &up);
     bool init(const P3D &world, const P3D &pos, const P3D &focus, const P3D &up);
     
     P3D &World(){ return m_worldSize; };
-    P3D &WorldPos(){ return  m_worldPos; };
-    P3D &WorldFocus(){ return m_worldFocus;};
+    P3D &WorldPos(){ return m_worldPos; };
+    P3D &WorldFocus(){ return m_worldFocus; };
     P3D &upDirect(){ return m_up; };
     
     void setPerspect(float fovy, float aspect, float zNear, float zFar);
@@ -44,7 +40,13 @@ public:
     void pitch(float angle);
     void yaw(float angle);
     
+protected:
+    PECamera();
+    ~PECamera();
 private:
+    PEMatrix *m_camera;
+    PEMatrix *m_perspect;
+    
     void normalized();
     void setMatrixData();
     
@@ -52,7 +54,6 @@ private:
     P3D m_pos, m_center, m_up;
     V3D nx, ny, nz;
     
-    PEMatrix *m_perspect;
     float m_fovy, m_aspect, m_zNear, m_zFar;
     void setPerspectMatrix();
 };

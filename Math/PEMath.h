@@ -13,6 +13,4 @@
 #include "PEMatrix.h"
 #include "PEVector.h"
 #include "PELine.h"
-
-#include "PECamera.h"
 #endif
