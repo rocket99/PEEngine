@@ -145,7 +145,7 @@ void PERealNode::setLightProjectViewUniform(string uniform)
         if (m_sceneIn->getLightSource()->Fovy() > 0.0) {
             mat = m_sceneIn->getLightSource()->getCamera()->modelViewProject();
         }else{
-            mat = m_sceneIn->getLightSource()->getCamera()->modelViewOrtho(-4.0, 4.0, -4.0, 4.0, -4.0, 4.0);
+            mat = m_sceneIn->getLightSource()->getCamera()->modelViewOrtho(-3.0, 3.0, -3.0, 3.0, -3.0, 3.0);
         }
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
     }

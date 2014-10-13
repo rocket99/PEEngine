@@ -41,17 +41,17 @@ mediump float attenu (mediump vec3 p){
 
 mediump float shadowFactor(){
     mediump float sum = 0.0;
-    sum += textureProj(u_depthTex, v_shadowCoord + vec4(-0.003, -0.003, 0.0, 0.0)) * 0.05;
-    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.0, -0.003, 0.0, 0.0)) *0.1;
-    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.003, -0.003, 0.0, 0.0)) * 0.05;
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(-0.003, -0.003, 0.0, 0.0), 0.000) * 0.05;
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.0, -0.003, 0.0, 0.0), 0.004) *0.1;
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.003, -0.003, 0.0, 0.0), 0.000) * 0.05;
     
-    sum += textureProj(u_depthTex, v_shadowCoord + vec4(-0.003, 0.0, 0.0, 0.0)) *0.1;
-    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.0, 0.0, 0.0, 0.0)) *0.4;
-    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.003, 0.0, 0.0, 0.0)) *0.1;
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(-0.003, 0.0, 0.0, 0.0), 0.004) *0.1;
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.0, 0.0, 0.0, 0.0), 0.004) *0.4;
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.003, 0.0, 0.0, 0.0), 0.004) *0.1;
     
-    sum += textureProj(u_depthTex, v_shadowCoord + vec4(-0.003, 0.003, 0.0, 0.0)) *0.05;
-    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.0, 0.003, 0.0, 0.0)) *0.1;
-    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.003, 0.003, 0.0, 0.0)) *0.05;
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(-0.003, 0.003, 0.0, 0.0), 0.000) *0.05;
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.0, 0.003, 0.0, 0.0), 0.004) *0.1;
+    sum += textureProj(u_depthTex, v_shadowCoord + vec4(0.003, 0.003, 0.0, 0.0), 0.000) *0.05;
 
     return sum;
 }
@@ -76,14 +76,14 @@ mediump vec4 light_color(mediump vec3 p)
         mediump float angle = acos(dot(normalize(l_direction), i));
         if(dot(-i, n) > 0.0 && angle < l_fovy){
             mediump vec3 s = normalize((l_position-p)+(u_cameraPos-p));
-            specular = l_specular*m_specular*pow(max(dot(s, n), 0.0), l_shininess);
+            specular = l_specular*m_specular*pow(max(dot(o, normalize(u_cameraPos-p)), 0.0), l_shininess);
         }
     }
-    return (ambient + diffuse + specular);
+    return (ambient + diffuse + specular*shadowFactor());
 }
 
 void main(){
-    frag_color = m_emission + light_color(v_point)*shadowFactor();// + 0.1*texture(u_texture, v_texCoord);
+    frag_color = m_emission + light_color(v_point);// + 0.1*texture(u_texture, v_texCoord);
     frag_color += texture(u_texture, v_texCoord);
 }
 

@@ -144,9 +144,6 @@ void PELight::removeUniformBlock()
 }
 
 void PELight::setCamera(){
-    if(m_camera != NULL ){
-        return;
-    }
     P3D center = m_position + 1000*m_direction;
     V3D up;
     if(dot(m_direction, Point3D(1.0, 0.0, 0.0)) == 0){
@@ -155,6 +152,13 @@ void PELight::setCamera(){
         up = Point3D(0.0, 1.0, 0.0).normal();
     }else if(dot(m_direction, Point3D(0.0, 0.0, 1.0)) == 0){
         up = Point3D(0.0, 0.0, 1.0).normal();
+    }
+    
+    if(m_camera != NULL ){
+        m_camera->WorldPos() = m_position;
+        m_camera->WorldFocus() = center;
+        m_camera->upDirect() = up;
+        return;
     }
     m_camera = PECamera::create(m_world, m_position, center, up);
     m_camera->setPerspect(2.0*m_fovy, 1.0, 0.01, 300.0);

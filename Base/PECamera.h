@@ -16,7 +16,6 @@
 class PECamera:public PEMatrix
 {
 public:
-    
     static PECamera *getInstance();
     static void purge();
     PECamera();
@@ -37,6 +36,14 @@ public:
     
     PEMatrix modelViewProject();
     PEMatrix modelViewOrtho(float left, float right, float bottom, float top, float front, float back);
+    
+    //运动
+    void move(const P3D &delta);
+    void move(float dx, float dy, float dz);
+    void roll(float angle);
+    void pitch(float angle);
+    void yaw(float angle);
+    
 private:
     void normalized();
     void setMatrixData();

@@ -9,7 +9,7 @@
 #ifndef Engine_PEMacro_h
 #define Engine_PEMacro_h
 
-#define GLOBAL_WORLD_SIZE       Point3D(768, 768, 768)
+#define GLOBAL_WORLD_SIZE       Point3D(1024, 768, 1024)
 
 #define ATTRIB_POINT_LOC        0
 #define ATTRIB_TEXCOORD_LOC     1
