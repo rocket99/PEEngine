@@ -119,4 +119,14 @@ PELine2D PELine2D::verticalLineAtPoint(const P2D &P)
 }
 
 
+#pragma mark PELine3D
+PELine3D::PELine3D(const P3D &oft, const P3D &slope, float t)
+{
+    m_oftx = oft.x; m_ofty = oft.y; m_oftz = oft.z;
+    m_dx = slope.x; m_dy = slope.y; m_dz = slope.z;
+    m_const = t;
+}
+
+
+
 

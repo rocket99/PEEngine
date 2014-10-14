@@ -53,7 +53,7 @@ private:
 class PELine3D
 {
 public:
-    PELine3D(float a, float b, float c, float d);
+    PELine3D(const P3D &oft, const P3D &slope, float t);
     ~PELine3D();
 private:
     float m_oftx, m_ofty, m_oftz;
