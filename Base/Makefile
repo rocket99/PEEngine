@@ -5,7 +5,7 @@ DGL= -DGL_GLEXT_PROTOTYPES
 
 ALL:	PEAutoReleasePool.o PEObject.o PENode.o PERealNode.o PELayer3D.o \
 		PEPolygon.o PERect.o PESphere.o PEPolarSurface.o PEMeshSurface.o \
-		PELight.o PEBox.o PECylinder.o PEFbxModel.o PECamera.o
+		PELight.o PEBox.o PECylinder.o PEFbxModel.o PECamera.o PEPointSet.o
 
 PEAutoReleasePool.o: PEAutoReleasePool.cpp PEAutoReleasePool.h
 	$(CC) -c PEAutoReleasePool.cpp
@@ -37,6 +37,9 @@ PEFbxModel.o: PEFbxModel.cpp PEFbxModel.h
 	$(CC) -c PEFbxModel.cpp $(DGL)
 PECamera.o:PECamera.cpp PECamera.h
 	$(CC) -c PECamera.cpp  $(DGL)
+PEPointSet.o:PEPointSet.cpp PEPointSet.h
+	$(CC) -c PEPointSet.cpp $(DGL)
+
 clean:
 	rm *.o
 

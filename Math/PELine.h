@@ -55,6 +55,7 @@ class PELine3D
 public:
     PELine3D(const P3D &oft, const P3D &slope, float t);
     ~PELine3D();
+
 private:
     float m_oftx, m_ofty, m_oftz;
     float m_dx, m_dy, m_dz;

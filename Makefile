@@ -5,8 +5,8 @@ BPath = Base/
 MPath = Math/
 SPath = Shader/
 BASE =	$(BPath)PEObject.o $(BPath)PENode.o $(BPath)PERealNode.o $(BPath)PEPolygon.o \
-		$(BPath)PERect.o $(BPath)PEMeshSurface.o $(BPath)PEPolarSurface.o \
-		$(BPath)PESphere.o $(BPath)PECylinder.o $(BPath)PECamera.o $(BPath)PEBox.o \
+		$(BPath)PERect.o $(BPath)PEMeshSurface.o $(BPath)PEPolarSurface.o $(BPath)PESphere.o \
+		$(BPath)PECylinder.o $(BPath)PECamera.o $(BPath)PEBox.o $(BPath)PEPointSet.o\
 		$(BPath)PELayer3D.o $(BPath)PELight.o $(BPath)PEAutoReleasePool.o 
 MATH =	$(MPath)PEDataType.o $(MPath)PEMatrix.o $(MPath)PEVector.o $(MPath)PELine.o
 SHADER = $(SPath)PEGLProgram.o $(SPath)PEShaderManager.o $(SPath)PEShaders.o

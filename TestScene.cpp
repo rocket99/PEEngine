@@ -32,8 +32,8 @@ bool TestScene::initWithSize(const Size3D &size)
 	PERect *plane= PERect::create(1000, 1000);
 	plane->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
 	plane->Position() = Point3D(0.0, 0.0, 0.0);
-	plane->Program1() = PEShaderManager::Instance()->getProgramForKey("vertColor");
-//	plane->Program1() = PEShaderManager::Instance()->getProgramForKey("light");
+	plane->Program0() = PEShaderManager::Instance()->getProgramForKey("vertColor");
+	plane->Program1() = PEShaderManager::Instance()->getProgramForKey("light");
 	plane->Color() = ColorRGBA(0.4, 0.4, 0.2, 1.0);
 	plane->Material().ambient = ColorRGBA(0.1, 0.1, 0.1, 1.0);
 	plane->Material().diffuse = ColorRGBA(0.5, 0.5, 0.5, 1.0);
@@ -45,8 +45,8 @@ bool TestScene::initWithSize(const Size3D &size)
 	for(int i=0; i<11; ++i){
 		for(int j=0; j<11; ++j){
 			PESphere *sphere = PESphere::create(40, 40, 40);	
-			sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("vertColor");
-//			sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("light");
+			sphere->Program0() = PEShaderManager::Instance()->getProgramForKey("vertColor");
+			sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("light");
 			sphere->Position() = Point3D(-500+i*100, 200.0, -500+j*100);
 			sphere->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
 			sphere->Color() = ColorRGBA(0.5, 0.4, 0.1, 1.0);
