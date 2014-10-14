@@ -33,7 +33,7 @@ PEPolygon *PEPolygon::createWithPoints(P2D *points, int num)
 
 bool PEPolygon::initWithPoints(P2D *points, int num)
 {
-    if(!PENode::init()){
+    if(!PERealNode::init()){
         return false;
     }
     m_num = num;
@@ -120,14 +120,9 @@ void PEPolygon::drawMethod()
     this->setColorUniform();
     this->setMaterialUniformBlock();
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_data);
-    glDrawArrays(GL_LINE_LOOP, 0, m_num);
+    glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, m_data);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, m_num);
     glDisableVertexAttribArray(0);
     this->deleteMaterialUbo();
 }
 
-PEPolygon *PEPolygon::convexPolygon(P2D *points, int num)
-{
-    
-    return NULL;
-}

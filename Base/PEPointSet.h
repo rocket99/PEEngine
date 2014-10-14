@@ -30,6 +30,8 @@ public:
     PEPolygon *MaxConvexPolygon();
     
     void draw();
+    void drawFBO();
+    void drawMethod();
 private:
     P2D *m_allPoints;
     int m_pointNum;

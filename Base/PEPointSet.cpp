@@ -29,6 +29,12 @@ bool PEPoint2DSet::initwithPoints(P2D *points, int num)
     for(int i=0; i<m_pointNum; ++i){
         m_allPoints[i] = points[i];
     }
+    m_data = new GLfloat[m_pointNum*3];
+    for(int i=0; i<m_pointNum; ++i){
+        m_data[3*i+0] = m_allPoints[i].x;
+        m_data[3*i+1] = m_allPoints[i].y;
+        m_data[3*i+2] = 0.0;
+    }
     return true;
 }
 
@@ -94,9 +100,10 @@ PEPolygon *PEPoint2DSet::MaxConvexPolygon()
     }
     
     tmpPoint.clear();
-    lst  =head;
+    lst = head;
     do {
         tmpPoint.push_back(lst->coord);
+        lst= lst->next;
     }while(lst != head);
     PEPolygon *polygon = PEPolygon::createWithPoints(tmpPoint);
     tmpPoint.clear();
@@ -114,7 +121,6 @@ void PEPoint2DSet::removeInnerPoint(VertNode *head, std::vector<P2D> &points)
             ++ it;
         }
     }
-    //
 }
 void PEPoint2DSet::expandConvex(VertNode *head, std::vector<P2D> &points){
     if (points.size() <= 0 ) {
@@ -141,6 +147,8 @@ void PEPoint2DSet::expandConvex(VertNode *head, std::vector<P2D> &points){
             node->next = lst->next;
             lst->next = node;
             lst = node->next;
+        }else{
+            lst = lst->next;
         }
     }while(lst != head);
 }
@@ -160,5 +168,53 @@ bool PEPoint2DSet::isInnerPoint(VertNode *head, const P2D &point)
 }
 
 
+void PEPoint2DSet::draw()
+{
+    if (!m_isVisible) {
+        return;
+    }
+    this->PENode::draw();
+    m_program = m_program1;
+    if (glIsProgram(m_program) == GL_FALSE) {
+        return;
+    }
+    glUseProgram(m_program);
+    this->setModelViewProjectUniform();
+    this->setLightProjectViewUniform();
+    this->setDepthTexUnifrom();
+    this->drawMethod();
+}
 
+void PEPoint2DSet::drawFBO()
+{
+    if (!m_isVisible) {
+        return;
+    }
+    this->PENode::draw();
+    m_program = m_program0;
+    if (glIsProgram(m_program) == GL_FALSE) {
+        return;
+    }
+    glUseProgram(m_program);
+    this->setLightProjectViewUniform(UNIFORM_MODELPROJECT);
+    this->drawMethod();
+}
+
+void PEPoint2DSet::drawMethod()
+{
+    GLint loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
+    if(loc >= 0){
+        glUniform4f(loc, m_color.r, m_color.g, m_color.b, m_color.a);
+    }
+    this->setSpaceUniform();
+    this->setCameraPosUniform();
+    this->setWorldMatUniform();
+    this->setColorUniform();
+    this->setMaterialUniformBlock();
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, m_data);
+    glDrawArrays(GL_POINTS, 0, m_pointNum);
+    glDisableVertexAttribArray(0);
+    this->deleteMaterialUbo();
+}
 

@@ -30,5 +30,6 @@
 #include "Base/PESphere.h"
 #include "Base/PECylinder.h"
 #include "Base/PEFbxModel.h"
+#include "Base/PEPointSet.h"
 
 #endif

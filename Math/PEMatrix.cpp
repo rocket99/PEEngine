@@ -302,7 +302,7 @@ PEMatrix PEMatrix::inverse()
 		}
 		float f = mat.Elm(i, i);
 		for(int j=0; j<m_col; ++j){
-			mat.Elm(i, j) = mat.Elm(i, j);
+			mat.Elm(i, j) = mat.Elm(i, j)/f;
 			inv.Elm(i, j) = inv.Elm(i, j)/f;
 		}
 		for(int r=0; r<m_row; ++r){

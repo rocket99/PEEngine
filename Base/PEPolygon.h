@@ -25,7 +25,6 @@ public:
     
     virtual void draw();
     virtual void drawFBO();
-    PEPolygon *convexPolygon(P2D *points, int num);
 private:
     float *m_data;
     vector <P2D> m_points;

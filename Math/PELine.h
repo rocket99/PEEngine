@@ -49,11 +49,15 @@ private:
 };
 
 
+// (x+a)/A = (y+b)/B = (z+c)/C = t;
 class PELine3D
 {
 public:
-    
+    PELine3D(float a, float b, float c, float d);
+    ~PELine3D();
 private:
-    
+    float m_oftx, m_ofty, m_oftz;
+    float m_dx, m_dy, m_dz;
+    float m_const;
 };
 #endif /* defined(__Engine__PELine__) */
