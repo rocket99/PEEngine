@@ -124,6 +124,7 @@ void PEScene::setGLPrograms()
 	PEShaderManager::Instance()->setProgramForKey(program, "vertColor");
 	vert = PEShaderReader::readShaderSrc("./Shader/light_Linux.vsh");
 	frag = PEShaderReader::readShaderSrc("./Shader/light_Linux.fsh");
+	PELog("link light GL program");
 	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "light");
 }

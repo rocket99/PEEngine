@@ -15,8 +15,6 @@ uniform mediump mat4 u_modelViewProject;
 uniform mediump mat4 u_lightViewProject;
 uniform mediump mat3 u_rotate;
 
-
-
 void main()
 {
     mat4 B;
