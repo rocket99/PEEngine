@@ -53,8 +53,9 @@ private:
 class PELine3D
 {
 public:
-    PELine3D(const P3D &A, const P3D &B);
-    PELine3D(float dx, float dy, float dz, float oftx, float ofty, float oftz);
+    PELine3D(const P3D &A, const P3D &B);//两点确定一直线
+    PELine3D(const V3D &direct, float dx, float dy, float dz);//一点一个方向向量确定一条直线
+    PELine3D(float dx, float dy, float dz, float oftx, float ofty, float oftz); //参数方程参数定义一条直线
     PELine3D(const PELine3D &line);
     ~PELine3D();
     

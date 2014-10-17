@@ -126,6 +126,12 @@ PELine3D::PELine3D(const P3D &A, const P3D &B)
     m_oft = A;
 }
 
+PELine3D::PELine3D(const V3D &direct, float x, float y, float z)
+{
+    m_vec = direct.normal();
+    m_oft = Point3D(-x, -y, -z);
+}
+
 PELine3D::PELine3D(float dx, float dy, float dz, float oftx, float ofty, float oftz)
 {
     m_oft = Point3D(oftx, ofty, oftz);
