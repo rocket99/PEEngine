@@ -4,10 +4,47 @@ PEPlane::PEPlane(const P3D &origin, const V3D &normal)
 {
 	m_origin = origin;
 	m_normal = normal;
+    m_const = -dot(m_normal, m_origin);
 }
 
 PEPlane::~PEPlane()
 {
 
 }
+
+bool PEPlane::isParalleltoLine(const PELine3D &line)
+{
+    float value = dot(line.Direct(), m_normal);
+    return (value == 0.0);
+}
+
+P3D PEPlane::crossPoint(const PELine3D &line)
+{
+    float t = -(m_const + dot(line.Offset(), m_normal))/dot(line.Direct(), m_normal);
+    return line.Direct()*t + line.Offset();
+}
+
+PELine3D PEPlane::crossLine(const PEPlane &P0)
+{
+    P3D vec = cross(m_normal, P0.m_normal);
+    V3D cc = cross(m_normal, vec);
+    
+    return PELine3D(vec, cc);
+}
+
+bool PEPlane::isPointOnPlane(const P3D &P)
+{
+    return m_const+dot(m_normal, P) == 0.0;
+}
+
+P3D &PEPlane::NormalVector()
+{
+    return m_normal;
+}
+
+const P3D &PEPlane::NormalVector() const
+{
+    return m_normal;
+}
+
 

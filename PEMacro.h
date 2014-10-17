@@ -1,4 +1,3 @@
-ampl/
 //  PEMacro.h
 //  Engine
 //

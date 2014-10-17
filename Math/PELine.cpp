@@ -120,13 +120,88 @@ PELine2D PELine2D::verticalLineAtPoint(const P2D &P)
 
 
 #pragma mark PELine3D
-PELine3D::PELine3D(const P3D &oft, const P3D &slope, float t)
+PELine3D::PELine3D(const P3D &A, const P3D &B)
 {
-    m_oftx = oft.x; m_ofty = oft.y; m_oftz = oft.z;
-    m_dx = slope.x; m_dy = slope.y; m_dz = slope.z;
-    m_const = t;
+    m_vec = (A - B).normal();
+    m_oft = A;
+}
+
+PELine3D::PELine3D(float dx, float dy, float dz, float oftx, float ofty, float oftz)
+{
+    m_oft = Point3D(oftx, ofty, oftz);
+    m_vec = Point3D(dx, dy, dz);
+}
+
+PELine3D::PELine3D(const PELine3D &line)
+{
+    m_oft = line.Offset();
+    m_vec = line.Direct();
+}
+
+PELine3D::~PELine3D()
+{
+    
+}
+
+P3D &PELine3D::Offset()
+{
+    return m_oft;
+}
+V3D &PELine3D::Direct()
+{
+    return m_vec;
 }
 
 
+const P3D &PELine3D::Offset() const
+{
+    return m_oft;
+}
+const V3D &PELine3D::Direct() const
+{
+    return m_vec;
+}
 
 
+bool PELine3D::isParallelToLine(const PELine3D &line)
+{
+    return (m_vec == line.Direct());
+}
+
+bool PELine3D::isPointOnTheLine(const P3D &P)
+{
+    if(m_vec.x*m_vec.y*m_vec.z == 0.0){
+        if (m_vec.x == 0.0){
+            if(P.x != m_oft.x){
+                return false;
+            }
+        }
+        if (m_vec.y == 0.0){
+            if(P.y != m_oft.y){
+                return false;
+            }
+        }
+        if (m_vec.z == 0.0) {
+            if(P.z != m_oft.z){
+                return false;
+            }
+        }
+    }else{
+        P3D tmp = (P-m_oft)/m_vec;
+        if(tmp.x == tmp.y && tmp.x == tmp.z){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    return false;
+}
+
+PELine3D PELine3D::verticalLineAtPoint(const P3D &P)
+{
+    float t = dot(P-m_oft, m_vec) / dot(m_vec, m_vec);
+    P3D verticalPoint = m_vec*t+m_oft;
+    //两点决定一条直线
+    PELine3D line(P, verticalPoint);
+    return line;
+}

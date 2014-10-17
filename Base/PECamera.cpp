@@ -144,8 +144,8 @@ PEMatrix PECamera::modelViewOrtho(float left, float right, float bottom, float t
 
 void PECamera::move(const P3D &delta)
 {
-    m_worldFocus += delta;
-    m_worldPos   += delta;
+    m_worldFocus += delta.x*nx+delta.y*ny+delta.z*nz;
+    m_worldPos   += delta.x*nx+delta.y*ny+delta.z*nz;
     this->normalized();
 }
 
@@ -178,16 +178,17 @@ void PECamera::pitch(float angle)
     PEMatrix mat = PEMatrix::RotationMatrix(nx, angle);
     PEMatrix mat_z(4, 1), mat_y(4, 1);
     mat_z.Elm(0, 0) = nz.x; mat_z.Elm(1, 0) = nz.y;
-    mat_z.Elm(2, 0) = nz.z; mat_z.Elm(3, 0) = 0.0;
+    mat_z.Elm(2, 0) = nz.z; mat_z.Elm(3, 0) = 1.0;
     mat_y.Elm(0, 0) = ny.x; mat_y.Elm(1, 0) = ny.y;
-    mat_y.Elm(2, 0) = ny.z; mat_y.Elm(3, 0) = 0.0;
+    mat_y.Elm(2, 0) = ny.z; mat_y.Elm(3, 0) = 1.0;
     
     PEMatrix Z = cross(mat, mat_z);
     PEMatrix Y = cross(mat, mat_y);
     nz = Point3D(Z.Elm(0, 0), Z.Elm(1, 0), Z.Elm(2, 0)).normal();
     ny = Point3D(Y.Elm(0, 0), Y.Elm(1, 0), Y.Elm(2, 0)).normal();
     m_up = ny;
-    m_worldFocus = m_worldPos + (m_worldFocus-m_worldPos)*nz;
+    m_worldFocus = m_worldPos + (m_worldFocus-m_worldPos).morel()*nz;
+    this->normalized();
 }
 
 void PECamera::yaw(float angle)
@@ -202,7 +203,8 @@ void PECamera::yaw(float angle)
     PEMatrix X = cross(mat, mat_x);
     nz = Point3D(Z.Elm(0, 0), Z.Elm(1, 0), Z.Elm(2, 0)).normal();
     nx = Point3D(X.Elm(0, 0), X.Elm(1, 0), X.Elm(2, 0)).normal();
-    m_worldFocus = m_worldPos + (m_worldFocus - m_worldPos)*nz;
+    m_worldFocus = m_worldPos + (m_worldFocus - m_worldPos).morel()*nz;
+    this->normalized();
 }
 
 

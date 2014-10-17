@@ -49,16 +49,26 @@ private:
 };
 
 
-// (x+a)/A = (y+b)/B = (z+c)/C = t;
+// x = At+oftX; y = Bt+ofty; z = Ct+oftz;
 class PELine3D
 {
 public:
-    PELine3D(const P3D &oft, const P3D &slope, float t);
+    PELine3D(const P3D &A, const P3D &B);
+    PELine3D(float dx, float dy, float dz, float oftx, float ofty, float oftz);
+    PELine3D(const PELine3D &line);
     ~PELine3D();
+    
+    P3D &Offset();
+    V3D &Direct();
 
+    const P3D &Offset() const;
+    const V3D &Direct() const;
+    
+    bool isParallelToLine(const PELine3D &line);
+    bool isPointOnTheLine(const P3D &P);
+    
+    PELine3D verticalLineAtPoint(const P3D &P);
 private:
-    float m_oftx, m_ofty, m_oftz;
-    float m_dx, m_dy, m_dz;
-    float m_const;
+    P3D m_oft, m_vec;
 };
 #endif /* defined(__Engine__PELine__) */
