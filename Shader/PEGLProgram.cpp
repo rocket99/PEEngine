@@ -44,6 +44,7 @@ bool PEGLProgram::initWithVertFragSrc(const char *vert, const char *frag)
 	return true;
 }
 
+#ifdef GL_LINUX
 PEGLProgram *PEGLProgram::create(const char *vert, const char *geometry, const char *frag)
 {
 	PEGLProgram *program = new PEGLProgram();
@@ -122,6 +123,7 @@ bool PEGLProgram::init(const char *vert, const char *tessCtrl, const char *tessE
 	this->linkProgram(vShader, tcShader, tvShader, gShader, fShader);
 	return true;
 }
+#endif
 
 GLint PEGLProgram::compileShader(GLenum type, const char *src)
 {
@@ -177,7 +179,7 @@ void PEGLProgram::linkProgram(GLint vert, GLint frag)
     glDeleteShader(vert);
     glDeleteShader(frag);
 }
-
+#ifdef GL_LINUX
 void PEGLProgram::linkProgram(GLint vShader, GLint gShader, GLint fShader)
 {
     if(vShader == GL_FALSE || gShader == GL_FALSE || fShader == GL_FALSE){
@@ -261,6 +263,7 @@ void PEGLProgram::linkProgram(GLint vShader, GLint tcShader, GLint tvShader, GLi
     glDeleteShader(gShader);
     glDeleteShader(fShader);
 }
+#endif
 
 GLuint PEGLProgram::getProgram()
 {
