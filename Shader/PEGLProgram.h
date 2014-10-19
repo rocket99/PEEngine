@@ -17,6 +17,15 @@ class PEGLProgram
 public:
 	static PEGLProgram *createWithVertFragSrc(const char *vert, const char *frag);
 	bool initWithVertFragSrc(const char *vert, const char *frag);
+
+	static PEGLProgram *create(const char *vert, const char * geometry, const char *frag);
+	bool init(const char *vert, const char *geometry, const char *frag);
+
+	static PEGLProgram *create(const char *vert, const char *tessCtrl, const char *tessEva, 
+								const char *geometry const char *frag);
+	bool init(const char *vert, const char *tessCtrl, const char *tessEva,
+				const char *geometry, const char *frag);
+
     PEGLProgram();
     ~PEGLProgram();
     
@@ -26,6 +35,8 @@ private:
     
     GLint compileShader(GLenum type, const char *src);
     void linkProgram(GLint vert, GLint frag);
+	void linkProgram(GLint vShader, GLint gShader, GLint fShader);
+	void linkProgram(GLint vShader, GLint tcShader, GLint tvShader, GLint gShader, GLint fShader);
 };
 
 #endif /* defined(__Engine__PEGLProgram__) */

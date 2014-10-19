@@ -47,7 +47,7 @@ bool TestScene::initWithSize(const Size3D &size)
 			PESphere *sphere = PESphere::create(40, 40, 40);	
 			sphere->Program0() = PEShaderManager::Instance()->getProgramForKey("vertColor");
 			sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("light");
-			sphere->Position() = Point3D(-500+i*200, 100.0, -500+j*200);
+			sphere->Position() = Point3D(-400+i*200, 100.0, -400+j*200);
 			sphere->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
 			sphere->Color() = ColorRGBA(0.5, 0.4, 0.1, 1.0);
 			sphere->Material().emission = ColorRGBA(0.2, 0.4, 0.6, 1.0);
