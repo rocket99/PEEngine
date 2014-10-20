@@ -1,26 +1,26 @@
 //
-//  PEPolygon.h
+//  PEPolygonNode.h
 //  Engine
 //
 //  Created by rocket99 on 14-8-22.
 //  Copyright (c) 2014年 rocket99. All rights reserved.
 //
 
-#ifndef __Engine__PEPolygon__
-#define __Engine__PEPolygon__
+#ifndef __Engine__PEPolygonNode__
+#define __Engine__PEPolygonNode__
 
 #include <iostream>
 #include "PERealNode.h"
 
-class PEPolygon:public PERealNode
+class PEPolygonNode:public PERealNode
 {
 public:
-    PEPolygon();
-    ~PEPolygon();
-    static PEPolygon *createWithPoints(P2D *points, int num);
+    PEPolygonNode();
+    ~PEPolygonNode();
+    static PEPolygonNode *createWithPoints(P2D *points, int num);
     bool initWithPoints(P2D *points, int num);
     
-    static PEPolygon *createWithPoints(const vector<P2D> &points);
+    static PEPolygonNode *createWithPoints(const vector<P2D> &points);
     bool initWithPoints(const vector<P2D> &points);
     
     virtual void draw();
@@ -31,4 +31,4 @@ private:
     int m_num;
     void drawMethod();
 };
-#endif /* defined(__Engine__PEPolygon__) */
+#endif /* defined(__Engine__PEPolygonNode__) */

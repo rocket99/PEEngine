@@ -38,7 +38,7 @@ bool PEPoint2DSet::initwithPoints(P2D *points, int num)
     return true;
 }
 
-PEPolygon *PEPoint2DSet::MaxConvexPolygon()
+PEPolygonNode *PEPoint2DSet::MaxConvexPolygon()
 {
     if(m_pointNum < 3){
         return NULL;
@@ -105,7 +105,7 @@ PEPolygon *PEPoint2DSet::MaxConvexPolygon()
         tmpPoint.push_back(lst->coord);
         lst= lst->next;
     }while(lst != head);
-    PEPolygon *polygon = PEPolygon::createWithPoints(tmpPoint);
+    PEPolygonNode *polygon = PEPolygonNode::createWithPoints(tmpPoint);
     tmpPoint.clear();
     return polygon;
 }

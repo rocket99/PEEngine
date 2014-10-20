@@ -1,29 +1,29 @@
 //
-//  PEPolygon.cpp
+//  PEPolygonNode.cpp
 //  Engine
 //
 //  Created by rocket99 on 14-8-22.
 //  Copyright (c) 2014年 rocket99. All rights reserved.
 //
 
-#include "PEPolygon.h"
+#include "PEPolygonNode.h"
 #include "../Math/PEMath.h"
 
 
-PEPolygon::PEPolygon():
+PEPolygonNode::PEPolygonNode():
 m_data(NULL), m_num(0)
 {
     
 }
 
-PEPolygon::~PEPolygon()
+PEPolygonNode::~PEPolygonNode()
 {
     delete [] m_data;
 }
 
-PEPolygon *PEPolygon::createWithPoints(P2D *points, int num)
+PEPolygonNode *PEPolygonNode::createWithPoints(P2D *points, int num)
 {
-    PEPolygon *polygon = new PEPolygon;
+    PEPolygonNode *polygon = new PEPolygonNode;
     if(polygon->initWithPoints(points, num)){
         polygon->autoRelease();
         return polygon;
@@ -31,7 +31,7 @@ PEPolygon *PEPolygon::createWithPoints(P2D *points, int num)
     return polygon;
 }
 
-bool PEPolygon::initWithPoints(P2D *points, int num)
+bool PEPolygonNode::initWithPoints(P2D *points, int num)
 {
     if(!PERealNode::init()){
         return false;
@@ -49,9 +49,9 @@ bool PEPolygon::initWithPoints(P2D *points, int num)
     return true;
 }
 
-PEPolygon *PEPolygon::createWithPoints(const vector<P2D> &points)
+PEPolygonNode *PEPolygonNode::createWithPoints(const vector<P2D> &points)
 {
-    PEPolygon *poly = new PEPolygon;
+    PEPolygonNode *poly = new PEPolygonNode;
     if(poly->initWithPoints(points)){
         poly->autoRelease();
         return poly;
@@ -60,7 +60,7 @@ PEPolygon *PEPolygon::createWithPoints(const vector<P2D> &points)
     return NULL;
 }
 
-bool PEPolygon::initWithPoints(const vector<P2D> &points)
+bool PEPolygonNode::initWithPoints(const vector<P2D> &points)
 {
     if(!PERealNode::init()){
         return false;
@@ -76,7 +76,7 @@ bool PEPolygon::initWithPoints(const vector<P2D> &points)
     return true;
 }
 
-void PEPolygon::draw()
+void PEPolygonNode::draw()
 {
     if (!m_isVisible) {
         return;
@@ -93,7 +93,7 @@ void PEPolygon::draw()
     this->drawMethod();
 }
 
-void PEPolygon::drawFBO()
+void PEPolygonNode::drawFBO()
 {
     if (!m_isVisible) {
         return;
@@ -108,7 +108,7 @@ void PEPolygon::drawFBO()
     this->drawMethod();
 }
 
-void PEPolygon::drawMethod()
+void PEPolygonNode::drawMethod()
 {
     GLint loc = glGetUniformLocation(m_program, UNIFORM_COLOR);
     if(loc >= 0){

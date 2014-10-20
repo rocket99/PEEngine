@@ -39,7 +39,7 @@ using namespace std;
 #include <OpenGLES/ES3/glext.h>
 #endif
 
-#define GL_LINUX
+//#define GL_LINUX
 #ifdef  GL_LINUX
 #include <GL/gl.h>
 #include <GL/glext.h>

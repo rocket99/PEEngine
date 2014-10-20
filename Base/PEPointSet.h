@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include "../PEPrefix.h"
 #include "../Math/PEMath.h"
-#include "PEPolygon.h"
+#include "PEPolygonNode.h"
 
 class PEPoint2DSet:public PERealNode
 {
@@ -27,7 +27,7 @@ public:
     static PEPoint2DSet *createWithPoints(P2D *points, int num);
     bool initwithPoints(P2D *points, int num);
     
-    PEPolygon *MaxConvexPolygon();
+    PEPolygonNode *MaxConvexPolygon();
     
     void draw();
     void drawFBO();

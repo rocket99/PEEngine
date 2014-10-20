@@ -47,7 +47,11 @@ private:
     float m_Px, m_Py, m_Pc; //m_Px*x + m_Py*y + m_Pc = 0.0;
     P2D m_A, m_B;
 };
-
+//线段 2D
+class PELine2DSeg:public PELine2D
+{
+    
+};
 
 // x = At+oftX; y = Bt+ofty; z = Ct+oftz;
 class PELine3D
