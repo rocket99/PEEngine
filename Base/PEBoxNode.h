@@ -1,13 +1,13 @@
 //
-//  PEBox.h
+//  PEBoxNode.h
 //  Engine
 //
 //  Created by rocket99 on 14-8-27.
 //  Copyright (c) 2014年 rocket99. All rights reserved.
 //
 
-#ifndef __Engine__PEBox__
-#define __Engine__PEBox__
+#ifndef __Engine__PEBoxNode__
+#define __Engine__PEBoxNode__
 
 #include <iostream>
 #include "PERect.h"
@@ -19,13 +19,13 @@
 #define BOX_TOP     "top"
 #define BOX_BOTTOM  "bottom"
 
-class PEBox:public PERealNode
+class PEBoxNode:public PERealNode
 {
 public:
-    PEBox();
-    ~PEBox();
+    PEBoxNode();
+    ~PEBoxNode();
     
-    static PEBox *createWithSize(const Size3D &size);
+    static PEBoxNode *createWithSize(const Size3D &size);
     bool initWithSize(const Size3D &size);
     PERect *getBoxSurfaceByName(string name);
     
@@ -38,4 +38,4 @@ public:
 private:
     Size3D m_size;
 };
-#endif /* defined(__Engine__PEBox__) */
+#endif /* defined(__Engine__PEBoxNode__) */

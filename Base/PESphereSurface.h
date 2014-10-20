@@ -1,23 +1,23 @@
 //
-//  PESphere.h
+//  PESphereSurface.h
 //  Engine
 //
 //  Created by rocket99 on 14-9-1.
 //  Copyright (c) 2014年 rocket99. All rights reserved.
 //
 
-#ifndef __Engine__PESphere__
-#define __Engine__PESphere__
+#ifndef __Engine__PESphereSurface__
+#define __Engine__PESphereSurface__
 
 #include <iostream>
 #include "PEMeshSurface.h"
 
-class PESphere:public PEMeshSurface
+class PESphereSurface:public PEMeshSurface
 {
 public:
-    PESphere();
-    ~PESphere();
-    static PESphere *create(int row, int col, float radius);
+    PESphereSurface();
+    ~PESphereSurface();
+    static PESphereSurface *create(int row, int col, float radius);
     bool initWithRadius(int row, int col, int radius);
 private:
     float m_radius;
@@ -26,4 +26,4 @@ private:
     void setNormalData();
     void setCoordData();
 };
-#endif /* defined(__Engine__PESphere__) */
+#endif /* defined(__Engine__PESphereSurface__) */

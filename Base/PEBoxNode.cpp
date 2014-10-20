@@ -1,22 +1,22 @@
 //
-//  PEBox.cpp
+//  PEBoxNode.cpp
 //  Engine
 //
 //  Created by rocket99 on 14-8-27.
 //  Copyright (c) 2014年 rocket99. All rights reserved.
 //
 
-#include "PEBox.h"
+#include "PEBoxNode.h"
 
-PEBox::PEBox(){}
+PEBoxNode::PEBoxNode(){}
 
-PEBox::~PEBox(){
+PEBoxNode::~PEBoxNode(){
 
 }
 
-PEBox *PEBox::createWithSize(const Size3D &size)
+PEBoxNode *PEBoxNode::createWithSize(const Size3D &size)
 {
-    PEBox *box = new PEBox();
+    PEBoxNode *box = new PEBoxNode();
     if(box->initWithSize(size)){
         box->autoRelease();
         return box;
@@ -25,7 +25,7 @@ PEBox *PEBox::createWithSize(const Size3D &size)
     return NULL;
 }
 
-bool PEBox::initWithSize(const Size3D &size)
+bool PEBoxNode::initWithSize(const Size3D &size)
 {
     if(!PENode::init()){
         return false;
@@ -64,12 +64,12 @@ bool PEBox::initWithSize(const Size3D &size)
     return true;
 }
 
-PERect *PEBox::getBoxSurfaceByName(string name)
+PERect *PEBoxNode::getBoxSurfaceByName(string name)
 {
     return static_cast<PERect *>(this->getChildByName(name));
 }
 
-void PEBox::setGLProgram0(GLuint program)
+void PEBoxNode::setGLProgram0(GLuint program)
 {
     m_program0 = program;
     for (int i=0; i<m_children.size(); ++i) {
@@ -77,7 +77,7 @@ void PEBox::setGLProgram0(GLuint program)
     }
 }
 
-void PEBox::setGLProgram1(GLuint program)
+void PEBoxNode::setGLProgram1(GLuint program)
 {
     m_program1 = program;
     for (int i=0; i<m_children.size(); ++i) {
@@ -85,11 +85,11 @@ void PEBox::setGLProgram1(GLuint program)
     }
 }
 
-void PEBox::drawFBO(){
+void PEBoxNode::drawFBO(){
     PENode::drawFBO();
 }
 
-void PEBox::draw(){
+void PEBoxNode::draw(){
 //    glEnable(GL_BLEND);
 //    glBlendFunc(GL_SRC_COLOR, GL_DST_COLOR);
     PENode::draw();

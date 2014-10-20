@@ -1,26 +1,26 @@
 //
-//  PESphere.cpp
+//  PESphereSurface.cpp
 //  Engine
 //
 //  Created by rocket99 on 14-9-1.
 //  Copyright (c) 2014年 rocket99. All rights reserved.
 //
 
-#include "PESphere.h"
+#include "PESphereSurface.h"
 
-PESphere::PESphere()
+PESphereSurface::PESphereSurface()
 {
     
 }
 
-PESphere::~PESphere()
+PESphereSurface::~PESphereSurface()
 {
     
 }
 
-PESphere *PESphere::create(int row, int col, float radius)
+PESphereSurface *PESphereSurface::create(int row, int col, float radius)
 {
-    PESphere *sphere = new PESphere;
+    PESphereSurface *sphere = new PESphereSurface;
     if(sphere->initWithRadius(row, col, radius)){
         sphere->autoRelease();
         return sphere;
@@ -29,7 +29,7 @@ PESphere *PESphere::create(int row, int col, float radius)
     return NULL;
 }
 
-bool PESphere::initWithRadius(int row, int col, int radius)
+bool PESphereSurface::initWithRadius(int row, int col, int radius)
 {
     if(!PEMeshSurface::initWithSize(row, col)){
         return false;
@@ -41,7 +41,7 @@ bool PESphere::initWithRadius(int row, int col, int radius)
     return true;
 }
 
-void PESphere::setCoordData()
+void PESphereSurface::setCoordData()
 {
     for (int i=0; i<=m_row; ++i) {
         for (int j=0; j<=m_col; ++j) {
@@ -52,7 +52,7 @@ void PESphere::setCoordData()
     }
 }
 
-void PESphere::setNormalData()
+void PESphereSurface::setNormalData()
 {
     for (int i=0; i<=m_row; ++i) {
         for (int j=0; j<=m_col; ++j) {

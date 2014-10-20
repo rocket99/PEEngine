@@ -19,6 +19,7 @@ public:
     bool isPointOnPlane(const P3D &P);
     bool isPointOnPlane(const P3D &P) const;
     
+    PELine3D reflectLine(const PELine3D &line);
 private:
     P3D m_origin;
     V3D m_normal;
