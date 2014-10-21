@@ -17,7 +17,8 @@ m_position(Point3D(0.0, 0.0, 0.0)),
 m_worldSize(GLOBAL_WORLD_SIZE),
 m_worldPos(P3DZERO),
 m_scale(Point3D(1.0, 1.0, 1.0)),
-m_locEuler(P3DZERO)
+m_locEuler(P3DZERO),
+m_blur(false)
 {
     m_children.clear();
 }

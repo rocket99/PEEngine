@@ -21,7 +21,7 @@
 //base node
 #include "Base/PENode.h"
 #include "Base/PELayer3D.h"
-#include "Base/PEPolygon.h"
+#include "Base/PEPolygonNode.h"
 #include "Base/PERect.h"
 #include "Base/PEBoxNode.h"
 #include "Base/PESphereSurface.h"

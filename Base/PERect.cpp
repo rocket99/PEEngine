@@ -69,6 +69,23 @@ void PERect::draw()
     this->setDepthTexUnifrom();
     this->setTextureUniform();
     this->drawFunc();
+    
+  /*  if(m_blur){
+        for (int i=9; i>0; --i) {
+            m_blurPos[i] = m_blurPos[i-1];
+        }
+        m_blurPos[0] = m_position;
+        for (int i=0; i<10; ++i) {
+            m_position = m_blurPos[i];
+            glUseProgram(m_program);
+            this->setModelViewProjectUniform();
+            this->setLightProjectViewUniform();
+            this->setDepthTexUnifrom();
+            this->setTextureUniform();
+            this->drawFunc();
+        }
+        m_position = m_blurPos[0];
+    }*/
 }
 
 void PERect::drawFBO()

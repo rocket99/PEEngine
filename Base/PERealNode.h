@@ -53,7 +53,6 @@ public:
     
     Color4F &Color();
     GLuint &Texture();
-    
 protected:
     GLuint m_program0, m_program1;
     GLuint m_program;

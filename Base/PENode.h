@@ -55,8 +55,6 @@ public:
     bool &Visible();
     P3D &Position();
     P3D &World();
-//    V3D &RotateAxis();
-//    float &RotateAngle();
     
     void Rotate(V3D axis, float angle);
     void setRotate(P3D EulerAngle, EulerOrder order);
@@ -70,6 +68,9 @@ public:
     
     virtual void update();
     
+    void blurMotionEnable(bool enable){
+        m_blur = enable;
+    }
 protected:
     PENode();
     ~PENode();
@@ -89,6 +90,9 @@ protected:
 
     PENode *m_parent;
     std::vector<PENode *> m_children;
+    
+    bool m_blur;
+    P3D m_blurPos[10];
 };
 #endif /* defined(__Engine__PENode__) */
 

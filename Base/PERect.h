@@ -10,10 +10,10 @@
 #define __Engine__PERect__
 
 #include <iostream>
-#include "PEPolygon.h"
+#include "PEPolygonNode.h"
 #include "../PETexture.h"
 
-class PERect:public PEPolygon
+class PERect:public PEPolygonNode
 {
 public:
     PERect();
@@ -30,3 +30,5 @@ protected:
 };
 
 #endif /* defined(__Engine__PERect__) */
+
+
