@@ -80,14 +80,14 @@ P2D operator / (const P2D &A, float scalar)
 	return result;
 }
 
-bool P2D::operator == (const P2D &P)
+bool operator == (const P2D &A, const P2D &B)
 {
-	return (x==P.x && y==P.y);
+	return (A.x==B.x && A.y==B.y);
 }
 
-bool P2D::operator != (const P2D &P)
+bool operator != (const P2D &A, const P2D &B)
 {
-	return (x!=P.x || y!=P.y);
+	return (A.x!=B.x || A.y!=B.y);
 }
 
 float dot(P2D &A, P2D &B)

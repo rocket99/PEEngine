@@ -11,6 +11,7 @@
 PEPolygon::PEPolygon(P2D *points, int num)
 {
     if(num < 3){return;}
+    
     P2D left = points[0];
     P2D top = points[0];
     P2D right = points[0];
@@ -56,6 +57,72 @@ PEPolygon::PEPolygon(P2D *points, int num)
     lst->next = head;
     std::vector<P2D> tmpPoint;
     for (int i=0; i<num; ++i) {
+        if(points[i] != left && points[i] != top &&
+           points[i] != right && points[i] != bottom)
+            tmpPoint.push_back(points[i]);
+    }
+    
+    while (tmpPoint.size() > 0) {
+        this->removeInnerPoint(head, tmpPoint);
+        this->expandConvex(head, tmpPoint);
+    }
+    
+    lst = head;
+    do {
+        m_points.push_back(lst->coord);
+        lst= lst->next;
+    }while(lst != head);
+    
+    this->initVertList();
+}
+
+PEPolygon::PEPolygon(const std::vector<P2D> &points)
+{
+    P2D left = points[0];
+    P2D top = points[0];
+    P2D right = points[0];
+    P2D bottom = points[0];
+    for (int i=1; i<points.size(); ++i) {
+        if (points[i].x < left.x) {
+            left = points[i];
+        }
+        if (points[i].y > top.y) {
+            top = points[i];
+        }
+        if (points[i].x > right.x) {
+            right = points[i];
+        }
+        if (points[i].y < bottom.y) {
+            bottom = points[i];
+        }
+    }
+    VertNode * head = new VertNode;
+    head->coord = left;
+    VertNode *lst = head;
+    if(left != top){
+        VertNode *lst0 = new VertNode;
+        lst0->coord = top;
+        lst->next = lst0;
+        lst = lst0;
+    }
+    if (top != right) {
+        VertNode *lst0 = new VertNode;
+        lst0->coord = right;
+        lst->next = lst0;
+        lst = lst0;
+    }
+    if (right != bottom) {
+        if (bottom != left) {
+            VertNode *lst0 = new VertNode;
+            lst0->coord = bottom;
+            lst->next = lst0;
+            lst = lst0;
+        }
+    }
+    
+    lst->next = head;
+    std::vector<P2D> tmpPoint;
+    for (int i=0; i<points.size(); ++i) {
         if(points[i] != left && points[i] != top &&
            points[i] != right && points[i] != bottom)
             tmpPoint.push_back(points[i]);
@@ -143,6 +210,11 @@ bool PEPolygon::isInnerPoint(VertNode *head, const P2D &point)
         }
     }while(lst != head);
     return true;
+}
+
+bool PEPolygon::isInnerPoint(const P2D &P)
+{
+    return this->isInnerPoint(m_list, P);
 }
 
 vector<P2D> & PEPolygon::Points()
@@ -252,6 +324,18 @@ P2D PEPolygon::gravityCenter()
     }
     return sum/area;
 }
+
+void PEPolygon::operator = (const PEPolygon &polygon)
+{
+    m_points = polygon.GetPoints();
+    this->initVertList();
+}
+
+int PEPolygon::verticeNum()
+{
+    return (int)m_points.size();
+}
+
 //PEPolygon PEPolygon::minus(const PEPolygon &poly)
 //{
 //    

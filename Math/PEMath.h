@@ -13,4 +13,7 @@
 #include "PEMatrix.h"
 #include "PEVector.h"
 #include "PELine.h"
+#include "PEPolygon.h"
+#include "PESphere.h"
+
 #endif

@@ -30,8 +30,8 @@ typedef struct PEPoint2D
     float morel();
 	float arg();
 	float degree();
-	bool operator == (const struct PEPoint2D &P);
-	bool operator != (const struct PEPoint2D &P);
+	friend bool operator == (const struct PEPoint2D &A, const struct PEPoint2D &B);
+	friend bool operator != (const struct PEPoint2D &A, const struct PEPoint2D &B);
 
 	void normalized();
 	struct PEPoint2D normal() const;

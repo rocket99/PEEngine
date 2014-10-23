@@ -18,6 +18,7 @@ class PEPolygon
 public:
     PEPolygon():m_list(NULL){m_points.clear();};
     PEPolygon(P2D *points, int num);
+    PEPolygon(const std::vector<P2D> &points);
     PEPolygon(const PEPolygon &polygon);
     ~PEPolygon();
     
@@ -29,11 +30,15 @@ public:
     void addPoint(const P2D &P);
     void addPoint(const P2D &P, int idx);
     bool isConvexOrNot();
+    bool isInnerPoint(const P2D &P);
     
     PEPolygon minus(const PEPolygon &ploy);
     
     float area();//面积
     P2D gravityCenter();
+    int verticeNum();
+    
+    void operator = (const PEPolygon &polygon);
 private:
     vector<P2D> m_points;
     
@@ -42,6 +47,7 @@ private:
         struct vert *next;
         struct vert *prev;
     } VertNode;
+    
     void expandConvex(VertNode *head, std::vector<P2D> &points);
     void removeInnerPoint(VertNode *head, std::vector<P2D> &points);
     bool isInnerPoint(VertNode *head, const P2D &point);

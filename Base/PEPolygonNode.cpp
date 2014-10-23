@@ -37,15 +37,9 @@ bool PEPolygonNode::initWithPoints(P2D *points, int num)
         return false;
     }
     m_num = num;
-    for(int i=0; i<m_num; ++i){
-        m_points.push_back(points[i]);
-    }
-    m_data = (float *)malloc(sizeof(float)*m_num*3);
-    for(int i=0; i<m_num; ++i){
-        m_data[3*i+0] = m_points[i].x;
-        m_data[3*i+1] = m_points[i].y;
-        m_data[3*i+2] = 0.0;
-    }
+    PEPolygon polygon(points, num);
+    m_polygon = polygon;
+    this->initData();
     return true;
 }
 
@@ -65,15 +59,46 @@ bool PEPolygonNode::initWithPoints(const vector<P2D> &points)
     if(!PERealNode::init()){
         return false;
     }
-    m_num = (int)points.size();
-    m_points = points;
+    PEPolygon polygon(points);
+    m_polygon = polygon;
+    m_num = m_polygon.verticeNum();
+    this->initData();
+    return true;
+}
+
+PEPolygonNode *PEPolygonNode::create(const PEPolygon &polygon)
+{
+    PEPolygonNode *node = new PEPolygonNode;
+    if(node->initWithPolygon(polygon)){
+        node->autoRelease();
+        return node;
+    }
+    delete node;
+    return NULL;
+}
+
+bool PEPolygonNode::initWithPolygon(const PEPolygon &polygon)
+{
+    if(!PERealNode::init()){
+        return false;
+    }
+    m_polygon = polygon;
+    m_num = m_polygon.verticeNum();
+    this->initData();
+    return true;
+}
+
+
+void PEPolygonNode::initData()
+{
     m_data = (float *)malloc(sizeof(float)*m_num*3);
+    vector<P2D> points = m_polygon.GetPoints();
     for(int i=0; i<m_num; ++i){
-        m_data[3*i+0] = m_points[i].x;
-        m_data[3*i+1] = m_points[i].y;
+        m_data[3*i+0] = points[i].x;
+        m_data[3*i+1] = points[i].y;
         m_data[3*i+2] = 0.0;
     }
-    return true;
+
 }
 
 void PEPolygonNode::draw()

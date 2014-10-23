@@ -10,6 +10,7 @@
 #define __Engine__PEPolygonNode__
 
 #include <iostream>
+#include "PEMath.h"
 #include "PERealNode.h"
 
 class PEPolygonNode:public PERealNode
@@ -23,11 +24,18 @@ public:
     static PEPolygonNode *createWithPoints(const vector<P2D> &points);
     bool initWithPoints(const vector<P2D> &points);
     
+    static PEPolygonNode *create(const PEPolygon &polygon);
+    bool initWithPolygon(const PEPolygon &polygon);
     virtual void draw();
     virtual void drawFBO();
+    
+    PEPolygon &Polygon(){
+        return m_polygon;
+    }
 private:
     float *m_data;
-    vector <P2D> m_points;
+    void initData();
+    PEPolygon m_polygon;
     int m_num;
     void drawMethod();
 };
