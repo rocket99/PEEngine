@@ -31,6 +31,9 @@ public:
     bool isConvexOrNot();
     
     PEPolygon minus(const PEPolygon &ploy);
+    
+    float area();//面积
+    P2D gravityCenter();
 private:
     vector<P2D> m_points;
     

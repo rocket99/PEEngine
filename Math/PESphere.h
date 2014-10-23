@@ -21,6 +21,8 @@ public:
     PESphere(float radius);
     PESphere(float a, float b, float c);
     ~PESphere();
+    
+    P3D *surfaceVertices(int row, int column);
 protected:
     float m_radius_x, m_radius_y, m_radius_z;
 };

@@ -210,6 +210,18 @@ void P2D::display()
     printf("(%.3f, %.3f)\n", x, y);
 }
 
+float areaOfTriangle(P2D &A, P2D &B, P2D &C)
+{
+    V2D AB = B-A;
+    V2D AC = C-A;
+    return AB.x*AC.y - AB.y*AC.x;
+}
+
+P2D gravityCenterOfTriangle(const P2D &A, const P2D &B, const P2D &C)
+{
+    return A+2.0*(0.5*(B+C)-A)/3.0;
+}
+
 #pragma mark PEPoint3D implementation
 
 P3D Point3D(float x , float y, float z)
@@ -349,8 +361,8 @@ void P3D::display()
 
 void Color4F::operator = (const Color4F &color)
 {
-    r = color.r;    g = color.g;
-    b = color.b;    a = color.a;
+    r = color.r; g = color.g;
+    b = color.b; a = color.a;
 }
 
 Color4F ColorRGBA(float red, float green, float blue, float alpha)

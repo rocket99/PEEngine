@@ -227,7 +227,33 @@ void PEPolygon::deleteVertList()
     }
 }
 
+float PEPolygon::area()
+{
+    float sum = 0.0f;
+    P2D A = m_list->coord;
+    VertNode *lst = m_list->next;
+    while (lst->next != m_list) {
+        sum += areaOfTriangle(A, lst->next->coord, lst->next->next->coord);
+    }
+    return sum;
+}
+
+P2D PEPolygon::gravityCenter()
+{
+    float area = 0.0;
+    P2D sum = Point2D(0.0, 0.0);
+    P2D A = m_list->coord;
+    VertNode *lst = m_list->next;
+    while (lst->next != m_list) {
+        P2D P = gravityCenterOfTriangle(A, lst->next->coord, lst->next->next->coord);
+        float a = areaOfTriangle(A, lst->next->coord, lst->next->next->coord);
+        area += a;
+        sum += a*P;
+    }
+    return sum/area;
+}
 //PEPolygon PEPolygon::minus(const PEPolygon &poly)
 //{
 //    
 //}
+

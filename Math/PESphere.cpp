@@ -30,5 +30,18 @@ PESphere::~PESphere()
     
 }
 
+P3D *PESphere::surfaceVertices(int row, int column)
+{
+    if(row <= 0 || column == 0){
+        return NULL;
+    }
+    P3D *vertices = new P3D[(row+1)*(column+1)];
+    for (int i=0; i<=row; ++i) {
+        for (int j=0; j<=column; ++j) {
+            
+        }
+    }
+    return vertices;
+}
 
 

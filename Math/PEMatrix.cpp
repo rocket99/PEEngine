@@ -458,7 +458,6 @@ float *PEMatrix::getData()
     return m_data;
 }
 
-
 PEMatrix PEMatrix::RotationMatrix(const V3D &axis, float angle)
 {
     PEMatrix mat(4, 4);
