@@ -3,7 +3,7 @@
 //
 
 #include "PEScene.h"
-#include "png.h"
+#include <png.h>
 
 PEScene::PEScene(){
 	m_width = 0;
@@ -47,6 +47,10 @@ bool PEScene::initWithSize(string name, int width, int height)
 	this->setGLPrograms();
 	glEnable(GL_DEPTH_TEST);
 	m_scene = TestScene::create(GLOBAL_WORLD_SIZE);
+
+	m_event = new PEKeyboardEvent(GLFW_KEY_W);
+	m_event->setSceneIn(m_pWindow);
+	m_event->setPressEndFunction(std::bind(&PEScene::saveViewToPicture, this));
 	return true;
 }
 
@@ -57,6 +61,8 @@ void PEScene::start()
 		this->draw();
 		glfwSwapBuffers(m_pWindow);
 		glfwPollEvents();
+		this->checkKeyboardInput();
+
 	}
 }
 
@@ -83,9 +89,7 @@ void PEScene::drawFBO()
 
 void PEScene::checkKeyboardInput()
 {
-	if(glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS){
-		
-	}
+	m_event->check();
 }
 int PEScene::Width()
 {
@@ -159,6 +163,7 @@ void PEScene::setGLPrograms()
 
 void PEScene::saveViewToPicture()
 {
+	PELog("save current view!");
 	GLubyte *data = new GLubyte[m_width*m_height*4];
 	memset(data, 0, sizeof(char)*4*m_width*m_height);
 	glReadPixels(0, 0, m_width, m_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -186,13 +191,13 @@ void PEScene::saveViewToPicture()
 	for(int i=0; i<m_height; ++i){
 		row_pointers[i] = (png_bytep)malloc(sizeof(unsigned char)*m_width*4);
 		for(int j=0; j<4*m_width; j+=4){
-			row_pointers[i][j+0] = data[i*4*m_width+j];
-			row_pointers[i][j+1] = data[i*4*m_width+j+1];
-			row_pointers[i][j+2] = data[i*4*m_width+j+2];
-			row_pointers[i][j+3] = data[i*4*m_width+j+3];
+			row_pointers[i][j+0] = data[(m_height-1-i)*4*m_width+j];
+			row_pointers[i][j+1] = data[(m_height-1-i)*4*m_width+j+1];
+			row_pointers[i][j+2] = data[(m_height-1-i)*4*m_width+j+2];
+			row_pointers[i][j+3] = data[(m_height-1-i)*4*m_width+j+3];
 		}
 	}
-	png_wirte_image(png_ptr, row_pointers);
+	png_write_image(png_ptr, row_pointers);
 	if(setjmp(png_jmpbuf(png_ptr))){
 		printf("write png file error during end of write!\n");
 		return;
@@ -202,6 +207,7 @@ void PEScene::saveViewToPicture()
 	}
 	free(row_pointers);
 	fclose(fp);
+	delete [] data; 
 }
 
 

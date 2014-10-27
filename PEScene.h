@@ -27,6 +27,8 @@ private:
 	TestScene *m_scene;
 	void saveViewToPicture();
 	void checkKeyboardInput();
+	PEKeyboardEvent *m_event;
+
 };
 
 

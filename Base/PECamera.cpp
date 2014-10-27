@@ -151,8 +151,8 @@ void PECamera::move(const P3D &delta)
 
 void PECamera::move(float dx, float dy, float dz)
 {
-    m_worldPos += Point3D(dx, dy, dz);
-    m_worldFocus += Point3D(dx, dy, dz);
+    m_worldPos += dx*nx + dy*ny + dz*nz;
+    m_worldFocus += dx*nx + dy*ny + dz*nz;
     this->normalized();
 }
 
@@ -207,6 +207,34 @@ void PECamera::yaw(float angle)
     this->normalized();
 }
 
+void PECamera::moveLeft()
+{
+	this->move(Point3D(-1.0, 0.0, 0.0));
+}
 
+void PECamera::moveRight()
+{
+	this->move(Point3D(1.0, 0.0, 0.0));
+}
+
+void PECamera::moveUp()
+{
+	this->move(0.0, 1.0, 0.0);
+}
+
+void PECamera::moveDown()
+{
+	this->move(0.0, -1.0, 0.0);
+}
+
+void PECamera::moveForward()
+{
+	this->move(0.0, 0.0, 1.0);
+}
+
+void PECamera::moveBackward()
+{
+	this->move(0.0, 0.0, -1.0);
+}
 
 

@@ -36,10 +36,17 @@ public:
     //运动
     void move(const P3D &delta);
     void move(float dx, float dy, float dz);
-    void roll(float angle);
-    void pitch(float angle);
-    void yaw(float angle);
-    
+    void roll(float angle = 1.0);
+    void pitch(float angle = 1.0);
+    void yaw(float angle=1.0);
+	
+	void moveLeft();
+	void moveRight();
+	void moveUp();
+	void moveDown();
+	void moveForward();
+	void moveBackward();
+	
 protected:
     PECamera();
     ~PECamera();

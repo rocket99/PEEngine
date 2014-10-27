@@ -1,6 +1,6 @@
 #include "PEKeyboardManager.h"
 
-PEKeyboardEvent::PEKeyboardEvent(int ketId)
+PEKeyboardEvent::PEKeyboardEvent(int keyId)
 {
 	m_keyId = keyId;
 	m_status = KEY_UNTOUCHED;
@@ -20,7 +20,10 @@ void PEKeyboardEvent::check()
 		switch(m_status){
 			case KEY_UNTOUCHED:
 			{
-				m_pressBeginFunc();
+				if(m_pressBeginFunc != 0){
+					PELog("key press begin");
+					m_pressBeginFunc();
+				}
 				m_status = KEY_PRESS_BEGIN;
 				m_count = 0;
 			}
@@ -28,7 +31,9 @@ void PEKeyboardEvent::check()
 			case KEY_PRESS_BEGIN:
 				++ m_count;
 				if(m_count >= 10000){
-					m_pressLastFunc();
+					if(m_pressLastFunc != 0){
+						m_pressLastFunc();
+					}
 					m_status = KEY_PRESS_LAST;
 				}
 				break;
@@ -41,20 +46,23 @@ void PEKeyboardEvent::check()
 
 	}else{
 		if(m_status != KEY_UNTOUCHED){
-			m_pressEndFunc();
+			PELog("key pres end.");
+			if(m_pressEndFunc != 0){
+				m_pressEndFunc();
+			}
 		}
 		m_status = KEY_UNTOUCHED;
 	}
 }
 
-void PEKeyboardEvent::setPressBeginFunction(std::function<void> fx){
+void PEKeyboardEvent::setPressBeginFunction(std::function<void()> fx){
 	m_pressBeginFunc = fx;
 }
 
-void PEKeyboardEvent::setPressLastFunction(std::function<void> fx){
+void PEKeyboardEvent::setPressLastFunction(std::function<void()> fx){
 	m_pressLastFunc = fx;
 }
 
-void PEKeyboardEvent::setPressEndFunction(std::function<void> fx){
+void PEKeyboardEvent::setPressEndFunction(std::function<void()> fx){
 	m_pressEndFunc = fx;
 }

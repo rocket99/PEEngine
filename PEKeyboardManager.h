@@ -24,9 +24,9 @@ class PEKeyboardEvent
 		void setPressLastFunction(std::function<void()> fx);
 		void setPressEndFunction(std::function<void()> fx);
 	private:
-		std::function< void() > m_pressBeginFunc;
-		std::function< void() > m_pressEndFunc;
-		std::function< void() > m_pressLastFunc;
+		std::function<void()> m_pressBeginFunc;
+		std::function<void()> m_pressLastFunc;
+		std::function<void()> m_pressEndFunc;
 		GLFWwindow *m_window;
 		int m_keyId;
 		PEKeyboardEvent::KeyState m_status;
