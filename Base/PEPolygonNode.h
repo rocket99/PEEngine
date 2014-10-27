@@ -10,7 +10,7 @@
 #define __Engine__PEPolygonNode__
 
 #include <iostream>
-#include "PEMath.h"
+#include "../Math/PEMath.h"
 #include "PERealNode.h"
 
 class PEPolygonNode:public PERealNode

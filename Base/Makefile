@@ -4,8 +4,8 @@ CC=g++ --std=c++11
 DGL= -DGL_GLEXT_PROTOTYPES
 
 ALL:	PEAutoReleasePool.o PEObject.o PENode.o PERealNode.o PELayer3D.o \
-		PEPolygon.o PERect.o PESphere.o PEPolarSurface.o PEMeshSurface.o \
-		PELight.o PEBox.o PECylinder.o PEFbxModel.o PECamera.o PEPointSet.o
+		PEPolygonNode.o PERect.o PESphereSurface.o PEPolarSurface.o PEMeshSurface.o \
+		PELight.o PEBoxNode.o PECylinder.o PEFbxModel.o PECamera.o PEPointSet.o
 
 PEAutoReleasePool.o: PEAutoReleasePool.cpp PEAutoReleasePool.h
 	$(CC) -c PEAutoReleasePool.cpp
@@ -17,20 +17,20 @@ PERealNode.o:PERealNode.cpp PERealNode.h PELayer3D.h ../PETextureManager.h
 	$(CC) -c PERealNode.cpp $(DGL)
 PELayer3D.o:PELayer3D.cpp PELayer3D.h
 	$(CC) -c PELayer3D.cpp  $(DGL)
-PEPolygon.o:PEPolygon.cpp PEPolygon.h
-	$(CC) -c PEPolygon.cpp  $(DGL)
+PEPolygonNode.o:PEPolygonNode.cpp PEPolygonNode.h
+	$(CC) -c PEPolygonNode.cpp  $(DGL)
 PERect.o:PERect.cpp PERect.h
 	$(CC) -c PERect.cpp		$(DGL)
 PEMeshSurface.o:PEMeshSurface.cpp PEMeshSurface.h 
 	$(CC) -c PEMeshSurface.cpp  $(DGL)
-PESphere.o:PESphere.cpp PESphere.h
-	$(CC) -c PESphere.cpp	$(DGL)
+PESphereSurface.o:PESphereSurface.cpp PESphereSurface.h
+	$(CC) -c PESphereSurface.cpp	$(DGL)
 PEPolarSurface.o:PEPolarSurface.cpp PEPolarSurface.h
 	$(CC) -c PEPolarSurface.cpp	$(DGL)
 PELight.o:PELight.cpp PELight.h 
 	$(CC) -c PELight.cpp	$(DGL)
-PEBox.o:PEBox.cpp PEBox.h
-	$(CC) -c PEBox.cpp		$(DGL)
+PEBoxNode.o:PEBoxNode.cpp PEBoxNode.h
+	$(CC) -c PEBoxNode.cpp		$(DGL)
 PECylinder.o:PECylinder.cpp PECylinder.h
 	$(CC) -c PECylinder.cpp $(DGL)
 PEFbxModel.o: PEFbxModel.cpp PEFbxModel.h

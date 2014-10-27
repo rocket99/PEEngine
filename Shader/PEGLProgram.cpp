@@ -58,11 +58,11 @@ PEGLProgram *PEGLProgram::create(const char *vert, const char *geometry, const c
 bool PEGLProgram::init(const char *vert, const char *geometry, const char *frag)
 {
 	GLint vShader = compileShader(GL_VERTEX_SHADER, vert);
-	if(GL_FALSE == glIsShader(v_shader)){
+	if(GL_FALSE == glIsShader(vShader)){
 		return false;
 	}
 	GLint gShader = compileShader(GL_GEOMETRY_SHADER, geometry);
-	if(GL_FALSE == glIsShader(geometry)){
+	if(GL_FALSE == glIsShader(gShader)){
 		glDeleteShader(gShader);
 		return false;
 	}
@@ -72,7 +72,7 @@ bool PEGLProgram::init(const char *vert, const char *geometry, const char *frag)
 		glDeleteShader(gShader);
 		return false;
 	}
-	this->linkProgram(vSahder, gShader, fShader);
+	this->linkProgram(vShader, gShader, fShader);
 	return true;
 }
 
@@ -90,25 +90,25 @@ bool PEGLProgram::init(const char *vert, const char *tessCtrl, const char *tessE
 						const char *geometry, const char *frag){
 
 	GLint vShader = compileShader(GL_VERTEX_SHADER, vert);
-	if(GL_FALSE == glIsShader(v_shader)){
+	if(GL_FALSE == glIsShader(vShader)){
 		return false;
 	}
 	GLint gShader = compileShader(GL_GEOMETRY_SHADER, geometry);
-	if(GL_FALSE == glIsShader(geometry)){
+	if(GL_FALSE == glIsShader(gShader)){
 		glDeleteShader(gShader);
 		return false;
 	}
 	GLint tcShader = compileShader(GL_TESS_CONTROL_SHADER, tessCtrl);
 	if(GL_FALSE == glIsShader(tcShader)){
-		glDeleteShader(vshader);
-		glDeleteShader(gshader);
+		glDeleteShader(vShader);
+		glDeleteShader(gShader);
 		return false;
 	}
 	GLint tvShader = compileShader(GL_TESS_EVALUATION_SHADER, tessEva);
 	if(GL_FALSE == glIsShader(tvShader)){
-		glDeleteShader(vshader);
-		glDeleteShader(gshader);
-		glDeleteShader(tcshader);
+		glDeleteShader(vShader);
+		glDeleteShader(gShader);
+		glDeleteShader(tcShader);
 		return false;
 	}
 	GLint fShader = compileShader(GL_FRAGMENT_SHADER, frag);

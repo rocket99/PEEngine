@@ -22,7 +22,7 @@ public:
 	bool init(const char *vert, const char *geometry, const char *frag);
 
 	static PEGLProgram *create(const char *vert, const char *tessCtrl, const char *tessEva, 
-								const char *geometry const char *frag);
+								const char *geometry, const char *frag);
 	bool init(const char *vert, const char *tessCtrl, const char *tessEva,
 				const char *geometry, const char *frag);
 #endif

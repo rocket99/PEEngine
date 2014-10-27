@@ -44,7 +44,7 @@ bool TestScene::initWithSize(const Size3D &size)
 	
 	for(int i=0; i<5; ++i){
 		for(int j=0; j<5; ++j){
-			PESphere *sphere = PESphere::create(40, 40, 40);	
+			PESphereSurface *sphere = PESphereSurface::create(40, 40, 40);	
 			sphere->Program0() = PEShaderManager::Instance()->getProgramForKey("vertColor");
 			sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("light");
 			sphere->Position() = Point3D(-400+i*200, 100.0, -400+j*200);
@@ -72,6 +72,7 @@ void TestScene::update()
 	this->getCamera()->WorldPos() = Point3D(1000.0*cos(a/180.0*M_PI), 1000.0, 1000.0*sin(a/180.0*M_PI));
 	this->getCamera()->upDirect() = Point3D(0.0, 1.0, 0.0);
 	this->getCamera()->WorldFocus() = Point3D(0.0, 0.0, 0.0);
+
 	a += 0.5;
 }
 

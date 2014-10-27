@@ -3,6 +3,7 @@
 //
 
 #include "PEScene.h"
+#include "png.h"
 
 PEScene::PEScene(){
 	m_width = 0;
@@ -46,7 +47,6 @@ bool PEScene::initWithSize(string name, int width, int height)
 	this->setGLPrograms();
 	glEnable(GL_DEPTH_TEST);
 	m_scene = TestScene::create(GLOBAL_WORLD_SIZE);
-	
 	return true;
 }
 
@@ -81,6 +81,12 @@ void PEScene::drawFBO()
 	m_scene->drawFBO();
 }
 
+void PEScene::checkKeyboardInput()
+{
+	if(glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS){
+		
+	}
+}
 int PEScene::Width()
 {
 	return m_width;
@@ -128,10 +134,12 @@ void PEScene::setFrameBuffer()
 
 void PEScene::setGLPrograms()
 {
+	std::string geometry;
 	std::string vert = PEShaderReader::readShaderSrc("./Shader/vertColor_Linux.vsh");
 	std::string frag = PEShaderReader::readShaderSrc("./Shader/vertColor_Linux.fsh");
 	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "vertColor");
+
 	vert = PEShaderReader::readShaderSrc("./Shader/light_Linux.vsh");
 	frag = PEShaderReader::readShaderSrc("./Shader/light_Linux.fsh");
 	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
@@ -141,6 +149,59 @@ void PEScene::setGLPrograms()
 	frag = PEShaderReader::readShaderSrc("./Shader/vertTex_Linux.fsh");
 	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "vert_tex");
-
+	
+	vert = PEShaderReader::readShaderSrc("./Shader/bezier/bezier.vsh");
+	geometry = PEShaderReader::readShaderSrc("./Shader/bezier/bezier.gsh");
+	frag = PEShaderReader::readShaderSrc("./Shader/bezier/bezier.fsh");
+	program = PEGLProgram::create(vert.c_str(), geometry.c_str(), frag.c_str());
+	PEShaderManager::Instance()->setProgramForKey(program, "bezier");
 }
+
+void PEScene::saveViewToPicture()
+{
+	GLubyte *data = new GLubyte[m_width*m_height*4];
+	memset(data, 0, sizeof(char)*4*m_width*m_height);
+	glReadPixels(0, 0, m_width, m_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	
+	png_structp png_ptr;
+	png_infop info_ptr;
+	png_bytep *tow_pointers;
+
+	FILE *fp = fopen("a.png", "wb");
+	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	info_ptr = png_create_info_struct(png_ptr);
+	png_init_io(png_ptr, fp);
+	if(setjmp(png_jmpbuf(png_ptr))){
+		PELog("write png file error during write header");
+		return;
+	}
+	
+	png_set_IHDR(png_ptr, info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB_ALPHA, 
+				PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+	png_write_info(png_ptr, info_ptr);
+	setjmp(png_jmpbuf(png_ptr));
+
+	int pos = 0;
+	png_bytep *row_pointers = (png_bytep*)malloc(sizeof(png_bytep)*m_height);
+	for(int i=0; i<m_height; ++i){
+		row_pointers[i] = (png_bytep)malloc(sizeof(unsigned char)*m_width*4);
+		for(int j=0; j<4*m_width; j+=4){
+			row_pointers[i][j+0] = data[i*4*m_width+j];
+			row_pointers[i][j+1] = data[i*4*m_width+j+1];
+			row_pointers[i][j+2] = data[i*4*m_width+j+2];
+			row_pointers[i][j+3] = data[i*4*m_width+j+3];
+		}
+	}
+	png_wirte_image(png_ptr, row_pointers);
+	if(setjmp(png_jmpbuf(png_ptr))){
+		printf("write png file error during end of write!\n");
+		return;
+	}
+	for(int j=0; j<m_height;++j){
+		free(row_pointers[j]);
+	}
+	free(row_pointers);
+	fclose(fp);
+}
+
 

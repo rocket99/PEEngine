@@ -23,10 +23,10 @@ private:
 	void draw();
 	GLuint m_colorTex, m_depthTex, m_fbo;
 	void setFrameBuffer();
-
 	void setGLPrograms();
-
 	TestScene *m_scene;
+	void saveViewToPicture();
+	void checkKeyboardInput();
 };
 
 

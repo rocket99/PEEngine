@@ -7,6 +7,7 @@
 //
 
 #include "PEPolygon.h"
+#include "PEDataType.h"
 
 PEPolygon::PEPolygon(P2D *points, int num)
 {
@@ -305,7 +306,7 @@ float PEPolygon::area()
     P2D A = m_list->coord;
     VertNode *lst = m_list->next;
     while (lst->next != m_list) {
-        sum += areaOfTriangle(A, lst->next->coord, lst->next->next->coord);
+        sum += P2D::areaOfTriangle(A, lst->coord, lst->next->coord);
     }
     return sum;
 }
@@ -317,8 +318,8 @@ P2D PEPolygon::gravityCenter()
     P2D A = m_list->coord;
     VertNode *lst = m_list->next;
     while (lst->next != m_list) {
-        P2D P = gravityCenterOfTriangle(A, lst->next->coord, lst->next->next->coord);
-        float a = areaOfTriangle(A, lst->next->coord, lst->next->next->coord);
+        P2D P = P2D::gravityCenterOfTriangle(A, lst->next->coord, lst->next->next->coord);
+        float a = P2D::areaOfTriangle(A, lst->coord, lst->next->coord);
         area += a;
         sum += a*P;
     }

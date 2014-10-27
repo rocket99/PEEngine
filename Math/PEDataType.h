@@ -39,8 +39,10 @@ typedef struct PEPoint2D
     
     void display();
     
-    friend float areaOfTriangle(const struct PEPoint2D &A, const struct PEPoint2D &B, const struct PEPoint2D &C);
-    friend struct PEPoint2D gravityCenterOfTriangle(const struct PEPoint2D &A, const struct PEPoint2D &B, const struct PEPoint2D &C);
+    static float areaOfTriangle(const struct PEPoint2D &A, const struct PEPoint2D &B, 
+								const struct PEPoint2D &C);
+    static struct PEPoint2D gravityCenterOfTriangle(const struct PEPoint2D &A, 
+						const struct PEPoint2D &B, const struct PEPoint2D &C);
 } P2D, V2D, Size2D;
 P2D Point2D(float x, float y);
 

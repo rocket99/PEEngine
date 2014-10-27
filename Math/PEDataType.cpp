@@ -210,14 +210,14 @@ void P2D::display()
     printf("(%.3f, %.3f)\n", x, y);
 }
 
-float areaOfTriangle(P2D &A, P2D &B, P2D &C)
+float P2D::areaOfTriangle(const P2D &A, const P2D &B, const P2D &C)
 {
     V2D AB = B-A;
     V2D AC = C-A;
     return AB.x*AC.y - AB.y*AC.x;
 }
 
-P2D gravityCenterOfTriangle(const P2D &A, const P2D &B, const P2D &C)
+P2D P2D::gravityCenterOfTriangle(const P2D &A, const P2D &B, const P2D &C)
 {
     return A+2.0*(0.5*(B+C)-A)/3.0;
 }

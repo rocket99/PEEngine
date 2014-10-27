@@ -31,4 +31,7 @@
 #include "Base/PEFbxModel.h"
 #include "Base/PEPointSet.h"
 
+//kayboard
+#include "PEKeyboardManager.h"
+
 #endif
