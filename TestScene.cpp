@@ -33,20 +33,20 @@ bool TestScene::initWithSize(const Size3D &size)
 	plane->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
 	plane->Position() = Point3D(0.0, 0.0, 0.0);
 	plane->Program0() = PEShaderManager::Instance()->getProgramForKey("vertColor");
-	plane->Program1() = PEShaderManager::Instance()->getProgramForKey("light");
+	plane->Program1() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
 	plane->Color() = ColorRGBA(0.4, 0.4, 0.2, 1.0);
 	plane->Material().ambient = ColorRGBA(0.1, 0.1, 0.1, 1.0);
 	plane->Material().diffuse = ColorRGBA(0.5, 0.5, 0.5, 1.0);
 	plane->Material().specular = ColorRGBA(0.8, 0.3, 0.2, 1.0);
 	plane->Material().emission = ColorRGBA(0.3, 0.3, 0.2, 1.0);
-	plane->Texture() = 0;
+	plane->Texture() = tex->Texture();
 	this->addChild(plane);
 	
 	for(int i=0; i<5; ++i){
 		for(int j=0; j<5; ++j){
 			PESphereSurface *sphere = PESphereSurface::create(40, 40, 40);	
 			sphere->Program0() = PEShaderManager::Instance()->getProgramForKey("vertColor");
-			sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("light");
+			sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
 			sphere->Position() = Point3D(-400+i*200, 100.0, -400+j*200);
 			sphere->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
 			sphere->Color() = ColorRGBA(0.5, 0.4, 0.1, 1.0);
@@ -76,4 +76,16 @@ void TestScene::update()
 	a += 0.5;
 }
 
+void TestScene::ProcessKeyboardEvent()
+{
+	PEKeyboardEvent w_event(GLFW_KEY_W);
+	w_event.setSceneIn(m_pWindow);
+	w_event.setPressLastFunction(std::bind(&PECamera::moveForward, this->getCamera()));
+	PEKeyboardManager::getInstance()->addKeyboardEvent(w_event);
+
+	PEKeyboardEvent s_event(GLFW_KEY_S);
+	s_event.setSceneIn(m_pWindow);
+	s_event.setPressLastFunction(std::bind(&PECamera::moveBackward, this->getCamera()));
+	PEKeyboardManager::getInstance()->addKeyboardEvent(s_event);
+}
 

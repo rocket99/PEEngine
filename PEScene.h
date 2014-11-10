@@ -2,7 +2,7 @@
 #define 	__PEScene_H__
 
 #include "Base/PEObject.h"
-#include "Shader/PEShaderManager.h"
+#include "Render/PEShaderManager.h"
 #include "TestScene.h"
 
 class PEScene: public PEObject

@@ -9,6 +9,15 @@ PEKeyboardEvent::PEKeyboardEvent(int keyId)
 	m_pressEndFunc = 0;
 }
 
+PEKeyboardEvent::PEKeyboardEvent(PEKeyboardEvent &event)
+{
+	m_keyId = event.m_keyId;
+	m_status = event.m_status;
+	m_pressBeginFunc = event.m_pressBeginFunc;
+	m_pressLastFunc  = event.m_pressLastFunc;
+	m_pressEndFunc   = event.m_pressEndFunc;
+}
+
 PEKeyboardEvent::~PEKeyboardEvent()
 {
 
@@ -65,4 +74,67 @@ void PEKeyboardEvent::setPressLastFunction(std::function<void()> fx){
 
 void PEKeyboardEvent::setPressEndFunction(std::function<void()> fx){
 	m_pressEndFunc = fx;
+}
+
+#pragma PEKeyboardEvent Manager
+
+PEKeyboardManager::PEKeyboardManager()
+{
+
+}
+
+PEKeyboardManager::~PEKeyboardManager()
+{
+
+}
+static PEKeyboardManager *instance = NULL;
+PEKeyboardManager *PEKeyboardManager::getInstance()
+{
+	if(instance == NULL){
+		instance = new PEKeyboardManager();
+	}
+	return instance;
+}
+
+void PEKeyboardManager::purge()
+{
+	if(instance == NULL){
+		return;
+	}
+	delete instance;
+	instance = NULL;
+}
+
+void PEKeyboardManager::addKeyboardEvent(PEKeyboardEvent &event)
+{
+	std::vector<PEKeyboardEvent>::iterator it = m_events.begin();
+	while(it != m_events.end()){
+		if(it->getKeyId() == event.getKeyId()){
+			m_events.erase(it);
+			break;
+		}
+		++ it;
+	}
+	m_events.push_back(event);
+}
+
+void PEKeyboardManager::removeKeyboardEvent(int keyId)
+{
+	std::vector<PEKeyboardEvent>::iterator it = m_events.begin();
+	while(it != m_events.end()){
+		if(it->getKeyId() == keyId){
+			m_events.erase(it);
+			break;
+		}
+		++ it;
+	}
+}
+
+void PEKeyboardManager::checkAllEvents()
+{
+	std::vector<PEKeyboardEvent>::iterator it = m_events.begin();
+	while(it != m_events.end()){
+		it->check();
+		++ it;
+	}
 }

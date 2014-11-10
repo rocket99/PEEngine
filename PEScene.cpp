@@ -61,8 +61,7 @@ void PEScene::start()
 		this->draw();
 		glfwSwapBuffers(m_pWindow);
 		glfwPollEvents();
-		this->checkKeyboardInput();
-
+		PEKeyboardManager::getInstance()->checkAllEvents();
 	}
 }
 
@@ -87,10 +86,6 @@ void PEScene::drawFBO()
 	m_scene->drawFBO();
 }
 
-void PEScene::checkKeyboardInput()
-{
-	m_event->check();
-}
 int PEScene::Width()
 {
 	return m_width;
@@ -144,21 +139,12 @@ void PEScene::setGLPrograms()
 	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "vertColor");
 
-	vert = PEShaderReader::readShaderSrc("./Shader/light_Linux.vsh");
-	frag = PEShaderReader::readShaderSrc("./Shader/light_Linux.fsh");
-	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
-	PEShaderManager::Instance()->setProgramForKey(program, "light");
 
-	vert = PEShaderReader::readShaderSrc("./Shader/vertTex_Linux.vsh");
-	frag = PEShaderReader::readShaderSrc("./Shader/vertTex_Linux.fsh");
+	PELog("load shader verticeTexture");
+	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.vsh");
+	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.fsh");
 	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
-	PEShaderManager::Instance()->setProgramForKey(program, "vert_tex");
-	
-	vert = PEShaderReader::readShaderSrc("./Shader/bezier/bezier.vsh");
-	geometry = PEShaderReader::readShaderSrc("./Shader/bezier/bezier.gsh");
-	frag = PEShaderReader::readShaderSrc("./Shader/bezier/bezier.fsh");
-	program = PEGLProgram::create(vert.c_str(), geometry.c_str(), frag.c_str());
-	PEShaderManager::Instance()->setProgramForKey(program, "bezier");
+	PEShaderManager::Instance()->setProgramForKey(program, "vert_tex");	
 }
 
 void PEScene::saveViewToPicture()

@@ -13,8 +13,8 @@
 //math methods
 #include "Math/PEMath.h"
 //gl program shaders
-#include "Shader/PEShaders.h"
-#include "Shader/PEShaderManager.h"
+#include "Render/PEShaders.h"
+#include "Render/PEShaderManager.h"
 #include "PETexture.h"
 #include "PETextureManager.h"
 
