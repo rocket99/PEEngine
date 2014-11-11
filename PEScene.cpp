@@ -8,7 +8,6 @@
 PEScene::PEScene(){
 	m_width = 0;
 	m_height = 0;
-
 	m_pWindow = NULL;
 }
 
@@ -47,10 +46,11 @@ bool PEScene::initWithSize(string name, int width, int height)
 	this->setGLPrograms();
 	glEnable(GL_DEPTH_TEST);
 	m_scene = TestScene::create(GLOBAL_WORLD_SIZE);
-
-	m_event = new PEKeyboardEvent(GLFW_KEY_W);
-	m_event->setSceneIn(m_pWindow);
-	m_event->setPressEndFunction(std::bind(&PEScene::saveViewToPicture, this));
+	m_scene->setGLFWwindow(m_pWindow);
+	m_scene->setKeyboardEvent();
+//	m_event = new PEKeyboardEvent(GLFW_KEY_W);
+//	m_event->setSceneIn(m_pWindow);
+//	m_event->setPressEndFunction(std::bind(&PEScene::saveViewToPicture, this));
 	return true;
 }
 
@@ -133,17 +133,10 @@ void PEScene::setFrameBuffer()
 
 void PEScene::setGLPrograms()
 {
-	std::string geometry;
-	std::string vert = PEShaderReader::readShaderSrc("./Shader/vertColor_Linux.vsh");
-	std::string frag = PEShaderReader::readShaderSrc("./Shader/vertColor_Linux.fsh");
-	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
-	PEShaderManager::Instance()->setProgramForKey(program, "vertColor");
-
-
 	PELog("load shader verticeTexture");
-	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.vsh");
-	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.fsh");
-	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	string vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.vsh");
+	string frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.fsh");
+	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "vert_tex");	
 }
 

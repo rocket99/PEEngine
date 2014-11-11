@@ -15,9 +15,9 @@ public:
 	void setGLFWwindow(GLFWwindow *window){
 		m_pWindow = window;
 	}
+	void setKeyboardEvent();
 private:
 	GLFWwindow *m_pWindow;
-	void ProcessKeyboardEvent();
 };
 
 

@@ -62,30 +62,33 @@ bool TestScene::initWithSize(const Size3D &size)
 	rect->Program1() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
 	rect->Texture() = PETextureManager::Instance()->DepthTex();
 //	this->addChild(rect);
-
 	return true;
 }
 
-void TestScene::update()
-{
-	static float a = 0.0;
-	this->getCamera()->WorldPos() = Point3D(1000.0*cos(a/180.0*M_PI), 1000.0, 1000.0*sin(a/180.0*M_PI));
-	this->getCamera()->upDirect() = Point3D(0.0, 1.0, 0.0);
-	this->getCamera()->WorldFocus() = Point3D(0.0, 0.0, 0.0);
+void TestScene::update(){}
 
-	a += 0.5;
-}
-
-void TestScene::ProcessKeyboardEvent()
+void TestScene::setKeyboardEvent()
 {
-	PEKeyboardEvent w_event(GLFW_KEY_W);
-	w_event.setSceneIn(m_pWindow);
-	w_event.setPressLastFunction(std::bind(&PECamera::moveForward, this->getCamera()));
+	PEKeyboardEvent *w_event = new PEKeyboardEvent(GLFW_KEY_W);
+	w_event->setSceneIn(m_pWindow);
+	w_event->setPressLastFunction(std::bind(&PECamera::moveForward, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(w_event);
 
-	PEKeyboardEvent s_event(GLFW_KEY_S);
-	s_event.setSceneIn(m_pWindow);
-	s_event.setPressLastFunction(std::bind(&PECamera::moveBackward, this->getCamera()));
+	PEKeyboardEvent *s_event = new PEKeyboardEvent(GLFW_KEY_S);
+	s_event->setSceneIn(m_pWindow);
+	s_event->setPressLastFunction(std::bind(&PECamera::moveBackward, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(s_event);
+	
+	PEKeyboardEvent *a_event = new PEKeyboardEvent(GLFW_KEY_A);
+	a_event->setSceneIn(m_pWindow);
+	a_event->setPressLastFunction(std::bind(&PECamera::moveLeft, this->getCamera()));
+	PEKeyboardManager::getInstance()->addKeyboardEvent(a_event);
+	
+	PEKeyboardEvent *d_event = new PEKeyboardEvent(GLFW_KEY_D);
+	d_event->setSceneIn(m_pWindow);
+	d_event->setPressLastFunction(std::bind(&PECamera::moveRight, this->getCamera()));
+	PEKeyboardManager::getInstance()->addKeyboardEvent(d_event);
 }
+
+
 

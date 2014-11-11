@@ -12,8 +12,8 @@ class PEKeyboardEvent
 			KEY_PRESS_LAST,
 			KEY_PRESS_END,
 		};
-		PEKeyboardEvent(int keyId);
-		PEKeyboardEvent(PEKeyboardEvent &event);
+		PEKeyboardEvent(int keyId, bool enable = true);
+		PEKeyboardEvent(const PEKeyboardEvent &event);
 		~PEKeyboardEvent();
 
 		void setSceneIn(GLFWwindow *window){
@@ -47,12 +47,12 @@ public:
 	static PEKeyboardManager *getInstance();
 	void purge();
 
-	void addKeyboardEvent(PEKeyboardEvent &event);
+	void addKeyboardEvent(PEKeyboardEvent *event);
 	void removeKeyboardEvent(int keyId);
 
 	void checkAllEvents();
 private:
-	std::vector<PEKeyboardEvent> m_events;
+	std::vector<PEKeyboardEvent *> m_events;
 };
 
 

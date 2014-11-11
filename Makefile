@@ -4,13 +4,12 @@ LINK = -lglfw3 -lGL -lGLU -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lm -lrt -luui
 BPath = Base/
 MPath = Math/
 SPath = Render/
-BASE =	$(BPath)PEObject.o 			$(BPath)PENode.o 			$(BPath)PERealNode.o \
-		$(BPath)PEPolygonNode.o 	$(BPath)PERect.o 			$(BPath)PEMeshSurface.o \
-		$(BPath)PEPolarSurface.o 	$(BPath)PESphereSurface.o 	$(BPath)PECylinder.o \
-		$(BPath)PECamera.o 			$(BPath)PEBoxNode.o 		$(BPath)PEPointSet.o\
-		$(BPath)PELayer3D.o 		$(BPath)PELight.o 			$(BPath)PEAutoReleasePool.o 
-MATH =	$(MPath)PEPolygon.o 	$(MPath)PEMatrix.o 		$(MPath)PEVector.o $(MPath)PELine.o \
-		$(MPath)PEPlane.o  		$(MPath)PEDataType.o 	$(MPath)PESphere.o
+BASE =	$(BPath)PEObject.o $(BPath)PENode.o $(BPath)PERealNode.o $(BPath)PEPolygonNode.o $(BPath)PERect.o\
+		$(BPath)PEMeshSurface.o $(BPath)PEPolarSurface.o $(BPath)PESphereSurface.o $(BPath)PECylinder.o \
+		$(BPath)PECamera.o $(BPath)PEBoxNode.o $(BPath)PEPointSet.o $(BPath)PELayer3D.o $(BPath)PELight.o\
+		$(BPath)PEAutoReleasePool.o 
+MATH =	$(MPath)PEPolygon.o $(MPath)PEMatrix.o $(MPath)PEVector.o $(MPath)PELine.o \
+		$(MPath)PEPlane.o $(MPath)PEDataType.o $(MPath)PESphere.o
 SHADER = $(SPath)PEGLProgram.o 	$(SPath)PEShaderManager.o 	$(SPath)PEShaders.o
 
 CC = g++ --std=c++11
