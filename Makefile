@@ -27,7 +27,7 @@ PETexture.o:PETexture.cpp PETexture.h
 PETextureManager.o:PETextureManager.cpp PETextureManager.h
 	$(CC) -c PETextureManager.cpp
 TestScene.o:TestScene.h TestScene.cpp
-	$(CC) -c TestScene.cpp 
+	$(CC) -c TestScene.cpp $(DGL)
 PEKeyboardManager.o:PEKeyboardManager.cpp PEKeyboardManager.h
 	$(CC) -c PEKeyboardManager.cpp
 
@@ -39,6 +39,6 @@ $(SHADER):
 	cd ./Render && $(MAKE)
 
 clean:
-	rm *.o ./Base/*.o ./Math/*.o $(SPath)/*.o ./main
+	rm *.o $(BPath)*.o $(MPath)*.o $(SPath)*.o ./main
 
 

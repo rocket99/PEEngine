@@ -30,7 +30,6 @@ void PEKeyboardEvent::check()
 			case KEY_UNTOUCHED:
 			{
 				if(m_pressBeginFunc != 0){
-					PELog("key press begin");
 					m_pressBeginFunc();
 				}
 				m_status = KEY_PRESS_BEGIN;
@@ -57,7 +56,6 @@ void PEKeyboardEvent::check()
 		}
 	}else{
 		if(m_status != KEY_UNTOUCHED){
-			PELog("key pres end.");
 			if(m_pressEndFunc != 0){
 				m_pressEndFunc();
 			}
@@ -86,7 +84,10 @@ PEKeyboardManager::PEKeyboardManager()
 }
 PEKeyboardManager::~PEKeyboardManager()
 {
-
+	for(int i=0; i<m_events.size(); ++i){
+		delete m_events[i];
+	}
+	m_events.clear();
 }
 
 static PEKeyboardManager *instance = NULL;
@@ -125,6 +126,7 @@ void PEKeyboardManager::removeKeyboardEvent(int keyId)
 	std::vector<PEKeyboardEvent *>::iterator it = m_events.begin();
 	while(it != m_events.end()){
 		if((*it)->getKeyId() == keyId){
+			delete (*it);
 			m_events.erase(it);
 			break;
 		}

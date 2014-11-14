@@ -131,18 +131,21 @@ void PEScene::setFrameBuffer()
 	PETextureManager::Instance()->ColorTex() = m_colorTex;
 }
 
-void PEScene::setGLPrograms()
-{
+void PEScene::setGLPrograms(){
 	PELog("load shader verticeTexture");
 	string vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.vsh");
 	string frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.fsh");
 	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "vert_tex");	
+	
+	PELog("load shader light");
+	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.vsh");
+	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.fsh");
+	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	PEShaderManager::Instance()->setProgramForKey(program, "light");	
 }
 
-void PEScene::saveViewToPicture()
-{
-	PELog("save current view!");
+void PEScene::saveViewToPicture(){
 	GLubyte *data = new GLubyte[m_width*m_height*4];
 	memset(data, 0, sizeof(char)*4*m_width*m_height);
 	glReadPixels(0, 0, m_width, m_height, GL_RGBA, GL_UNSIGNED_BYTE, data);

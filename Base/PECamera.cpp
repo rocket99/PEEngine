@@ -7,24 +7,19 @@
 //
 
 #include "PECamera.h"
-
-
-PECamera::PECamera()
-{
+PECamera::PECamera(){
     m_up = Point3D(0.0, 1.0, 0.0);
-    m_center = Point3D(0.0, 0.0, 0.0);
+    m_focus = Point3D(0.0, 0.0, 0.0);
     m_pos = Point3D(0.0, 0.0, 1.0);
     m_camera = NULL;
     m_perspect = NULL;
 }
 
-PECamera::~PECamera()
-{
+PECamera::~PECamera(){
     delete m_perspect;
 }
 
-PECamera *PECamera::create(const P3D &world, const P3D &pos, const P3D &focus, const V3D &up)
-{
+PECamera *PECamera::create(const P3D &world, const P3D &pos, const P3D &focus, const V3D &up){
     PECamera *camera = new PECamera();
     if(camera->init(world, pos, focus, up)){
         camera->autoRelease();
@@ -34,9 +29,8 @@ PECamera *PECamera::create(const P3D &world, const P3D &pos, const P3D &focus, c
     return NULL;
 }
 
-bool PECamera::init(const P3D &world, const P3D &pos, const P3D &focus, const P3D &up)
-{
-    if (pos == focus || isParallel(pos-focus, up) ||  up == Point3D(0.0, 0.0, 0.0)) {
+bool PECamera::init(const P3D &world, const P3D &pos, const P3D &focus, const P3D &up){
+    if (pos == focus || isParallel(pos-focus, up) || up == Point3D(0.0, 0.0, 0.0)) {
         PELog("pay attention to paramemters such as pos, focus and up, there is some invalid paramemter.\n");
         return false;
     }
@@ -50,13 +44,12 @@ bool PECamera::init(const P3D &world, const P3D &pos, const P3D &focus, const P3
     return true;
 }
 
-void PECamera::normalized()
-{
+void PECamera::normalized(){
     m_up.normalized();
-    m_pos = (m_worldPos / m_worldSize);
-    m_center = (m_worldFocus / m_worldSize);
+    m_pos = m_worldPos / m_worldSize;
+    m_focus = m_worldFocus / m_worldSize;
     
-    nz = (m_center - m_pos).normal();
+    nz = (m_worldFocus - m_worldPos).normal();
     ny = m_up.normal();
     
     nx = cross(nz, ny).normal();
@@ -64,9 +57,7 @@ void PECamera::normalized()
     m_up = ny;
 }
 
-void PECamera::setMatrixData()
-{
-    
+void PECamera::setMatrixData(){
     this->normalized();
     m_camera->Elm(0, 0) = nx.x;  m_camera->Elm(0, 1) = nx.y;
     m_camera->Elm(0, 2) = nx.z;  m_camera->Elm(0, 3) = -dot(nx, m_pos);
@@ -156,85 +147,78 @@ void PECamera::move(float dx, float dy, float dz)
     this->normalized();
 }
 
-void PECamera::roll(float angle)
-{
+void PECamera::roll(float angle){
     PEMatrix mat = PEMatrix::RotationMatrix(nz, angle);
     PEMatrix mat_x(4, 1), mat_y(4, 1);
-    mat_x.Elm(0, 0) = nx.x; mat_x.Elm(1, 0) = nx.y;
-    mat_x.Elm(2, 0) = nx.z; mat_x.Elm(3, 0) = 0.0;
-    mat_y.Elm(0, 0) = ny.x; mat_y.Elm(1, 0) = ny.y;
-    mat_y.Elm(2, 0) = ny.z; mat_y.Elm(3, 0) = 0.0;
-    
+    mat_x.Elm(0, 0) = nx.x; mat_x.Elm(1, 0) = nx.y; mat_x.Elm(2, 0) = nx.z; mat_x.Elm(3, 0) = 0.0;
+    mat_y.Elm(0, 0) = ny.x; mat_y.Elm(1, 0) = ny.y; mat_y.Elm(2, 0) = ny.z; mat_y.Elm(3, 0) = 0.0;
     PEMatrix X = cross(mat, mat_x);
     PEMatrix Y = cross(mat, mat_y);
-    
     nx = Point3D(X.Elm(0, 0), X.Elm(1, 0), X.Elm(2, 0));
     ny = Point3D(Y.Elm(0, 0), Y.Elm(1, 0), Y.Elm(2, 0));
     m_up = ny;
 }
 
-void PECamera::pitch(float angle)
-{
-    PEMatrix mat = PEMatrix::RotationMatrix(nx, angle);
-    PEMatrix mat_z(4, 1), mat_y(4, 1);
-    mat_z.Elm(0, 0) = nz.x; mat_z.Elm(1, 0) = nz.y;
-    mat_z.Elm(2, 0) = nz.z; mat_z.Elm(3, 0) = 1.0;
-    mat_y.Elm(0, 0) = ny.x; mat_y.Elm(1, 0) = ny.y;
-    mat_y.Elm(2, 0) = ny.z; mat_y.Elm(3, 0) = 1.0;
-    
+void PECamera::pitch(float angle){
+    PEMatrix mat = PEMatrix::RotationMatrix(nx, angle).complement(3,3);
+    PEMatrix mat_z(3, 1), mat_y(3, 1);
+    mat_z.Elm(0, 0) = nz.x; mat_z.Elm(1, 0) = nz.y; mat_z.Elm(2, 0) = nz.z;
+    mat_y.Elm(0, 0) = ny.x; mat_y.Elm(1, 0) = ny.y; mat_y.Elm(2, 0) = ny.z;
     PEMatrix Z = cross(mat, mat_z);
     PEMatrix Y = cross(mat, mat_y);
     nz = Point3D(Z.Elm(0, 0), Z.Elm(1, 0), Z.Elm(2, 0)).normal();
     ny = Point3D(Y.Elm(0, 0), Y.Elm(1, 0), Y.Elm(2, 0)).normal();
-    m_up = ny;
-    m_worldFocus = m_worldPos + (m_worldFocus-m_worldPos).morel()*nz;
-    this->normalized();
+	m_worldFocus = m_worldPos + nz*(m_worldFocus-m_worldPos).morel();
+	m_up = ny; 
 }
 
-void PECamera::yaw(float angle)
-{
+void PECamera::yaw(float angle){
     PEMatrix mat = PEMatrix::RotationMatrix(ny, angle);
     PEMatrix mat_z(4, 1), mat_x(4, 1);
-    mat_z.Elm(0, 0) = nz.x; mat_z.Elm(1, 0) = nz.y;
-    mat_z.Elm(2, 0) = nz.z; mat_z.Elm(3, 0) = 0.0;
-    mat_x.Elm(0, 0) = nx.x; mat_x.Elm(1, 0) = nx.y;
-    mat_x.Elm(2, 0) = nx.z; mat_x.Elm(3, 0) = 0.0;
+    mat_z.Elm(0, 0) = nz.x; mat_z.Elm(1, 0) = nz.y; mat_z.Elm(2, 0) = nz.z; mat_z.Elm(3, 0) = 0.0;
+    mat_x.Elm(0, 0) = nx.x; mat_x.Elm(1, 0) = nx.y; mat_x.Elm(2, 0) = nx.z; mat_x.Elm(3, 0) = 0.0;
     PEMatrix Z = cross(mat, mat_z);
     PEMatrix X = cross(mat, mat_x);
     nz = Point3D(Z.Elm(0, 0), Z.Elm(1, 0), Z.Elm(2, 0)).normal();
     nx = Point3D(X.Elm(0, 0), X.Elm(1, 0), X.Elm(2, 0)).normal();
-    m_worldFocus = m_worldPos + (m_worldFocus - m_worldPos).morel()*nz;
-    this->normalized();
+    m_worldFocus = m_worldPos + nz*(m_worldFocus-m_worldPos).morel();
 }
 
-void PECamera::moveLeft()
-{
+void PECamera::moveLeft(){
 	this->move(Point3D(-1.0, 0.0, 0.0));
 }
-
-void PECamera::moveRight()
-{
+void PECamera::moveRight(){
 	this->move(Point3D(1.0, 0.0, 0.0));
 }
-
-void PECamera::moveUp()
-{
+void PECamera::moveUp(){
 	this->move(0.0, 1.0, 0.0);
 }
-
-void PECamera::moveDown()
-{
+void PECamera::moveDown(){
 	this->move(0.0, -1.0, 0.0);
 }
-
-void PECamera::moveForward()
-{
+void PECamera::moveForward(){
 	this->move(0.0, 0.0, 1.0);
 }
-
-void PECamera::moveBackward()
-{
+void PECamera::moveBackward(){
 	this->move(0.0, 0.0, -1.0);
+}
+void PECamera::lookUp(){
+	this->pitch(0.5);
+}
+void PECamera::lookDown(){
+	this->pitch(-0.5);
+}
+void PECamera::lookLeft(){
+	this->yaw(0.25);
+}
+void PECamera::lookRight(){
+	this->yaw(-0.25);
+}
+void PECamera::positiveRotate(){
+	this->roll(0.5);
+}
+void PECamera::nagitiveRotate(){
+	this->roll(-0.5);
 }
 
 

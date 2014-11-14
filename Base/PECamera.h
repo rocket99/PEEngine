@@ -46,7 +46,13 @@ public:
 	void moveDown();
 	void moveForward();
 	void moveBackward();
-	
+
+	void lookUp();
+	void lookDown();
+	void lookLeft();
+	void lookRight();
+	void positiveRotate();
+	void nagitiveRotate();
 protected:
     PECamera();
     ~PECamera();
@@ -58,7 +64,7 @@ private:
     void setMatrixData();
     
     P3D m_worldPos, m_worldSize, m_worldFocus;
-    P3D m_pos, m_center, m_up;
+    P3D m_pos, m_focus, m_up;
     V3D nx, ny, nz;
     
     float m_fovy, m_aspect, m_zNear, m_zFar;

@@ -18,6 +18,8 @@ public:
 	void setKeyboardEvent();
 private:
 	GLFWwindow *m_pWindow;
+
+	void setLightUniform();
 };
 
 
