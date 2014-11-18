@@ -89,6 +89,7 @@ float &PELight::Shininess()
 
 void PELight::setUniformBlock(GLuint program)
 {
+//	PELog("set Light Uniform!");
     if(glIsProgram(program) == GL_FALSE){
         return;
     }

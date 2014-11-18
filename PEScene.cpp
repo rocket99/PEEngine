@@ -44,6 +44,7 @@ bool PEScene::initWithSize(string name, int width, int height)
 	
 	this->setFrameBuffer();
 	this->setGLPrograms();
+	PELog("scene program!\n");
 	glEnable(GL_DEPTH_TEST);
 	m_scene = TestScene::create(GLOBAL_WORLD_SIZE);
 	m_scene->setGLFWwindow(m_pWindow);
@@ -72,6 +73,7 @@ void PEScene::draw()
 	glDisable(GL_CULL_FACE);
 	glClearColor(0.4, 0.4, 0.4, 0.5);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_MULTISAMPLE);
 	m_scene->draw();
 }
 
@@ -81,6 +83,7 @@ void PEScene::drawFBO()
 	glViewport(0, 0, (GLsizei)m_width, (GLsizei)m_height);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+	glEnable(GL_MULTISAMPLE);
 	glClearColor(0.40, 0.4, 0.4, 0.5);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	m_scene->drawFBO();
@@ -132,16 +135,16 @@ void PEScene::setFrameBuffer()
 }
 
 void PEScene::setGLPrograms(){
-	PELog("load shader verticeTexture");
-	string vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.vsh");
-	string frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.fsh");
-	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
-	PEShaderManager::Instance()->setProgramForKey(program, "vert_tex");	
+//	PELog("load shader verticeTexture");
+//	string vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.vsh");
+//	string frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.fsh");
+//	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+//	PEShaderManager::Instance()->setProgramForKey(program, "vert_tex");	
 	
 	PELog("load shader light");
-	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.vsh");
-	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.fsh");
-	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	std::string vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.vsh");
+	std::string frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.fsh");
+	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "light");	
 }
 

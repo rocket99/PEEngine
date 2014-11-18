@@ -218,13 +218,13 @@ void PEMeshSurface::drawFunc()
     this->setTextureUniform();
     this->setCameraPosUniform();
     
-//    GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
-//    if(loc >= 0){
-//        PEMatrix mat = m_worldMat.complement(3, 3);
-//        glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
-//    }
+    GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
+    if(loc >= 0){
+        PEMatrix mat = m_worldMat.complement(3, 3);
+        glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
+    }
     
-    GLint loc = glGetUniformLocation(m_program, "u_skyBox");
+    loc = glGetUniformLocation(m_program, "u_skyBox");
     if(loc >= 0){
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
@@ -233,19 +233,20 @@ void PEMeshSurface::drawFunc()
     
     this->setMaterialUniformBlock();
     this->setLightUniformBlock();
-    glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[0]);
+    
+	/*glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[0]);
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);
     glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 0, &m_data[m_row*m_col*18]);
     glEnableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[m_row*m_col*30]);
-    glEnableVertexAttribArray(ATTRIB_NORMAL_LOC);
-//    glBindVertexArray(m_VAO);
+    glEnableVertexAttribArray(ATTRIB_NORMAL_LOC);*/
+    glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, m_row*m_col*6);
-//    glBindVertexArray(0);
-    glDisableVertexAttribArray(ATTRIB_POINT_LOC);
+    glBindVertexArray(0);
+/*    glDisableVertexAttribArray(ATTRIB_POINT_LOC);
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
-    this->deleteMaterialUbo();
+  */  this->deleteMaterialUbo();
     this->deleteLightUbo();
 }
 
@@ -281,5 +282,4 @@ void PEMeshSurface::setVAO()
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
 }
-
 

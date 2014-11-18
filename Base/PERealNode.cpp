@@ -158,6 +158,7 @@ PERealNode::Material_Color & PERealNode::Material(){
 void PERealNode::setMaterialUniformBlock(){
     GLint index = glGetUniformBlockIndex(m_program, UNIFORM_MATERIAL);
     if(index == GL_INVALID_OPERATION || index == GL_INVALID_INDEX){
+		PELog("material block not available!");
         return;
     }
     GLint blockSize;

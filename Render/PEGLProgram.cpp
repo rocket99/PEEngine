@@ -39,7 +39,7 @@ bool PEGLProgram::initWithVertFragSrc(const char *vert, const char *frag)
 		glDeleteShader(vShader);
 		return false;
 	}
-	linkProgram(vShader, fShader);
+	this->linkProgram(vShader, fShader);
 
 	return true;
 }
@@ -131,7 +131,7 @@ GLint PEGLProgram::compileShader(GLenum type, const char *src)
 		return GL_FALSE;
 	}
     GLint shader = glCreateShader(type);
-    glShaderSource(shader, 1, &src, NULL);
+	glShaderSource(shader, 1, &src, NULL);
     glCompileShader(shader);
     GLint status = GL_FALSE;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);

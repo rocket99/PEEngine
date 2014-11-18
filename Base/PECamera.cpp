@@ -203,22 +203,22 @@ void PECamera::moveBackward(){
 	this->move(0.0, 0.0, -1.0);
 }
 void PECamera::lookUp(){
-	this->pitch(0.5);
+	this->pitch(0.05);
 }
 void PECamera::lookDown(){
-	this->pitch(-0.5);
+	this->pitch(-0.05);
 }
 void PECamera::lookLeft(){
-	this->yaw(0.25);
+	this->yaw(0.05);
 }
 void PECamera::lookRight(){
-	this->yaw(-0.25);
+	this->yaw(-0.05);
 }
 void PECamera::positiveRotate(){
-	this->roll(0.5);
+	this->roll(0.05);
 }
 void PECamera::nagitiveRotate(){
-	this->roll(-0.5);
+	this->roll(-0.05);
 }
 
 
