@@ -15,13 +15,11 @@ bool TestScene::initWithSize(const Size3D &size)
 	if(!PELayer3D::initWithSize(size)){
 		return false;
 	}	
-	PELog("TestScene init.");
-
 	PETexture *tex = PETexture::create("15182.jpg", PETexture::PicType::JPG_PIC);	
 	PELight *light = this->getLightSource();
 	light->Fovy() = 30.0;
 	light->Shininess() = 7.0;
-	light->Position() = Point3D(0.0, 1000.0, 0.0);
+	light->Position() = Point3D(0.0, 500.0, 0.0);
 	light->Direction() = Point3D(0.0, -1.0, 0.0);
 	light->Ambient() = ColorRGBA(0.1, 0.1, 0.1, 1.0); 
 	light->Diffuse() = ColorRGBA(0.4, 0.4, 0.4, 0.5);
@@ -32,8 +30,8 @@ bool TestScene::initWithSize(const Size3D &size)
 	PERect *plane= PERect::create(1000, 1000);
 	plane->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
 	plane->Position() = Point3D(0.0, 0.0, 0.0);
-	plane->Program0() = PEShaderManager::Instance()->getProgramForKey("vertColor");
-	plane->Program1() = PEShaderManager::Instance()->getProgramForKey("light");
+	plane->Program0() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
+	plane->Program1() = PEShaderManager::Instance()->getProgramForKey("shadow");
 	plane->Color() = ColorRGBA(0.4, 0.4, 0.2, 1.0);
 	plane->Material().ambient = ColorRGBA(0.1, 0.1, 0.1, 1.0);
 	plane->Material().diffuse = ColorRGBA(0.5, 0.5, 0.5, 1.0);
@@ -42,11 +40,11 @@ bool TestScene::initWithSize(const Size3D &size)
 	plane->Texture() = tex->Texture();
 	this->addChild(plane);
 	
-/*	for(int i=0; i<5; ++i){
+	for(int i=0; i<5; ++i){
 		for(int j=0; j<5; ++j){
 			PESphereSurface *sphere = PESphereSurface::create(40, 40, 40);	
-			sphere->Program0() = PEShaderManager::Instance()->getProgramForKey("vertColor");
-			sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
+			sphere->Program0() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
+			sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("shadow");
 			sphere->Position() = Point3D(-400+i*200, 100.0, -400+j*200);
 			sphere->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
 			sphere->Color() = ColorRGBA(0.5, 0.4, 0.1, 1.0);
@@ -58,12 +56,13 @@ bool TestScene::initWithSize(const Size3D &size)
 			this->addChild(sphere);
 		}
 	}
- */
 //显示缓冲
 	PERect *rect = PERect::create(600, 600);
 	rect->Program1() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
 	rect->Texture() = PETextureManager::Instance()->DepthTex();
 //	this->addChild(rect);
+
+	this->setKeyboardEvent();
 	return true;
 }                                                                                                                                                                                                                                                                                                  
 

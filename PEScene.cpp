@@ -49,9 +49,11 @@ bool PEScene::initWithSize(string name, int width, int height)
 	m_scene = TestScene::create(GLOBAL_WORLD_SIZE);
 	m_scene->setGLFWwindow(m_pWindow);
 	m_scene->setKeyboardEvent();
-//	m_event = new PEKeyboardEvent(GLFW_KEY_W);
-//	m_event->setSceneIn(m_pWindow);
-//	m_event->setPressEndFunction(std::bind(&PEScene::saveViewToPicture, this));
+
+	m_event = new PEKeyboardEvent(GLFW_KEY_PRINT_SCREEN);
+	m_event->setSceneIn(m_pWindow);
+	m_event->setPressEndFunction(std::bind(&PEScene::saveViewToPicture, this));
+	
 	return true;
 }
 
@@ -86,6 +88,7 @@ void PEScene::drawFBO()
 	glEnable(GL_MULTISAMPLE);
 	glClearColor(0.40, 0.4, 0.4, 0.5);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_MULTISAMPLE);
 	m_scene->drawFBO();
 }
 
@@ -112,7 +115,7 @@ void PEScene::setFrameBuffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA,
 				GL_UNSIGNED_BYTE, NULL);
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_colorTex, 0);	
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_colorTex, 0);
 
 	GLfloat border[] = {1.0f, 0.0f, 0.0f, 0.0f};
 	glGenTextures(1, &m_depthTex);
@@ -135,17 +138,23 @@ void PEScene::setFrameBuffer()
 }
 
 void PEScene::setGLPrograms(){
-//	PELog("load shader verticeTexture");
-//	string vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.vsh");
-//	string frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.fsh");
-//	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
-//	PEShaderManager::Instance()->setProgramForKey(program, "vert_tex");	
-	
-	PELog("load shader light");
-	std::string vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.vsh");
-	std::string frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.fsh");
+	PELog("load vertice texture render");
+	std::string vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.vsh");
+	std::string frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.fsh");
 	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	PEShaderManager::Instance()->setProgramForKey(program, "vert_tex");	
+	
+	PELog("load light render");
+	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.vsh");
+	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.fsh");
+	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "light");	
+	
+	PELog("load shadow render");
+	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/shadow.vsh");
+	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/shadow.fsh");
+	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	PEShaderManager::Instance()->setProgramForKey(program, "shadow");	
 }
 
 void PEScene::saveViewToPicture(){

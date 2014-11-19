@@ -180,12 +180,9 @@ void PEMeshSurface::draw()
     }
     PENode::draw();
     m_program = m_program1;
-//	PELog("mesh program1 %d", m_program1);
     if(glIsProgram(m_program) == GL_FALSE){
-//		PELog("mesh draw error:program error!");
         return;
     }
-//	PELog("draw mesh");
     glUseProgram(m_program);
     this->setModelViewProjectUniform();
     this->setLightProjectViewUniform();
@@ -234,19 +231,21 @@ void PEMeshSurface::drawFunc()
     this->setMaterialUniformBlock();
     this->setLightUniformBlock();
     
-	/*glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[0]);
+	glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[0]);
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);
     glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 0, &m_data[m_row*m_col*18]);
     glEnableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_FALSE, 0, &m_data[m_row*m_col*30]);
-    glEnableVertexAttribArray(ATTRIB_NORMAL_LOC);*/
-    glBindVertexArray(m_VAO);
+    glEnableVertexAttribArray(ATTRIB_NORMAL_LOC);
     glDrawArrays(GL_TRIANGLES, 0, m_row*m_col*6);
-    glBindVertexArray(0);
-/*    glDisableVertexAttribArray(ATTRIB_POINT_LOC);
+    glDisableVertexAttribArray(ATTRIB_POINT_LOC);
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
-  */  this->deleteMaterialUbo();
+ 
+//	  glBindVertexArray(m_VAO);
+//    glDrawArrays(GL_TRIANGLES, 0, m_row*m_col*6);
+//    glBindVertexArray(0);
+    this->deleteMaterialUbo();
     this->deleteLightUbo();
 }
 
@@ -258,10 +257,12 @@ void PEMeshSurface::setVAO()
     glBufferData(GL_ARRAY_BUFFER, m_row*m_col*18*sizeof(GLfloat), &m_data[0], GL_STATIC_DRAW);
     glGenBuffers(1, &normalBuf);
     glBindBuffer(GL_ARRAY_BUFFER, normalBuf);
-    glBufferData(GL_ARRAY_BUFFER, 18*m_row*m_col, &m_data[m_row*m_col*18], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 18*m_row*m_col*sizeof(GLfloat), &m_data[m_row*m_col*18],
+					GL_STATIC_DRAW);
     glGenBuffers(1, &texCoordBuf);
     glBindBuffer(GL_ARRAY_BUFFER, texCoordBuf);
-    glBufferData(GL_ARRAY_BUFFER, 12*m_row*m_col*sizeof(GLfloat), &m_data[m_row*m_col*12], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 12*m_row*m_col*sizeof(GLfloat), &m_data[m_row*m_col*12], 
+					GL_STATIC_DRAW);
     
     glGenVertexArrays(1, &m_VAO);
     glBindVertexArray(m_VAO);
@@ -271,10 +272,8 @@ void PEMeshSurface::setVAO()
     
     glBindBuffer(GL_ARRAY_BUFFER, pointBuf);
     glVertexAttribPointer(ATTRIB_POINT_LOC, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
-    
     glBindBuffer(GL_ARRAY_BUFFER, normalBuf);
-    glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
-    
+    glVertexAttribPointer(ATTRIB_NORMAL_LOC, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);    
     glBindBuffer(GL_ARRAY_BUFFER, texCoordBuf);
     glVertexAttribPointer(ATTRIB_TEXCOORD_LOC, 2, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
     
@@ -282,4 +281,6 @@ void PEMeshSurface::setVAO()
     glDisableVertexAttribArray(ATTRIB_TEXCOORD_LOC);
     glDisableVertexAttribArray(ATTRIB_NORMAL_LOC);
 }
+
+
 

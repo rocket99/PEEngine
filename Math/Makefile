@@ -1,6 +1,6 @@
 #Makefile
 
-CC = g++ -std=c++11
+CC = g++ --std=c++11
 all:PEDataType.o PEMatrix.o PEVector.o PELine.o PEPlane.o PEPolygon.o PESphere.o
 
 PEDataType.o:PEDataType.cpp PEDataType.h
