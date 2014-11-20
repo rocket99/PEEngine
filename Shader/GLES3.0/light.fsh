@@ -71,7 +71,6 @@ mediump vec4 light_color(mediump vec3 p)
         mediump vec3 s = normalize((l_position-p)+(u_cameraPos-p));
         specular = l_specular*m_specular*pow(max(dot(s, n), 0.0), l_shininess);
     }else{
-        ambient *= attenu(p);
         diffuse = l_diffuse*m_diffuse * max(0.0, dot(-i, n));
         mediump float angle = acos(dot(normalize(l_direction), i));
         if(dot(-i, n) > 0.0 && angle < l_fovy){
@@ -79,11 +78,13 @@ mediump vec4 light_color(mediump vec3 p)
             specular = l_specular*m_specular*pow(max(dot(o, normalize(u_cameraPos-p)), 0.0), l_shininess);
         }
     }
-    return (ambient + diffuse*shadowFactor() + specular*shadowFactor());
+    return ambient + diffuse + (ambient+diffuse+specular)*shadowFactor()*attenu(p);
 }
 
 void main(){
-    frag_color = m_emission + light_color(v_point);// + 0.1*texture(u_texture, v_texCoord);
-    frag_color += texture(u_texture, v_texCoord);
+    frag_color = m_emission + light_color(v_point);
+    frag_color *= texture(u_texture, v_texCoord);
 }
+
+
 
