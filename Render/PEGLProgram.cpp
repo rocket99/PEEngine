@@ -216,7 +216,6 @@ void PEGLProgram::linkProgram(GLint vShader, GLint gShader, GLint fShader)
     glDeleteShader(gShader);
     glDeleteShader(fShader);
 }
-
 void PEGLProgram::linkProgram(GLint vShader, GLint tcShader, GLint tvShader, GLint gShader, GLint fShader)
 {
     if(vShader==GL_FALSE || tcShader==GL_FALSE || tvShader==GL_FALSE || gShader==GL_FALSE || fShader==GL_FALSE){

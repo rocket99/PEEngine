@@ -17,7 +17,7 @@ string PEShaderReader::readShaderSrc(const char *file)
 	}
 	char *buf = new char[len];
 	fseek(fp, 0, SEEK_SET);
-	int ret = fread(buf, sizeof(char), len, fp);
+	size_t ret = fread(buf, sizeof(char), len, fp);
 	buf[ret] = '\0';
 	string src = buf;
 	delete [] buf;

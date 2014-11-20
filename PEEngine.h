@@ -32,6 +32,8 @@
 #include "Base/PEPointSet.h"
 
 //kayboard
+#ifdef GL_LINUX
 #include "PEKeyboardManager.h"
+#endif
 
 #endif
