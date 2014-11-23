@@ -34,8 +34,20 @@ public:
     
     void draw();
     void drawFBO();
-    
+    void drawFunc();
 private:
     Size3D m_size;
+    P3D *m_coords;
+    P3D *m_normal;
+    P2D *m_texCoord;
+    Color4F *m_color;
+    GLfloat *m_data;
+    void initFrontRect();
+    void initBackRect();
+    void initLeftRect();
+    void initRightRect();
+    void initTopRect();
+    void initBottomRect();
+    void updateData();
 };
 #endif /* defined(__Engine__PEBoxNode__) */
