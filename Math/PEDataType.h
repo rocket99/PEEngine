@@ -45,7 +45,8 @@ typedef struct PEPoint2D
 						const struct PEPoint2D &B, const struct PEPoint2D &C);
 } P2D, V2D, Size2D;
 P2D Point2D(float x, float y);
-
+#define POS2D(x, y)  Point2D(x, y) 
+#define VEC2D(x, y)  POS2D(x, y)
 
 typedef struct PEPoint3D
 {		
@@ -83,6 +84,8 @@ typedef struct PEPoint3D
     void display();
 }P3D, V3D, Size3D;
 P3D Point3D(float x, float y, float z);
+#define POS3D(x, y, z)  Point3D(x, y, z)
+#define VEC3D(x, y, z)  POS3D(x, y, z)
 #define P3DZERO Point3D(0.0, 0.0, 0.0)
    
 

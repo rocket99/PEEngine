@@ -9,7 +9,7 @@ BASE =	$(BPath)PEObject.o $(BPath)PENode.o $(BPath)PERealNode.o $(BPath)PEPolygo
 		$(BPath)PECamera.o $(BPath)PEBoxNode.o $(BPath)PEPointSet.o $(BPath)PELayer3D.o $(BPath)PELight.o\
 		$(BPath)PEAutoReleasePool.o 
 MATH =	$(MPath)PEPolygon.o $(MPath)PEMatrix.o $(MPath)PEVector.o $(MPath)PELine.o \
-		$(MPath)PEPlane.o $(MPath)PEDataType.o $(MPath)PESphere.o
+		$(MPath)PEPlane.o $(MPath)PEDataType.o $(MPath)PESphere.o $(MPath)PERandom.o $(MPath)PEMotion.o
 SHADER = $(SPath)PEGLProgram.o 	$(SPath)PEShaderManager.o 	$(SPath)PEShaders.o
 
 CC = g++ --std=c++11

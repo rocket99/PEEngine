@@ -132,7 +132,7 @@ void PERealNode::setModelViewProjectUniform(string uniform)
     GLint loc = glGetUniformLocation(m_program, uniform.c_str());
     if(loc >= 0){
         PEMatrix mat = m_sceneIn->getCamera()->modelViewProject();
-//        PEMatrix mat = m_sceneIn->getCamera()->modelViewOrtho(-4, 4, -4, 4, -4, 4);
+//        PEMatrix mat = m_sceneIn->getCamera()->modelViewOrtho(-1, 1, -1, 1, -1, 1);
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
     }
 }
@@ -145,7 +145,7 @@ void PERealNode::setLightProjectViewUniform(string uniform)
         if (m_sceneIn->getLightSource()->Fovy() > 0.0) {
             mat = m_sceneIn->getLightSource()->getCamera()->modelViewProject();
         }else{
-            mat = m_sceneIn->getLightSource()->getCamera()->modelViewOrtho(-3.0, 3.0, -3.0, 3.0, -3.0, 3.0);
+            mat = m_sceneIn->getLightSource()->getCamera()->modelViewOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
         }
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.getData());
     }
@@ -168,10 +168,14 @@ void PERealNode::setMaterialUniformBlock(){
     glGetUniformIndices(m_program, 4, name, indices);
     glGetActiveUniformsiv(m_program, 4, indices, GL_UNIFORM_OFFSET, offset);
     
-    GLfloat ambient[] = {m_material.ambient.r, m_material.ambient.g, m_material.ambient.b, m_material.ambient.a};
-    GLfloat diffuse[] = {m_material.diffuse.r, m_material.diffuse.g, m_material.diffuse.b, m_material.diffuse.a};
-    GLfloat specular[] = {m_material.specular.r, m_material.specular.g, m_material.specular.b, m_material.specular.a};
-    GLfloat emission[] = {m_material.emission.r, m_material.emission.g, m_material.emission.b, m_material.emission.a};
+    GLfloat ambient[] = {m_material.ambient.r, m_material.ambient.g, m_material.ambient.b, 
+			m_material.ambient.a};
+    GLfloat diffuse[] = {m_material.diffuse.r, m_material.diffuse.g, m_material.diffuse.b, 
+			m_material.diffuse.a};
+    GLfloat specular[] = {m_material.specular.r, m_material.specular.g, m_material.specular.b,
+			m_material.specular.a};
+    GLfloat emission[] = {m_material.emission.r, m_material.emission.g, m_material.emission.b,
+			m_material.emission.a};
     memcpy(blockBuffer+offset[0], ambient, 4*sizeof(GLfloat));
     memcpy(blockBuffer+offset[1], diffuse, 4*sizeof(GLfloat));
     memcpy(blockBuffer+offset[2], specular, 4*sizeof(GLfloat));
@@ -230,9 +234,9 @@ void PERealNode::setDepthTexUnifrom()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, PETextureManager::Instance()->DepthTex());
         glUniform1i(loc, 1);
-//        GLint err = glGetError();
-//        printf("C error %d\n", err);
-    }
+    }else{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 }
 
 void PERealNode::setTextureUniform()
@@ -242,7 +246,9 @@ void PERealNode::setTextureUniform()
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_texture);
         glUniform1i(loc, 0);
-    }
+    }else{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 }
 
 void PERealNode::setCameraPosUniform()

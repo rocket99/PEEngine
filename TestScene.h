@@ -20,6 +20,8 @@ private:
 	GLFWwindow *m_pWindow;
 
 	void setLightUniform();
+
+	PEMotion m_motion;
 };
 
 

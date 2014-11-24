@@ -15,5 +15,7 @@
 #include "PELine.h"
 #include "PEPolygon.h"
 #include "PESphere.h"
+#include "PERandom.h"
+#include "PEMotion.h"
 
 #endif

@@ -17,56 +17,82 @@ bool TestScene::initWithSize(const Size3D &size)
 	}	
 	PETexture *tex = PETexture::create("15182.jpg", PETexture::PicType::JPG_PIC);	
 	PELight *light = this->getLightSource();
-	light->Fovy() = 30.0;
-	light->Shininess() = 7.0;
-	light->Position() = Point3D(0.0, 500.0, 0.0);
-	light->Direction() = Point3D(0.0, -1.0, 0.0);
-	light->Ambient() = ColorRGBA(0.1, 0.1, 0.1, 1.0); 
-	light->Diffuse() = ColorRGBA(0.4, 0.4, 0.4, 0.5);
+	light->Fovy() = 0.0;
+	light->Shininess() = 6.3;
+	light->Position() = Point3D(0.0, 600.0, 0.0);
+	light->Direction() = Point3D(0.3, -1.0, 0.2);
+	light->Ambient() = ColorRGBA(0.4, 0.4, 0.45, 1.0); 
+	light->Diffuse() = ColorRGBA(0.8, 0.8, 0.8, 0.5);
 	light->Specular()=  ColorRGBA(0.9, 0.9, 0.9, 1.0);
 	light->setCamera();
-	this->getCamera()->World() = size;
 
+	this->getCamera()->World() = size;
+	this->getCamera()->zNear() = 0.001;
 	PERect *plane= PERect::create(1000, 1000);
 	plane->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
 	plane->Position() = Point3D(0.0, 0.0, 0.0);
 	plane->Program0() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
 	plane->Program1() = PEShaderManager::Instance()->getProgramForKey("shadow");
 	plane->Color() = ColorRGBA(0.4, 0.4, 0.2, 1.0);
-	plane->Material().ambient = ColorRGBA(0.1, 0.1, 0.1, 1.0);
+	plane->Material().ambient = ColorRGBA(0.7, 0.7, 0.7, 1.0);
 	plane->Material().diffuse = ColorRGBA(0.5, 0.5, 0.5, 1.0);
-	plane->Material().specular = ColorRGBA(0.3, 0.3, 0.2, 1.0);
+	plane->Material().specular = ColorRGBA(0.3, 0.6, 0.6, 1.0);
 	plane->Material().emission = ColorRGBA(0.3, 0.2, 0.2, 1.0);
 	plane->Texture() = tex->Texture();
 	this->addChild(plane);
-	
-	for(int i=0; i<5; ++i){
-		for(int j=0; j<5; ++j){
-			PESphereSurface *sphere = PESphereSurface::create(40, 40, 40);	
-			sphere->Program0() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
-			sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("shadow");
-			sphere->Position() = Point3D(-400+i*200, 100.0, -400+j*200);
-			sphere->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
-			sphere->Color() = ColorRGBA(0.5, 0.4, 0.1, 1.0);
-			sphere->Material().emission = ColorRGBA(0.2, 0.4, 0.6, 1.0);
-			sphere->Material().ambient = ColorRGBA(0.2, 0.3, 0.1, 1.0);
-			sphere->Material().diffuse = ColorRGBA(0.4, 0.4, 0.4, 1.0);
-			sphere->Material().specular = ColorRGBA(0.9, 0.5, 0.3, 1.0);
-			sphere->Texture() = tex->Texture();
-			this->addChild(sphere);
+
+	m_motion.Position() = POS3D(1.0, 0.0, 0.0);
+	m_motion.Velocity() = VEC3D(0.4, -4.0, 0.5);
+	m_motion.Accelerate() = VEC3D(0.0, 0.0, 0.0);
+
+	PEBoxNode *box = PEBoxNode::createWithSize(Point3D(20, 20, 20));
+	box->Program0() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
+	box->Program1() = PEShaderManager::Instance()->getProgramForKey("shadow");
+	box->Position() = m_motion.Position();	
+	box->Color() = ColorRGBA(0.5, 0.4, 0.1, 1.0);
+	box->Material().emission = ColorRGBA(0.2, 0.4, 0.6, 1.0);
+	box->Material().ambient = ColorRGBA(0.2, 0.3, 0.1, 1.0);
+	box->Material().diffuse = ColorRGBA(0.4, 0.4, 0.4, 1.0);
+	box->Material().specular = ColorRGBA(0.0, 0.0, 000, 1.0);
+	box->Texture() = tex->Texture();
+	this->addChild(box, "box");
+/*	
+	for(int a=0; a<3; ++a){
+		for(int i=0; i<5; ++i){
+			for(int j=0; j<5; ++j){
+				PEBoxNode *sphere = PEBoxNode::createWithSize(Point3D(100, 100, 100));	
+				sphere->Program0() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
+				sphere->Program1() = PEShaderManager::Instance()->getProgramForKey("shadow");
+				sphere->Position() = Point3D(-400+i*200+ a*50.0, 100.0+a*100.0, -400+j*200 + a*70.0);
+				sphere->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
+				sphere->Color() = ColorRGBA(0.5, 0.4, 0.1, 1.0);
+				sphere->Material().emission = ColorRGBA(0.2, 0.4, 0.6, 1.0);
+				sphere->Material().ambient = ColorRGBA(0.2, 0.3, 0.1, 1.0);
+				sphere->Material().diffuse = ColorRGBA(0.4, 0.4, 0.4, 1.0);
+				sphere->Material().specular = ColorRGBA(0.0, 0.0, 000, 1.0);
+				sphere->Texture() = tex->Texture();
+				this->addChild(sphere);
+			}
 		}
 	}
+	*/
 //显示缓冲
-	PERect *rect = PERect::create(600, 600);
+/*	PERect *rect = PERect::create(800, 800);
+	rect->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
+	rect->Position() = Point3D(0.0, 600.0, 0.0);
 	rect->Program1() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
 	rect->Texture() = PETextureManager::Instance()->DepthTex();
-//	this->addChild(rect);
-
+	this->addChild(rect);
+*/
 	this->setKeyboardEvent();
 	return true;
 }                                                                                                                                                                                                                                                                                                  
 
-void TestScene::update(){}
+void TestScene::update(){
+	PERealNode *node = static_cast<PERealNode *>(this->getChildByName("box"));
+	m_motion.LorenzMotion(0.001);
+	node->Position() = m_motion.Position();
+}
 
 void TestScene::setKeyboardEvent()
 {
