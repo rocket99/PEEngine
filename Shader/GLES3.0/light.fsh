@@ -25,6 +25,7 @@ uniform u_material
     mediump vec4 m_emission;
 };
 
+uniform mediump vec4 u_color;
 uniform mediump vec3 u_cameraPos;
 uniform mediump sampler2DShadow u_depthTex;
 uniform sampler2D u_texture;
@@ -83,7 +84,7 @@ mediump vec4 light_color(mediump vec3 p)
 
 void main(){
     frag_color = m_emission + light_color(v_point);
-    frag_color *= texture(u_texture, v_texCoord);
+    frag_color *= texture(u_texture, v_texCoord)+u_color;
 }
 
 

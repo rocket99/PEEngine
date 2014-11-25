@@ -6,6 +6,9 @@ string PEShaderReader::readShaderSrc(const char *file)
     char *buffer = NULL;
     NSString *path = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%s", file]
                                                      ofType:nil];
+    if(path == nil){
+        path = [NSString stringWithFormat:@"%s", file];
+    }
     NSString *src = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     unsigned long len = [src lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
     buffer = (char *)malloc(sizeof(char) * (len+1));

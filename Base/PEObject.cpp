@@ -10,15 +10,13 @@
 #include "PEAutoReleasePool.h"
 #include "PENode.h"
 
-PEObject *PEObject::create(const char *str)
-{
+PEObject *PEObject::create(const char *str){
     PEObject *obj = new PEObject;
     obj->setName(str);
     return obj;
 }
 
-void PEObject::retain()
-{
+void PEObject::retain(){
     PENode *node = static_cast<PENode *>(this);
     if (node != NULL) {
         for(int i=0; i<node->getChildren().size(); ++i){
@@ -28,8 +26,7 @@ void PEObject::retain()
     ++ m_retain;
 }
 
-void PEObject::release()
-{
+void PEObject::release(){
     PENode *node = static_cast<PENode *>(this);
     if (node != NULL) {
         for(int i=0; i<node->getChildren().size(); ++i){
@@ -42,14 +39,12 @@ void PEObject::release()
     }
 }
 
-void PEObject::autoRelease()
-{
+void PEObject::autoRelease(){
 	-- m_retain;
 	PEAutoReleasePool::Instance()->addObject(this);
 }
 
-void PEObject::safeDelete()
-{
+void PEObject::safeDelete(){
     if(PEAutoReleasePool::Instance()->isObjectInPool(this)){
         this->m_retain = 0;
         
@@ -58,16 +53,13 @@ void PEObject::safeDelete()
     }
 }
 
-void PEObject::setName(const char *str)
-{
+void PEObject::setName(const char *str){
     this->m_name = str;
 }
 
-string PEObject::getName()
-{
+string PEObject::getName(){
     return m_name;
 }
-int PEObject::retainCount()
-{
+int PEObject::retainCount(){
     return m_retain;
 }
