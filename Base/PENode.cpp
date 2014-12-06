@@ -10,16 +10,12 @@
 #include "PELayer3D.h"
 
 PENode::PENode():
-m_tag(0),
-m_isVisible(true),
-m_parent(NULL),
+m_tag(0),   m_isVisible(true),
+m_parent(NULL), m_blur(false),
 m_position(Point3D(0.0, 0.0, 0.0)),
 m_worldSize(GLOBAL_WORLD_SIZE),
-m_worldPos(P3DZERO),
-m_scale(Point3D(1.0, 1.0, 1.0)),
-m_locEuler(P3DZERO),
-m_blur(false)
-{
+m_worldPos(P3DZERO), m_locEuler(P3DZERO),
+m_scale(Point3D(1.0, 1.0, 1.0)){
     m_children.clear();
 }
 
@@ -213,6 +209,7 @@ void PENode::update(){
 }
 
 void PENode::draw(){
+//	PELog("%p draw", this);
     if(!m_isVisible){
         return;
     }
@@ -225,6 +222,7 @@ void PENode::draw(){
 
 void PENode::drawFBO()
 {
+//	PELog("%p draw FBO", this);
     if(!m_isVisible){
         return;
     }
@@ -268,7 +266,6 @@ float &PENode::ScaleZ()
 }
 
 void PENode::Rotate(V3D axis, float angle){
-
     m_localRotate = cross(PEMatrix::RotationMatrix(axis, angle), m_localRotate);
 //	m_localRotate.display();
 }

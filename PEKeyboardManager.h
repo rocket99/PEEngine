@@ -51,8 +51,10 @@ public:
 	void removeKeyboardEvent(int keyId);
 
 	void checkAllEvents();
+	void setEventView(GLFWwindow *window);
 private:
 	std::vector<PEKeyboardEvent *> m_events;
+	GLFWwindow *m_window;
 };
 
 

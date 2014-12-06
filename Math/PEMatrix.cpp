@@ -212,7 +212,7 @@ bool PEMatrix::operator != (const PEMatrix &mat)
 PEMatrix PEMatrix::complement(int row, int col)
 {
 	if(row >= m_col || col >= m_col){
-		PELog("there is must be row<max_row && col<max_col");
+		PELog("there is must be row(%d)<max_row(%d) && col(%d)<max_col(%d)", row, m_row, col, m_col);
 		return PEMatrix(0, 0);
 	}
 	PEMatrix retMat(m_row-1, m_col-1);

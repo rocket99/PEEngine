@@ -105,17 +105,10 @@ void PERect::drawFBO()
 void PERect::drawFunc()
 {
     this->setSpaceUniform();
-    this->setWorldMatUniform();
-    this->setColorUniform();
+	this->setWorldMatUniform();
+	this->setColorUniform();
     this->setCameraPosUniform();
-    GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
-    if(loc >= 0){
-		PELog("rect rotate");
-        PEMatrix mat = m_worldMat.complement(3, 3);
-		PELog("rotate mat: \n");
-		mat.display();
-        glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
-    }
+
     this->setMaterialUniformBlock();
     this->setLightUniformBlock();
     glEnableVertexAttribArray(ATTRIB_POINT_LOC);

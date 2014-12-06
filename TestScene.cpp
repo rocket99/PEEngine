@@ -93,62 +93,50 @@ void TestScene::update(){
 void TestScene::setKeyboardEvent()
 {
 	PEKeyboardEvent *w_event = new PEKeyboardEvent(GLFW_KEY_W);
-	w_event->setSceneIn(m_pWindow);
 	w_event->setPressLastFunction(std::bind(&PECamera::moveForward, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(w_event);
 
 	PEKeyboardEvent *s_event = new PEKeyboardEvent(GLFW_KEY_S);
-	s_event->setSceneIn(m_pWindow);
 	s_event->setPressLastFunction(std::bind(&PECamera::moveBackward, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(s_event);
 	
 	PEKeyboardEvent *a_event = new PEKeyboardEvent(GLFW_KEY_A);
-	a_event->setSceneIn(m_pWindow);
 	a_event->setPressLastFunction(std::bind(&PECamera::moveLeft, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(a_event);
 	
 	PEKeyboardEvent *d_event = new PEKeyboardEvent(GLFW_KEY_D);
-	d_event->setSceneIn(m_pWindow);
 	d_event->setPressLastFunction(std::bind(&PECamera::moveRight, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(d_event);
 	
 	PEKeyboardEvent *e_event = new PEKeyboardEvent(GLFW_KEY_E);
-	e_event->setSceneIn(m_pWindow);
 	e_event->setPressLastFunction(std::bind(&PECamera::moveUp, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(e_event);
 	
 	PEKeyboardEvent *r_event = new PEKeyboardEvent(GLFW_KEY_R);
-	r_event->setSceneIn(m_pWindow);
 	r_event->setPressLastFunction(std::bind(&PECamera::moveDown, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(r_event);
 	
 	PEKeyboardEvent *left_event = new PEKeyboardEvent(GLFW_KEY_LEFT);
-	left_event->setSceneIn(m_pWindow);
 	left_event->setPressLastFunction(std::bind(&PECamera::positiveRotate, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(left_event);
 	
 	PEKeyboardEvent *right_event = new PEKeyboardEvent(GLFW_KEY_RIGHT);
-	right_event->setSceneIn(m_pWindow);
 	right_event->setPressLastFunction(std::bind(&PECamera::nagitiveRotate, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(right_event);
 
 	PEKeyboardEvent *up_event = new PEKeyboardEvent(GLFW_KEY_UP);
-	up_event->setSceneIn(m_pWindow);
 	up_event->setPressLastFunction(std::bind(&PECamera::lookUp, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(up_event);
 
 	PEKeyboardEvent *down_event = new PEKeyboardEvent(GLFW_KEY_DOWN);
-	down_event->setSceneIn(m_pWindow);
 	down_event->setPressLastFunction(std::bind(&PECamera::lookDown, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(down_event);
 	
 	PEKeyboardEvent *z_event = new PEKeyboardEvent(GLFW_KEY_Z);
-	z_event->setSceneIn(m_pWindow);
 	z_event->setPressLastFunction(std::bind(&PECamera::lookLeft, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(z_event);
 	
 	PEKeyboardEvent *x_event = new PEKeyboardEvent(GLFW_KEY_X);
-	x_event->setSceneIn(m_pWindow);
 	x_event->setPressLastFunction(std::bind(&PECamera::lookRight, this->getCamera()));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(x_event);
 }

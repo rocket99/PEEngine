@@ -10,7 +10,8 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	scene->start();
-	scene->release();
+
+//	scene->release();
 	return 0;
 }
 

@@ -27,6 +27,9 @@ PEScene * PEScene::createWithSize(string name, int width, int height)
 
 bool PEScene::initWithSize(string name, int width, int height)
 {
+	if(!PENode::init()){
+		return false;
+	}
 	m_name = name;
 	m_width = width;
 	m_height = height;
@@ -43,7 +46,10 @@ bool PEScene::initWithSize(string name, int width, int height)
 	
 	this->setFrameBuffer();
 	this->setGLPrograms();
+	this->setWorldMat();
 	glEnable(GL_DEPTH_TEST);
+
+	PEKeyboardManager::getInstance()->setEventView(m_pWindow);
 
 	m_event = new PEKeyboardEvent(GLFW_KEY_SPACE);
 	m_event->setSceneIn(m_pWindow);
@@ -72,21 +78,27 @@ void PEScene::draw()
 	glClearColor(0.75, 0.75, 0.75, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_MULTISAMPLE);
-//	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGB8, m_width, m_height);
-//	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, m_width, m_height);
-	PENode::draw();
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGB8, m_width, m_height);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, m_width, m_height);
+
+	for(int i=0; i<m_children.size(); ++i){
+		m_children[i]->draw();
+	}
 }
 
 void PEScene::drawFBO()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 	glViewport(0, 0, (GLsizei)m_width, (GLsizei)m_height);
-//	glEnable(GL_CULL_FACE);
-//	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	glEnable(GL_MULTISAMPLE);
 	glClearColor(0.75, 0.75, 0.75, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	PENode::drawFBO();
+
+	for(int i=0; i<m_children.size(); ++i){
+		m_children[i]->drawFBO();
+	}
 }
 
 int PEScene::Width()

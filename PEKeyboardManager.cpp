@@ -118,6 +118,7 @@ void PEKeyboardManager::addKeyboardEvent(PEKeyboardEvent *event)
 		}
 		++ it;
 	}
+	event->setSceneIn(m_window);
 	m_events.push_back(event);
 }
 
@@ -141,4 +142,15 @@ void PEKeyboardManager::checkAllEvents()
 		(*it)->check();
 		++ it;
 	}
+}
+
+void PEKeyboardManager::setEventView(GLFWwindow *window)
+{
+	m_window = window;
+	std::vector<PEKeyboardEvent *>::iterator it = m_events.begin();
+	while(it != m_events.end()){
+		(*it)->setSceneIn(m_window);
+		++ it;
+	}
+
 }
