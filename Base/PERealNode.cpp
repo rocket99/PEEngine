@@ -261,6 +261,15 @@ void PERealNode::setCameraPosUniform()
     }
 }
 
+void PERealNode::setRotateUniform()
+{
+	GLint loc = glGetUniformLocation(m_program, UNIFORM_ROTATE);
+	if(loc >= 0){
+		PEMatrix mat = m_worldMat.complement(3,3);
+		glUniformMatrix3fv(loc, 1, GL_FALSE, mat.getData());
+	}
+}
+
 GLuint PERealNode::getCurrentGLProgram(){
     return m_program;
 }

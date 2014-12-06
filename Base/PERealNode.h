@@ -75,7 +75,8 @@ protected:
     void setDepthTexUnifrom();
     void setTextureUniform();
     void setCameraPosUniform();
-    
+	void setRotateUniform();
+
     Color4F m_color;
     GLuint m_texture;
 };

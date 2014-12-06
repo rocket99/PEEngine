@@ -1,11 +1,12 @@
 #ifndef 	__PEScene_H__
 #define 	__PEScene_H__
 
-#include "Base/PEObject.h"
+#include "Base/PENode.h"
 #include "Render/PEShaderManager.h"
-#include "TestScene.h"
+#include "Base/PELayer3D.h"
+#include "PEKeyboardManager.h"
 
-class PEScene: public PEObject
+class PEScene: public PENode
 {
 public:
 	PEScene();
@@ -24,7 +25,6 @@ private:
 	GLuint m_colorTex, m_depthTex, m_fbo;
 	void setFrameBuffer();
 	void setGLPrograms();
-	TestScene *m_scene;
 	void saveViewToPicture();
 	void checkKeyboardInput();
 	PEKeyboardEvent *m_event;

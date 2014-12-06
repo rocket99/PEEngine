@@ -8,7 +8,7 @@
 
 #ifndef Engine_PEEngine_h
 #define Engine_PEEngine_h
-
+#include "PEPrefix.h"
 #include "PEMacro.h"
 //math methods
 #include "Math/PEMath.h"
@@ -34,6 +34,7 @@
 //kayboard
 #ifdef GL_LINUX
 #include "PEKeyboardManager.h"
+#include "PEScene.h"
 #endif
 
 #endif

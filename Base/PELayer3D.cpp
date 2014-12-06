@@ -50,10 +50,12 @@ bool PELayer3D::initWithSize(const Size3D &size)
 
 void PELayer3D::drawFBO()
 {
+	PELog("draw fbo layer3D");
     PENode::drawFBO();
 }
 
 void PELayer3D::draw(){
+	PELog("draw layer3D");
     PENode::draw();
 }
 

@@ -9,6 +9,7 @@
 class TestScene:public PELayer3D
 {
 public:
+	static PEScene *Scene(const Size3D &size);
 	static TestScene *create(const Size3D &size);
 	bool initWithSize(const Size3D &size);	
 	void update();
@@ -18,9 +19,6 @@ public:
 	void setKeyboardEvent();
 private:
 	GLFWwindow *m_pWindow;
-
-	void setLightUniform();
-
 	PEMotion m_motion;
 };
 

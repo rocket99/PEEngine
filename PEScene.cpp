@@ -2,8 +2,7 @@
 // PEScene.cpp
 //
 
-#include "PEScene.h"
-#include <png.h>
+#include "PEEngine.h"
 
 PEScene::PEScene(){
 	m_width = 0;
@@ -45,9 +44,6 @@ bool PEScene::initWithSize(string name, int width, int height)
 	this->setFrameBuffer();
 	this->setGLPrograms();
 	glEnable(GL_DEPTH_TEST);
-	m_scene = TestScene::create(GLOBAL_WORLD_SIZE);
-	m_scene->setGLFWwindow(m_pWindow);
-	m_scene->setKeyboardEvent();
 
 	m_event = new PEKeyboardEvent(GLFW_KEY_SPACE);
 	m_event->setSceneIn(m_pWindow);
@@ -73,12 +69,12 @@ void PEScene::draw()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, m_width, m_height);
 	glDisable(GL_CULL_FACE);
-	glClearColor(0.4, 0.4, 0.4, 0.5);
+	glClearColor(0.75, 0.75, 0.75, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_MULTISAMPLE);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGB8, m_width, m_height);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, m_width, m_height);
-	m_scene->draw();
+//	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGB8, m_width, m_height);
+//	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, m_width, m_height);
+	PENode::draw();
 }
 
 void PEScene::drawFBO()
@@ -88,10 +84,9 @@ void PEScene::drawFBO()
 //	glEnable(GL_CULL_FACE);
 //	glCullFace(GL_BACK);
 	glEnable(GL_MULTISAMPLE);
-	glClearColor(0.40, 0.4, 0.4, 0.5);
+	glClearColor(0.75, 0.75, 0.75, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_MULTISAMPLE);
-	m_scene->drawFBO();
+	PENode::drawFBO();
 }
 
 int PEScene::Width()
@@ -117,8 +112,7 @@ void PEScene::setFrameBuffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA,
 				GL_UNSIGNED_BYTE, NULL);
-	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 8, GL_RGBA8, m_width, m_height, 
-					GL_TRUE);
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 8, GL_RGBA8, m_width, m_height, GL_TRUE);
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_colorTex, 0);
 
 	GLfloat border[] = {1.0f, 0.0f, 0.0f, 0.0f};
@@ -131,10 +125,8 @@ void PEScene::setFrameBuffer()
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LESS);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_width, m_height, 0, 
-				GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
-	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 8, GL_DEPTH_COMPONENT, m_width, 
-					m_height, GL_TRUE);	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 8, GL_DEPTH_COMPONENT, m_width, m_height, GL_TRUE);	
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTex, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	PETextureManager::Instance()->DepthTex() = m_depthTex;

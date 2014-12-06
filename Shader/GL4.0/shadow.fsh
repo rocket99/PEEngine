@@ -36,19 +36,19 @@ float shadow_factor()
 {
 	float sum = 0.0;
 	float delta = 1.0/900.0;
-//	sum += textureProj(u_depthTex, v_shadowCoord+vec4(-delta, -delta, 0.0, 0.0));
-//	sum += textureProj(u_depthTex, v_shadowCoord+vec4(   0.0, -delta, 0.0, 0.0));
-//	sum += textureProj(u_depthTex, v_shadowCoord+vec4( delta, -delta, 0.0, 0.0));
+	sum += textureProj(u_depthTex, v_shadowCoord+vec4(-delta, -delta, 0.0, 0.0));
+	sum += textureProj(u_depthTex, v_shadowCoord+vec4(   0.0, -delta, 0.0, 0.0));
+	sum += textureProj(u_depthTex, v_shadowCoord+vec4( delta, -delta, 0.0, 0.0));
 
-//	sum += textureProj(u_depthTex, v_shadowCoord+vec4(-delta, 0.0, 0.0, 0.0));
-	sum += textureProj(u_depthTex, v_shadowCoord+vec4(   0.0, 0.0, 0.0, 0.0));
-//	sum += textureProj(u_depthTex, v_shadowCoord+vec4( delta, 0.0, 0.0, 0.0));
+	sum += textureProj(u_depthTex, v_shadowCoord+vec4(-delta, 0.0, 0.0, 0.0));
+	sum += textureProj(u_depthTex, v_shadowCoord);
+	sum += textureProj(u_depthTex, v_shadowCoord+vec4( delta, 0.0, 0.0, 0.0));
 
-//	sum += textureProj(u_depthTex, v_shadowCoord+vec4(-delta, delta, 0.0, 0.0));
-//	sum += textureProj(u_depthTex, v_shadowCoord+vec4(   0.0, delta, 0.0, 0.0));
-//	sum += textureProj(u_depthTex, v_shadowCoord+vec4( delta, delta, 0.0, 0.0));
+	sum += textureProj(u_depthTex, v_shadowCoord+vec4(-delta, delta, 0.0, 0.0));
+	sum += textureProj(u_depthTex, v_shadowCoord+vec4(   0.0, delta, 0.0, 0.0));
+	sum += textureProj(u_depthTex, v_shadowCoord+vec4( delta, delta, 0.0, 0.0));
 
-	return sum/1.0;
+	return sum/9.0;
 }
 
 vec4 lightShine(vec3 P){

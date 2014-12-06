@@ -3,8 +3,6 @@
 //
 
 #include "PETexture.h"
-#include <png.h>
-#include <jpeglib.h>
 
 #define PNG_BYTES_TO_CHECK 4
 PETexture::PETexture()
