@@ -15,8 +15,9 @@ SHADER = $(SPath)PEGLProgram.o $(SPath)PEShaderManager.o $(SPath)PEShaders.o
 CC = g++ --std=c++11
 DGL = -DGL_GLEXT_PROTOTYPES
 ALL:main
-main:main.o PEScene.o TestScene.o PETexture.o PETextureManager.o PEKeyboardManager.o $(BASE) $(MATH) $(SHADER)
-	$(CC) -o main $(MATH) $(BASE) $(SHADER) main.o PEScene.o TestScene.o PETexture.o PETextureManager.o PEKeyboardManager.o $(LINK) -g
+main:main.o PEScene.o TestScene.o NormalMapScene.o JuliaScene.o PETexture.o PETextureManager.o PEKeyboardManager.o $(BASE) $(MATH) $(SHADER)
+	$(CC) -o main $(MATH) $(BASE) $(SHADER) main.o PEScene.o TestScene.o NormalMapScene.o JuliaScene.o PETexture.o \
+	   	PETextureManager.o PEKeyboardManager.o $(LINK) -g
 main.o:main.cpp PEEngine.h PEMacro.h
 	$(CC) -c main.cpp
 PEScene.o:PEScene.cpp PEScene.h TestScene.h
@@ -27,6 +28,10 @@ PETextureManager.o:PETextureManager.cpp PETextureManager.h
 	$(CC) -c PETextureManager.cpp -g
 TestScene.o:TestScene.h TestScene.cpp
 	$(CC) -c TestScene.cpp $(DGL) -g
+NormalMapScene.o:NormalMapScene.h NormalMapScene.cpp
+	$(CC) -c NormalMapScene.cpp $(DGL) -g
+JuliaScene.o:JuliaScene.cpp JuliaScene.h
+	$(CC) -c JuliaScene.cpp $(DGL) -g
 PEKeyboardManager.o:PEKeyboardManager.cpp PEKeyboardManager.h
 	$(CC) -c PEKeyboardManager.cpp -g
 	

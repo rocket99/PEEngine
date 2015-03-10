@@ -50,12 +50,10 @@ bool PEScene::initWithSize(string name, int width, int height)
 	glEnable(GL_DEPTH_TEST);
 
 	PEKeyboardManager::getInstance()->setEventView(m_pWindow);
-
 	m_event = new PEKeyboardEvent(GLFW_KEY_SPACE);
 	m_event->setSceneIn(m_pWindow);
 	m_event->setPressEndFunction(std::bind(&PEScene::saveViewToPicture, this));
 	PEKeyboardManager::getInstance()->addKeyboardEvent(m_event);
-//	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGBA, m_width, m_height);
 	return true;
 }
 
@@ -74,12 +72,12 @@ void PEScene::draw()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, m_width, m_height);
-	glDisable(GL_CULL_FACE);
-	glClearColor(0.75, 0.75, 0.75, 1.0);
+	glClearColor(0.5, 0.5, 0.5, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_MULTISAMPLE);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGB8, m_width, m_height);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, m_width, m_height);
+//	glEnable(GL_MULTISAMPLE);
+//	glSampleCoverage(0.05, GL_TRUE);
+//	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGB8, m_width, m_height);
+//	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, m_width, m_height);
 
 	for(int i=0; i<m_children.size(); ++i){
 		m_children[i]->draw();
@@ -90,8 +88,6 @@ void PEScene::drawFBO()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 	glViewport(0, 0, (GLsizei)m_width, (GLsizei)m_height);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
 	glEnable(GL_MULTISAMPLE);
 	glClearColor(0.75, 0.75, 0.75, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -115,54 +111,69 @@ void PEScene::setFrameBuffer()
 {
 	glGenFramebuffers(1, &m_fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-
+//color
 	glGenTextures(1, &m_colorTex);
-	glBindTexture(GL_TEXTURE_2D, m_colorTex);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA,
-				GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_colorTex);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 8, GL_RGBA8, m_width, m_height, GL_TRUE);
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_colorTex, 0);
-
+//depth
 	GLfloat border[] = {1.0f, 0.0f, 0.0f, 0.0f};
 	glGenTextures(1, &m_depthTex);
-	glBindTexture(GL_TEXTURE_2D, m_depthTex);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LESS);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_depthTex);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	glTexParameterfv(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_BORDER_COLOR, border);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_COMPARE_FUNC, GL_LESS);
 	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 8, GL_DEPTH_COMPONENT, m_width, m_height, GL_TRUE);	
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTex, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, m_depthTex, 0);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	PETextureManager::Instance()->DepthTex() = m_depthTex;
 	PETextureManager::Instance()->ColorTex() = m_colorTex;
 }
 
 void PEScene::setGLPrograms(){
-	PELog("load vertice texture render");
 	std::string vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.vsh");
 	std::string frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_tex.fsh");
 	PEGLProgram *program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "vert_tex");	
 	
-	PELog("load light render");
 	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.vsh");
 	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/light.fsh");
 	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "light");	
 	
-	PELog("load shadow render");
 	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/shadow.vsh");
 	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/shadow.fsh");
 	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
 	PEShaderManager::Instance()->setProgramForKey(program, "shadow");	
+	
+	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/normal.vsh");
+	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/normal.fsh");
+	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	PEShaderManager::Instance()->setProgramForKey(program, "normal");	
+
+	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_color.vsh");
+	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/vert_color.fsh");
+	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	PEShaderManager::Instance()->setProgramForKey(program, "vert_color");
+
+	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/normal_map.vsh");
+	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/normal_map.fsh");
+	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	PEShaderManager::Instance()->setProgramForKey(program, "normal_map");
+	
+	vert = PEShaderReader::readShaderSrc("./Shader/GL4.0/Julia.vsh");
+	frag = PEShaderReader::readShaderSrc("./Shader/GL4.0/Julia.fsh");
+	program = PEGLProgram::createWithVertFragSrc(vert.c_str(), frag.c_str());
+	PEShaderManager::Instance()->setProgramForKey(program, "julia");
 }
 
 void PEScene::saveViewToPicture(){
@@ -211,5 +222,15 @@ void PEScene::saveViewToPicture(){
 	fclose(fp);
 	delete [] data; 
 }
+
+void PEScene::displayHardwareInfo()
+{
+	int num;
+	glGetIntegerv(GL_SAMPLE_BUFFERS, &num);
+	PELog("sample num %d", num);
+	glGetIntegerv(GL_SAMPLES, &num);
+	PELog("samples %d", num);
+}
+
 
 

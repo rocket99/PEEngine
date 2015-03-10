@@ -38,7 +38,6 @@ protected:
     PELayer3D();
     ~PELayer3D();
     
-private:
     Size3D m_size;
     PECamera *m_camera;
     PELight *m_light;

@@ -16,6 +16,7 @@ public:
 	void start();
 	int Width();
 	int Height();
+
 private:
 	string m_name;
 	GLint m_width, m_height;
@@ -29,6 +30,7 @@ private:
 	void checkKeyboardInput();
 	PEKeyboardEvent *m_event;
 
+	void displayHardwareInfo();
 };
 
 

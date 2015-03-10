@@ -92,25 +92,28 @@ bool PETexture::readPNGFile(const char *fileName)
 	m_width = png_get_image_width(png_ptr, info_ptr);
 	m_height = png_get_image_height(png_ptr, info_ptr);
 	row_pointers = png_get_rows(png_ptr, info_ptr);
-	GLubyte *data = new GLubyte [m_width*m_height*4];;
+	GLubyte *data = new GLubyte [m_width*m_height*4];
+	w = m_width; h = m_height;
+	long pos = 0;
 	switch(color_type){
 		case PNG_COLOR_TYPE_RGB_ALPHA:
 			for(y=0; y<h;++y){
-				for(x=0; x<w; ++x){
-					data[(y*w+x)*4+0] = row_pointers[y][x+0];
-					data[(y*w+x)*4+1] = row_pointers[y][x+1];
-					data[(y*w+x)*4+2] = row_pointers[y][x+2];
-					data[(y*w+x)*4+3] = row_pointers[y][x+3];
+				for(x=0; x<4*w; x+=4){
+					data[pos++] = row_pointers[y][x+0];
+					data[pos++] = row_pointers[y][x+1];
+					data[pos++] = row_pointers[y][x+2];
+					data[pos++] = row_pointers[y][x+3];
 				}
 			}
 			break;
 		case PNG_COLOR_TYPE_RGB:
-			for(y=0; y<h; ++y){
+			PELog("png without alpha");
+			for(y=0; y<m_height; ++y){
 				for(x=0; x<w; ++x){
-					data[(y*w+x)*4+0] = row_pointers[y][x+0];
-					data[(y*w+x)*4+1] = row_pointers[y][x+1];
-					data[(y*w+x)*4+2] = row_pointers[y][x+2];
-					data[(y*w+x)*4+3] = 255;
+					data[pos++] = row_pointers[y][3*x+0];
+					data[pos++] = row_pointers[y][3*x+1];
+					data[pos++] = row_pointers[y][3*x+2];
+					data[pos++] = 255;
 				}
 			}
 			break;

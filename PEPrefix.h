@@ -15,6 +15,7 @@
 #include <map>
 #include <list>
 #include <functional>
+#include <thread>
 using namespace std;
 #endif
 

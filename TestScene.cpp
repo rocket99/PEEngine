@@ -26,68 +26,31 @@ bool TestScene::initWithSize(const Size3D &size)
 	if(!PELayer3D::initWithSize(size)){
 		return false;
 	}
-	PETexture *tex = PETexture::create("15182.jpg", PETexture::PicType::JPG_PIC);	
-	PELight *light = this->getLightSource();
-	light->Fovy() =40.0;
-	light->Shininess() = 2.3;
-	light->Position() = Point3D(0.0, 600.0, 0.0);
-	light->Direction() = Point3D(0.3, -1.0, 0.1);
-	light->Ambient() = ColorRGBA(0.1, 0.2, 0.05, 1.0); 
-	light->Diffuse() = ColorRGBA(0.3, 0.3, 0.2, 0.5);
-	light->Specular()=  ColorRGBA(0.9, 0.9, 0.9, 1.0);
-	light->setCamera();
 
-	this->getCamera()->World() = size;
-	this->getCamera()->zNear() = 0.001;
+	PETexture *tex = PETexture::create("../tank/tank_hp_heibaoII_body_normal.png", PETexture::PicType::PNG_PIC);
+//	PETexture *tex = PETexture::create("../user.png", PETexture::PicType::PNG_PIC);
+	PELog("tex width= %d, height=%d\n", tex->Width(), tex->Height());
+	PERect *bound  = PERect::create(tex->Width(), tex->Height());
+	bound->Texture() = tex->Texture(); 
+	bound->Program1() = PEShaderManager::Instance()->getProgramForKey("normal");
+	this->addChild(bound);
 
-	PERect *plane= PERect::create(1000, 1000);
-	plane->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
-	plane->Position() = Point3D(0.0, 0.0, 0.0);
-	plane->Program0() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
-	plane->Program1() = PEShaderManager::Instance()->getProgramForKey("shadow");
-	plane->Color() = ColorRGBA(0.4, 0.4, 0.2, 1.0);
-	plane->Material().ambient = ColorRGBA(0.2, 0.2, 0.1, 1.0);
-	plane->Material().diffuse = ColorRGBA(0.5, 0.5, 0.5, 1.0);
-	plane->Material().specular = ColorRGBA(0.3, 0.6, 0.6, 1.0);
-	plane->Material().emission = ColorRGBA(0.3, 0.2, 0.2, 1.0);
-	plane->Texture() = tex->Texture();
-	this->addChild(plane);
-	
-/*	for(int a=0; a<3; ++a){
-		for(int i=0; i<5; ++i){
-			for(int j=0; j<5; ++j){
-				PEBoxNode *box = PEBoxNode::createWithSize(Point3D(100, 30, 100));	
-				box->Program0() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
-				box->Program1() = PEShaderManager::Instance()->getProgramForKey("shadow");
-				box->Position() = Point3D(-400+i*200+ a*50.0, 100.0+a*100.0, -400+j*200 + a*70.0);
-				box->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
-				box->Color() = ColorRGBA(0.5, 0.4, 0.1, 1.0);
-				box->Material().emission = ColorRGBA(0.3, 0.25, 0.2, 1.0);
-				box->Material().ambient = ColorRGBA(0.2, 0.3, 0.1, 1.0);
-				box->Material().diffuse = ColorRGBA(0.4, 0.4, 0.4, 1.0);
-				box->Material().specular = ColorRGBA(0.8, 0.7, 0.2, 1.0);
-				box->Texture() = tex->Texture();
-				this->addChild(box);
-			}
-		}
-	}
-*/
 //显示缓冲
-/*	PERect *rect = PERect::create(800, 800);
+	PERect *rect = PERect::create(800, 800);
 	rect->Rotate(Point3D(1.0, 0.0, 0.0), 90.0);
 	rect->Position() = Point3D(0.0, 600.0, 0.0);
 	rect->Program1() = PEShaderManager::Instance()->getProgramForKey("vert_tex");
 	rect->Texture() = PETextureManager::Instance()->DepthTex();
 	this->addChild(rect);
-*/
+
 	this->setKeyboardEvent();
+
+
+
 	return true;
 }   
 
 void TestScene::update(){
-//	PERealNode *node = static_cast<PERealNode *>(this->getChildByName("box"));
-//	m_motion.LorenzMotion(0.001);
-//	node->Position() = m_motion.Position();
 }
 
 void TestScene::setKeyboardEvent()
@@ -141,4 +104,38 @@ void TestScene::setKeyboardEvent()
 	PEKeyboardManager::getInstance()->addKeyboardEvent(x_event);
 }
 
+void TestScene::draw()
+{
+	PENode::draw();
+	const GLfloat coords[] = {
+		-100.0, -100.0, 0.0, -100.0, 100.0, 0.0, 100.0, 100.0, 0.0, 100.0, -100.0, 0.0,
+	};
+	const GLubyte colors[] = {
+		255, 0, 0, 255, 0, 255, 0, 255, 0, 0, 255, 255, 128, 128, 0, 128,
+	};	
+	const GLfloat texCoords[] = {
+		0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+	};
+	GLuint program = PEShaderManager::Instance()->getProgramForKey("vert_color");
+	glUseProgram(program);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, coords);
+	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_FALSE, 0, colors);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+
+	GLint loc = glGetUniformLocation(program, "u_position");
+	if(loc >= 0){
+		glUniform3f(loc, 0.0f, 0.0f, 0.0f);
+	}
+	loc = glGetUniformLocation(program, "u_space");
+	if(loc >= 0){
+		glUniform3f(loc, m_size.x, m_size.y, m_size.x);
+	}	
+
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+
+}
 

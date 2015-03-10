@@ -17,6 +17,8 @@ public:
 		m_pWindow = window;
 	}
 	void setKeyboardEvent();
+
+	void draw();
 private:
 	GLFWwindow *m_pWindow;
 	PEMotion m_motion;

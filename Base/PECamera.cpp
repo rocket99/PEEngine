@@ -10,7 +10,7 @@
 PECamera::PECamera(){
     m_up = Point3D(0.0, 1.0, 0.0);
     m_focus = Point3D(0.0, 0.0, 0.0);
-    m_pos = Point3D(0.0, 0.0, 1.0);
+    m_pos = Point3D(1.0, 0.0, 0.0);
     m_camera = NULL;
     m_perspect = NULL;
 }
