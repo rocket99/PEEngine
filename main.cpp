@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
 			break;
 		case '2':
 			{
-				Size3D size0; size0.x = size0.y= size.z = 800;
-				scene = JuliaScene::Scene(size);
+				Size3D size0; size0.x = size0.y= size0.z = 800;
+				scene = JuliaScene::Scene(size0);
 			}
 			break;
 		case '3':

@@ -34,16 +34,15 @@ bool PELayer3D::initWithSize(const Size3D &size)
         return false;
     }
     m_size = size;
+
     m_camera = PECamera::create(size, Point3D(0.0, 0.0, size.z), P3DZERO, Point3D(0.0, 1.0, 0.0));
-    m_camera->setPerspect(60.0, 1.0, 0.05, 30.0);
+   	m_camera->setPerspect(60.0, 1.0, 0.05, 30.0);
     m_camera->World() = m_size;
     m_camera->WorldFocus() = P3DZERO;
     m_camera->WorldPos() = Point3D(0.0, 0.0, m_size.z);
     m_camera->upDirect() = Point3D(0.0, 1.0, 0.0);
     m_camera->retain();
-    
     m_light = PELight::createWithWorld(size);
-    
     return true;
 }
 

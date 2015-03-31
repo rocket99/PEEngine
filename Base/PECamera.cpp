@@ -30,6 +30,11 @@ PECamera *PECamera::create(const P3D &world, const P3D &pos, const P3D &focus, c
 }
 
 bool PECamera::init(const P3D &world, const P3D &pos, const P3D &focus, const P3D &up){
+//	printf("world %f, %f, %f\n", world.x, world.y, world.z);	
+//	printf("pos %f, %f, %f\n", pos.x, pos.y, pos.z);	
+//	printf("focus %f, %f, %f\n", focus.x, focus.y, focus.z);	
+//	printf("up %f, %f, %f\n", up.x, up.y, up.z);	
+
     if (pos == focus || isParallel(pos-focus, up) || up == Point3D(0.0, 0.0, 0.0)) {
         PELog("pay attention to paramemters such as pos, focus and up, there is some invalid paramemter.\n");
         return false;
