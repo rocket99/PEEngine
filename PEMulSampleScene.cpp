@@ -2,7 +2,7 @@
 // PEMulSampleScene.cpp
 //
 //
-#include "PEEngine.h"
+#include "PEMulSampleScene.h"
 
 PEMulSampleScene::PEMulSampleScene(){
 	m_width = 0;
@@ -60,7 +60,8 @@ bool PEMulSampleScene::initWithSize(string name, int width, int height)
 
 void PEMulSampleScene::start()
 {
-	while(!glfwWindowShouldClose(m_pWindow)&& glfwGetKey(m_pWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS){
+	while(!glfwWindowShouldClose(m_pWindow) && 
+			glfwGetKey(m_pWindow, GLFW_KEY_ESCAPE)!=GLFW_PRESS){
 		this->drawFBO();
 		this->draw();
 		glfwSwapBuffers(m_pWindow);

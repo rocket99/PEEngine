@@ -25,6 +25,9 @@ public:
     
     static PETexture *create(const char *fileName, PicType type);
     bool initWithPic(const char *fileName, PicType type);
+
+	static PETexture *createWithFont(const std::string &content, const std::string &font, float size);
+	bool initWithFont(const std::string &constent, const std::string &font, float size);
     GLuint Texture();
     int Width();
     int Height();

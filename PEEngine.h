@@ -35,6 +35,7 @@
 #ifdef GL_LINUX
 #include "PEKeyboardManager.h"
 #include "PEScene.h"
+#include "PEMulSampleScene.h"
 #endif
 
 #endif

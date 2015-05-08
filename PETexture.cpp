@@ -3,22 +3,21 @@
 //
 
 #include "PETexture.h"
+#include <freetype2/ft2build.h>
+#include <freetype2/freetype.h>
 
 #define PNG_BYTES_TO_CHECK 4
-PETexture::PETexture()
-{
+PETexture::PETexture(){
 	m_Id = 0;
 }
 
-PETexture::~PETexture()
-{
+PETexture::~PETexture(){
 	if(GL_TRUE == glIsTexture(m_Id)){
 		glDeleteTextures(1, &m_Id);
 	}
 }
 
-PETexture *PETexture::create(const char *fileName, PicType type)
-{
+PETexture *PETexture::create(const char *fileName, PicType type){
 	PETexture *texture = new PETexture();
 	if(texture->initWithPic(fileName, type)){
 		return texture;
@@ -27,8 +26,7 @@ PETexture *PETexture::create(const char *fileName, PicType type)
 	return NULL;
 }
 
-bool PETexture::initWithPic(const char *fileName, PicType type)
-{
+bool PETexture::initWithPic(const char *fileName, PicType type){
 	switch(type){
 		case PNG_PIC:
 			return this->readPNGFile(fileName);
@@ -43,23 +41,45 @@ bool PETexture::initWithPic(const char *fileName, PicType type)
 	return true;
 }
 
-GLuint PETexture::Texture()
-{
+PETexture *PETexture::createWithFont(const std::string &content, const std::string &font, float size){
+	PETexture *tex = new PETexture();
+	if(tex->initWithFont(content, font, size)){
+		return tex;
+	}
+	delete tex;
+	return nullptr;
+}
+
+bool PETexture::initWithFont(const std::string &content, const std::string &font, float size){
+	FT_Library library;
+	FT_Face face;
+	int err = FT_Init_FreeType(&library);
+	if(err != 0){
+		return false;
+	}
+	err = FT_New_Face(library, font.c_str(), 0, &face);
+	if(err != 0){
+		return  false;
+	}
+	
+
+
+	return true;
+}
+
+GLuint PETexture::Texture(){
 	return m_Id;
 }
 
-int PETexture::Width()
-{
+int PETexture::Width(){
 	return m_width;
 }
 
-int PETexture::Height()
-{
+int PETexture::Height(){
 	return m_height;
 }
 
-bool PETexture::readPNGFile(const char *fileName)
-{
+bool PETexture::readPNGFile(const char *fileName){
 	FILE *fp = fopen(fileName, "rb");
 	if(NULL == fp){
 		return false;
@@ -129,8 +149,7 @@ bool PETexture::readPNGFile(const char *fileName)
 	return true;
 }
 
-bool PETexture::readJPGFile(const char *fileName)
-{
+bool PETexture::readJPGFile(const char *fileName){
 	FILE *fp = fopen(fileName, "rb");
 	if(NULL == fp){
 		return false;

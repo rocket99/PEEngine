@@ -1,10 +1,18 @@
-#ifndef 	__PEMulSampleScene_H__
-#define 	__PEMulSampleScene_H__
+//
+//
+//
+//
+//
+#ifndef	__PEMulSampleScene_H__
+#define __PEMulSampleScene_H__
 
+#include "PEPrefix.h"
 #include "Base/PENode.h"
 #include "Render/PEShaderManager.h"
+#include "Render/PEShaders.h"
 #include "Base/PELayer3D.h"
 #include "PEKeyboardManager.h"
+#include "PETextureManager.h"
 
 class PEMulSampleScene: public PENode
 {
@@ -31,6 +39,7 @@ private:
 
 	void displayHardwareInfo();
 };
+
 
 
 #endif
